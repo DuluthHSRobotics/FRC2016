@@ -12,7 +12,9 @@
 package org.usfirst.frc5293.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+
 import org.usfirst.frc5293.Robot;
+import org.usfirst.frc5293.subsystems.ToteElevator;
 
 /**
  *
@@ -31,12 +33,15 @@ public class  ReleaseTote extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	setTimeout(6); //TIMEOUT, may need to be adjusted
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    }
-
+    	if (Robot.toteElevator.getLowerSwitch() == false) { //NEEDS TO BE FIXED TOO
+    		Robot.toteElevator.lowerTotes();
+    	}
+	}
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return false;

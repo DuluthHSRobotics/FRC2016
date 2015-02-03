@@ -9,7 +9,7 @@
 // it from being updated in the future.
 
 
-package org.usfirst.frc5293.commands;
+package org.usfirst.frc5293.autoncommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -20,7 +20,7 @@ import org.usfirst.frc5293.Robot;
  *
  */
 public class  AutonDrive extends Command implements IParsable{
-	double xstrafe, ystrafe, rrotation, t;
+	private double xstrafe, ystrafe, rrotation, t;
   
 	public AutonDrive() {
         // Use requires() here to declare subsystem dependencies
