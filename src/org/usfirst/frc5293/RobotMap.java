@@ -28,7 +28,7 @@ public class RobotMap {
     public static SpeedController drivetrainTalonSR1;
     public static SpeedController drivetrainTalonSR2;
     public static SpeedController drivetrainTalonSR3;
-    public static RobotDrive drivetrainRobotDrive41;
+    public static RobotDrive drivetrainRobotDrive420;
     public static SpeedController toteElevatorTalonSRX4;
     public static SpeedController toteElevatorTalonSRX5;
     public static DigitalInput toteElevatorLimitTote0;
@@ -58,13 +58,13 @@ public class RobotMap {
         drivetrainTalonSR3 = new Talon(3);
         LiveWindow.addActuator("Drivetrain", "TalonSR 3", (Talon) drivetrainTalonSR3);
         
-        drivetrainRobotDrive41 = new RobotDrive(drivetrainTalonSR0, drivetrainTalonSR1,
+        drivetrainRobotDrive420 = new RobotDrive(drivetrainTalonSR0, drivetrainTalonSR1,
               drivetrainTalonSR2, drivetrainTalonSR3);
         
-        drivetrainRobotDrive41.setSafetyEnabled(true);
-        drivetrainRobotDrive41.setExpiration(0.1);
-        drivetrainRobotDrive41.setSensitivity(0.5);
-        drivetrainRobotDrive41.setMaxOutput(1.0);
+        drivetrainRobotDrive420.setSafetyEnabled(true);
+        drivetrainRobotDrive420.setExpiration(0.1);
+        drivetrainRobotDrive420.setSensitivity(0.5);
+        drivetrainRobotDrive420.setMaxOutput(1.0);
 
         toteElevatorTalonSRX4 = new TalonSRX(4);
         LiveWindow.addActuator("Tote Elevator", "TalonSRX 4", (TalonSRX) toteElevatorTalonSRX4);
