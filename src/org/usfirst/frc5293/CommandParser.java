@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package org.usfirst.frc5293; 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
@@ -11,7 +8,7 @@ import edu.wpi.first.wpilibj.command.PrintCommand;
 
 /**
  *
- * @author Andrew
+ * 
  */
 public class CommandParser {
     

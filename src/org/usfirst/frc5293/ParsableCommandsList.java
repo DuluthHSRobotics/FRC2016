@@ -5,7 +5,7 @@ import org.usfirst.frc5293.Robot;
 
 /**
  *
- * @author Andrew
+ * 
  */
 public class ParsableCommandsList {
     private static class ParsableWaitCommand extends WaitCommand implements IParsable{
