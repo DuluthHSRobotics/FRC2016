@@ -1,16 +1,9 @@
 
-package org.usfirst.frc5293;
+package org.usfirst.frc5293.util;
 
 //Change this import to your own CommandBase
 
-import edu.wpi.first.wpilibj.command.Command;
-
-
-/**
- *
- * 
- */
-public interface IParsable {  
+public interface IParsable {
     /**
      *Return a one-character String which unique for this class.
      *This is the character you will use in a command string to call this class.
@@ -22,9 +15,4 @@ public interface IParsable {
      * Keep track of the order, as that will be the order you use for the Input String.
      */
     void setArguments(String[] args);
-    
-    
-  
-    
-        
 }

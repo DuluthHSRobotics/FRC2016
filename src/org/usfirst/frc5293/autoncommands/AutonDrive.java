@@ -8,18 +8,14 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.usfirst.frc5293.autoncommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.usfirst.frc5293.IParsable;
+import org.usfirst.frc5293.util.IParsable;
 import org.usfirst.frc5293.Robot;
 
-/**
- *
- */
-public class  AutonDrive extends Command implements IParsable{
+public class AutonDrive extends Command implements IParsable {
 	private double xstrafe, ystrafe, rrotation, t;
   
 	public AutonDrive() {
@@ -41,6 +37,7 @@ public class  AutonDrive extends Command implements IParsable{
     	
     	Robot.drivetrain.autondrive(xstrafe, ystrafe, rrotation);
     }
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return false;
@@ -55,6 +52,7 @@ public class  AutonDrive extends Command implements IParsable{
     // subsystems is scheduled to run
     protected void interrupted() {
     }
+
     //The the parser checks the input string, the letter returned here will
     //denote that this command is to be added to the list.
     //This must return a single letter.
@@ -65,7 +63,7 @@ public class  AutonDrive extends Command implements IParsable{
     //The parser will set the arguments here, each one will be a string and
     //must be parsed accordingly.
     public void setArguments(String[] args) {
-        xstrafe  = Double.parseDouble(args[0]);
+        xstrafe = Double.parseDouble(args[0]);
         ystrafe = Double.parseDouble(args[1]);
         rrotation = Double.parseDouble(args[2]);
         t = Double.parseDouble(args[3]);

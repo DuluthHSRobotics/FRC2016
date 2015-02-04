@@ -1,15 +1,9 @@
-
-package org.usfirst.frc5293;
+package org.usfirst.frc5293.util;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- *
- * 
- */
 public class ParsedRobot extends IterativeRobot {
     private Preferences _preferences = Preferences.getInstance();
     private final String _commandName = "AutonomousCommand";
@@ -18,6 +12,7 @@ public class ParsedRobot extends IterativeRobot {
     private CommandGroup _autonomousCommand;
     
     //Creates the AutonomousCommand preference in RobotPreferences if it doesn't exist  
+    @Override
     public void robotInit(){
         if(!_preferences.containsKey(_commandName)){
             _preferences.putString(_commandName, _defaultString);
@@ -26,6 +21,7 @@ public class ParsedRobot extends IterativeRobot {
     }
 
     //Cancels any autonomous command when you disable the robot
+    @Override
     public void disabledInit(){
         if(null != _autonomousCommand){
             _autonomousCommand.cancel();
@@ -33,6 +29,7 @@ public class ParsedRobot extends IterativeRobot {
     }
     
     //Checks to see if you have changed the autonomous command while the robot is disabled
+    @Override
     public void disabledPeriodic(){
         String currentString = _preferences.getString(_commandName, _defaultString);
         if(!currentString.equals(_autonomousString)){
@@ -43,6 +40,7 @@ public class ParsedRobot extends IterativeRobot {
     }
     
     //Starts the autonomous command in Autonomous Mode
+    @Override
     public void autonomousInit(){
         if(null != _autonomousCommand){
             _autonomousCommand.start();
@@ -50,6 +48,7 @@ public class ParsedRobot extends IterativeRobot {
     }
     
     //Ends the autonomous command when Teleop starts
+    @Override
     public void teleopInit(){
         if(null != _autonomousCommand){
             _autonomousCommand.cancel();

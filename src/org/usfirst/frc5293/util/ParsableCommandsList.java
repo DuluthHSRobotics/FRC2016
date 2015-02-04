@@ -1,7 +1,6 @@
-package org.usfirst.frc5293;
+package org.usfirst.frc5293.util;
 
 import edu.wpi.first.wpilibj.command.WaitCommand;
-import org.usfirst.frc5293.Robot;
 
 /**
  *
@@ -25,10 +24,8 @@ public class ParsableCommandsList {
         public void setArguments(String[] args) {
             setTimeout(ParsedRobot.parseDouble(args[0]));
         }
-        
     }
-    
-    
+
     private static IParsable[] _commandList; 
     
     //Sets the list of ParsableCommands
