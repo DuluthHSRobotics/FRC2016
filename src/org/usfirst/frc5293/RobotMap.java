@@ -21,84 +21,72 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * floating around.
  */
 public class RobotMap {
-    public static SpeedController drivetrainTalonSR0;
-    public static SpeedController drivetrainTalonSR1;
-    public static SpeedController drivetrainTalonSR2;
-    public static SpeedController drivetrainTalonSR3;
-    public static RobotDrive drivetrainRobotDrive420;
-    public static SpeedController toteElevatorTalonSRX0;
-    public static SpeedController toteElevatorTalonSRX1;
-    public static DigitalInput toteElevatorLimitTote0;
-    public static DigitalInput toteElevatorLimitToteElev1;
-    public static DigitalInput toteElevatorLimitToteElev2;
-    public static SpeedController binElevatorVictorSP6;
-    public static DigitalInput binElevatorLimitBinElev3;
-    public static DigitalInput binElevatorLimitBinElev4;
-    public static DigitalInput binElevatorLimitBinElev5;
-    public static DigitalInput binElevatorLimitBinElev6;
-    public static DigitalInput binElevatorLimitBinElev7;
-    public static DoubleSolenoid binGrabberDoubleSolGrabber0;
+    public static final class ToteElevator {
+        public static SpeedController talonSRX0;
+        public static SpeedController talonSRX1;
+        public static DigitalInput bottomLimitSwitch;
+
+        public static void init() {
+            talonSRX0 = new CANTalon(0);
+            // TODO: For what ever reason we cannot directly connect the CANTalon to LiveWindow since it does not implement
+            // TODO: the LiveWindowSendable interface.
+            //LiveWindow.addActuator("Tote Elevator", "TalonSRX 4", (CANTalon) talonSRX0);
+
+            talonSRX1 = new CANTalon(1);
+            //LiveWindow.addActuator("Tote Elevator", "TalonSRX 5", (CANTalon) talonSRX1);
+
+            bottomLimitSwitch = new DigitalInput(4);
+            LiveWindow.addSensor("Tote Elevator", "Button Limit Switch", ToteElevator.bottomLimitSwitch);
+        }
+    }
+
+    public static final class Drivetrain {
+        public static SpeedController frontLeftTalon;
+        public static SpeedController backLeftTalon;
+        public static SpeedController frontRightTalon;
+        public static SpeedController backRightTalon;
+        public static RobotDrive control;
+
+        public static void init() {
+            frontLeftTalon = new Talon(0);
+            LiveWindow.addActuator("Drivetrain", "Front Left (Talon)", (Talon) frontLeftTalon);
+
+            backLeftTalon = new Talon(1);
+            LiveWindow.addActuator("Drivetrain", "Back Left (Talon)", (Talon) backLeftTalon);
+
+            frontRightTalon = new Talon(2);
+            LiveWindow.addActuator("Drivetrain", "Front Right (Talon)", (Talon) frontRightTalon);
+
+            backRightTalon = new Talon(3);
+            LiveWindow.addActuator("Drivetrain", "Back Right (Talon)", (Talon) backRightTalon);
+
+            control = new RobotDrive(
+                    frontLeftTalon, backLeftTalon,
+                    frontRightTalon, backRightTalon);
+
+            control.setSafetyEnabled(true);
+            control.setExpiration(0.1);
+            control.setSensitivity(0.5);
+            control.setMaxOutput(1.0);
+        }
+    }
+
+    public static final class BinElevator {
+        public static SpeedController victor;
+        public static DoubleSolenoid solenoidGrabber;
+
+        public static void init() {
+            victor = new VictorSP(6);
+            LiveWindow.addActuator("Bin Elevator", "Victor SP 6", (VictorSP) victor);
+
+            solenoidGrabber = new DoubleSolenoid(0, 0, 1);
+            LiveWindow.addActuator("Bin Grabber", "Double Sol Grabber 0", solenoidGrabber);
+        }
+    }
 
     public static void init() {
-        drivetrainTalonSR0 = new Talon(0);
-        LiveWindow.addActuator("Drivetrain", "TalonSR 0", (Talon) drivetrainTalonSR0);
-        
-        drivetrainTalonSR1 = new Talon(1);
-        LiveWindow.addActuator("Drivetrain", "TalonSR 1", (Talon) drivetrainTalonSR1);
-        
-        drivetrainTalonSR2 = new Talon(2);
-        LiveWindow.addActuator("Drivetrain", "TalonSR 2", (Talon) drivetrainTalonSR2);
-        
-        drivetrainTalonSR3 = new Talon(3);
-        LiveWindow.addActuator("Drivetrain", "TalonSR 3", (Talon) drivetrainTalonSR3);
-        
-        drivetrainRobotDrive420 = new RobotDrive(drivetrainTalonSR0, drivetrainTalonSR1,
-              drivetrainTalonSR2, drivetrainTalonSR3);
-        
-        drivetrainRobotDrive420.setSafetyEnabled(true);
-        drivetrainRobotDrive420.setExpiration(0.1);
-        drivetrainRobotDrive420.setSensitivity(0.5);
-        drivetrainRobotDrive420.setMaxOutput(1.0);
-
-        toteElevatorTalonSRX0 = new CANTalon(0);
-        // TODO: For what ever reason we cannot directly connect the CANTalon to LiveWindow since it does not implement
-        // TODO: the LiveWindowSendable interface.
-        //LiveWindow.addActuator("Tote Elevator", "TalonSRX 4", (CANTalon) toteElevatorTalonSRX0);
-        
-        toteElevatorTalonSRX1 = new CANTalon(1);
-        //LiveWindow.addActuator("Tote Elevator", "TalonSRX 5", (CANTalon) toteElevatorTalonSRX1);
-        
-        toteElevatorLimitTote0 = new DigitalInput(0);
-        LiveWindow.addSensor("Tote Elevator", "Limit Tote 0", toteElevatorLimitTote0);
-        
-        toteElevatorLimitToteElev1 = new DigitalInput(1);
-        LiveWindow.addSensor("Tote Elevator", "Limit ToteElev 1", toteElevatorLimitToteElev1);
-        
-        toteElevatorLimitToteElev2 = new DigitalInput(2);
-        LiveWindow.addSensor("Tote Elevator", "Limit ToteElev 2", toteElevatorLimitToteElev2);
-        
-        binElevatorVictorSP6 = new VictorSP(6);
-        LiveWindow.addActuator("Bin Elevator", "Victor SP 6", (VictorSP) binElevatorVictorSP6);
-        
-        binElevatorLimitBinElev3 = new DigitalInput(3);
-        LiveWindow.addSensor("Bin Elevator", "Limit BinElev 3", binElevatorLimitBinElev3);
-        
-        binElevatorLimitBinElev4 = new DigitalInput(4);
-        LiveWindow.addSensor("Bin Elevator", "Limit BinElev 4", binElevatorLimitBinElev4);
-        
-        binElevatorLimitBinElev5 = new DigitalInput(5);
-        LiveWindow.addSensor("Bin Elevator", "Limit BinElev 5", binElevatorLimitBinElev5);
-        
-        binElevatorLimitBinElev6 = new DigitalInput(6);
-        LiveWindow.addSensor("Bin Elevator", "Limit BinElev 6", binElevatorLimitBinElev6);
-        
-        binElevatorLimitBinElev7 = new DigitalInput(7);
-        LiveWindow.addSensor("Bin Elevator", "Limit BinElev 7", binElevatorLimitBinElev7);
-        
-        binGrabberDoubleSolGrabber0 = new DoubleSolenoid(0, 0, 1);      
-        LiveWindow.addActuator("Bin Grabber", "Double Sol Grabber 0", binGrabberDoubleSolGrabber0);
-        
-
-        // END AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=CONSTRUCTORS
+        Drivetrain.init();
+        ToteElevator.init();
+        BinElevator.init();
     }
 }

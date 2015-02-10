@@ -18,22 +18,14 @@ import org.usfirst.frc5293.commands.CollectTote;
 
 public class ToteElevator extends Subsystem {
 
+	// TODO: Implement adjusting the speeds smoothly
     // TODO: Adjust speeds
-    private static final double RAISE_SPEED = 1.0;
-    private static final double LOWER_SPEED = -1.0;
+    private static double RAISE_SPEED = 0.5;
+    private static double LOWER_SPEED = -0.5;
 
-    private final DigitalInput limitToteElev1 = RobotMap.toteElevatorLimitToteElev1;
-    private final SpeedController talonSRX0 = RobotMap.toteElevatorTalonSRX0;
-    private final SpeedController talonSRX1 = RobotMap.toteElevatorTalonSRX1;
-    private final DigitalInput limitTote0 = RobotMap.toteElevatorLimitTote0;
-    private final DigitalInput limitToteElev2 = RobotMap.toteElevatorLimitToteElev2;
-
-    public DigitalInput getUpperSwitch () {
-    	return limitToteElev1;
-    }
-    public DigitalInput getLowerSwitch () { //DIGITAL INPUT TYPE NEEDS TO BE FIXED
-    	return limitToteElev2;
-    }
+    private final DigitalInput bottomLimitSwitch = RobotMap.ToteElevator.bottomLimitSwitch;
+    private final SpeedController talonSRX0 = RobotMap.ToteElevator.talonSRX0;
+    private final SpeedController talonSRX1 = RobotMap.ToteElevator.talonSRX1;
 
     public void raiseTotes(){
     	talonSRX0.set(RAISE_SPEED);
@@ -41,6 +33,11 @@ public class ToteElevator extends Subsystem {
     }
 
     public void lowerTotes(){
+//        if (bottomLimitSwitch.get()) {
+//            stop();
+//            return;
+//        }
+
     	talonSRX0.set(LOWER_SPEED);
     	talonSRX1.set(LOWER_SPEED);
     }

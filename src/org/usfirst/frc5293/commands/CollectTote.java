@@ -15,8 +15,8 @@ import org.usfirst.frc5293.Robot;
 
 public class CollectTote extends Command {
 
-    public static final int UP_BUTTON = 10;
-    public static final int DOWN_BUTTON = 11;
+    public static int UP_BUTTON = 11;
+    public static int DOWN_BUTTON = 10;
 
     public CollectTote() {
         requires(Robot.toteElevator);
