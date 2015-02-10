@@ -1,3 +1,9 @@
-/bin/
+# IntelliJ Project Files
 .idea/
 *.iml
+
+# Build Files
+/bin/
+/build/
+/dist/
+sysProps.xml

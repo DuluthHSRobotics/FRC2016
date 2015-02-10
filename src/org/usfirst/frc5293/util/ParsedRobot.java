@@ -5,53 +5,53 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ParsedRobot extends IterativeRobot {
-    private Preferences _preferences = Preferences.getInstance();
-    private final String _commandName = "AutonomousCommand";
-    private String _autonomousString = "";
-    private String _defaultString = "";
-    private CommandGroup _autonomousCommand;
-    
-    //Creates the AutonomousCommand preference in RobotPreferences if it doesn't exist  
+    private Preferences prefs = Preferences.getInstance();
+    private final String commandName = "AutonomousCommand";
+    private String autonomousString = "";
+    private String defaultString = "";
+    private CommandGroup autonomousCommand;
+
+    //Creates the AutonomousCommand preference in RobotPreferences if it doesn't exist
     @Override
     public void robotInit(){
-        if(!_preferences.containsKey(_commandName)){
-            _preferences.putString(_commandName, _defaultString);
-            _preferences.save();
+        if(!prefs.containsKey(commandName)){
+            prefs.putString(commandName, defaultString);
+            prefs.save();
         }
     }
 
     //Cancels any autonomous command when you disable the robot
     @Override
     public void disabledInit(){
-        if(null != _autonomousCommand){
-            _autonomousCommand.cancel();
+        if(autonomousCommand != null){
+            autonomousCommand.cancel();
         }
     }
     
     //Checks to see if you have changed the autonomous command while the robot is disabled
     @Override
     public void disabledPeriodic(){
-        String currentString = _preferences.getString(_commandName, _defaultString);
-        if(!currentString.equals(_autonomousString)){
-            System.out.println("New command detected:: Old one was " + _autonomousString + " New one was " + currentString);
-            _autonomousString = currentString;
-            _autonomousCommand = CommandParser.parseStringToCommandGroup(_autonomousString);
+        String currentString = prefs.getString(commandName, defaultString);
+        if(!currentString.equals(autonomousString)){
+            System.out.println("New command detected:: Old one was " + autonomousString + " New one was " + currentString);
+            autonomousString = currentString;
+            autonomousCommand = CommandParser.parseStringToCommandGroup(autonomousString);
         }
     }
     
     //Starts the autonomous command in Autonomous Mode
     @Override
     public void autonomousInit(){
-        if(null != _autonomousCommand){
-            _autonomousCommand.start();
+        if(autonomousCommand != null){
+            autonomousCommand.start();
         }
     }
     
     //Ends the autonomous command when Teleop starts
     @Override
     public void teleopInit(){
-        if(null != _autonomousCommand){
-            _autonomousCommand.cancel();
+        if(autonomousCommand != null){
+            autonomousCommand.cancel();
         }
     }
 
@@ -64,7 +64,7 @@ public class ParsedRobot extends IterativeRobot {
      */
     protected void enterCommandList(IParsable[] list){
         ParsableCommandsList.setParsableCommands(list);
-        _autonomousCommand = CommandParser.parseStringToCommandGroup(_preferences.getString(_commandName, _defaultString));                
+        autonomousCommand = CommandParser.parseStringToCommandGroup(prefs.getString(commandName, defaultString));
     }
     
    //Use the following three methods to parse the strings input to setArguments

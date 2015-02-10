@@ -40,13 +40,15 @@ public class Drivetrain extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
+
     public void drive() {
     	double x = Robot.oi.getJoystick1().getX();
-    	double y = Robot.oi.getJoystick1().getX();
+    	double y = Robot.oi.getJoystick1().getY();
     	double r = Robot.oi.getJoystick1().getTwist();
     	
     	robotDrive420.mecanumDrive_Cartesian(x, y, r, 0);
     }
+
     public void autondrive(double xstrafe, double ystrafe, double rrotation) {
     	robotDrive420.mecanumDrive_Cartesian(xstrafe, ystrafe, rrotation, 0);
     }

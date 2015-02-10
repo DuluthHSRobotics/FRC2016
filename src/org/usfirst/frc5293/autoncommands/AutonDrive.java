@@ -34,7 +34,6 @@ public class AutonDrive extends Command implements IParsable {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
     	Robot.drivetrain.autondrive(xstrafe, ystrafe, rrotation);
     }
 
