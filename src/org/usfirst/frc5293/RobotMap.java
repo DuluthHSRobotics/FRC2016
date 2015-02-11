@@ -41,29 +41,36 @@ public class RobotMap {
     }
 
     public static final class Drivetrain {
-        public static SpeedController frontLeftTalon;
-        public static SpeedController backLeftTalon;
-        public static SpeedController frontRightTalon;
-        public static SpeedController backRightTalon;
+        private static final int FRONT_LEFT_ID = 1;
+        private static final int BACK_LEFT_ID = 0;
+        private static final int FRONT_RIGHT_ID = 2;
+        private static final int BACK_RIGHT_ID = 3;
+
+        public static SpeedController frontLeft;
+        public static SpeedController backLeft;
+        public static SpeedController frontRight;
+        public static SpeedController backRight;
         public static RobotDrive control;
 
         public static void init() {
-            frontLeftTalon = new Talon(0);
-            LiveWindow.addActuator("Drivetrain", "Front Left (Talon)", (Talon) frontLeftTalon);
+            frontLeft = new Talon(FRONT_LEFT_ID);
+            LiveWindow.addActuator("Drivetrain", "Front Left (Talon)", (Talon) frontLeft);
 
-            backLeftTalon = new Talon(1);
-            LiveWindow.addActuator("Drivetrain", "Back Left (Talon)", (Talon) backLeftTalon);
+            backLeft = new Talon(BACK_LEFT_ID);
+            LiveWindow.addActuator("Drivetrain", "Back Left (Talon)", (Talon) backLeft);
 
-            frontRightTalon = new Talon(2);
-            LiveWindow.addActuator("Drivetrain", "Front Right (Talon)", (Talon) frontRightTalon);
+            frontRight = new Talon(FRONT_RIGHT_ID);
+            LiveWindow.addActuator("Drivetrain", "Front Right (Talon)", (Talon) frontRight);
 
-            backRightTalon = new Talon(3);
-            LiveWindow.addActuator("Drivetrain", "Back Right (Talon)", (Talon) backRightTalon);
+            backRight = new Talon(BACK_RIGHT_ID);
+            LiveWindow.addActuator("Drivetrain", "Back Right (Talon)", (Talon) backRight);
 
             control = new RobotDrive(
-                    frontLeftTalon, backLeftTalon,
-                    frontRightTalon, backRightTalon);
+                    frontLeft, backLeft,
+                    frontRight, backRight);
 
+            control.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+            control.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
             control.setSafetyEnabled(true);
             control.setExpiration(0.1);
             control.setSensitivity(0.5);

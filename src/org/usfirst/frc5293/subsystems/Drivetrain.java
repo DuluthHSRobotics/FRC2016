@@ -12,7 +12,6 @@ package org.usfirst.frc5293.subsystems;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc5293.Robot;
 import org.usfirst.frc5293.RobotMap;
 import org.usfirst.frc5293.commands.MecanumDrive;
 
@@ -24,16 +23,8 @@ public class Drivetrain extends Subsystem {
         setDefaultCommand(new MecanumDrive());
     }
 
-    public void drive() {
-    	double x = Robot.oi.getJoystick1().getX();
-    	double y = Robot.oi.getJoystick1().getY();
-    	double r = Robot.oi.getJoystick1().getTwist();
-
+    public void drive(double x, double y, double r) {
         drive.mecanumDrive_Cartesian(x, y, r, 0);
-    }
-
-    public void autondrive(double xstrafe, double ystrafe, double rrotation) {
-    	drive.mecanumDrive_Cartesian(xstrafe, ystrafe, rrotation, 0);
     }
 
     public void stop() {

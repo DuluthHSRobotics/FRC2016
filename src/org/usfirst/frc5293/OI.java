@@ -49,10 +49,12 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 
-    public final Joystick joystick1;
+    private final Joystick joystick1;
+    private final Joystick joystick2;
 
     public OI() {
         joystick1 = new Joystick(0);
+        joystick2 = new Joystick(1);
 
         // TODO: Use the button.when*() methods instead
 
@@ -68,6 +70,10 @@ public class OI {
 
     public Joystick getJoystick1() {
         return joystick1;
+    }
+
+    public Joystick getJoystick2() {
+        return joystick2;
     }
 }
 

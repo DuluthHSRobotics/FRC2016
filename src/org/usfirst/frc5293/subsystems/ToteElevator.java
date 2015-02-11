@@ -33,10 +33,10 @@ public class ToteElevator extends Subsystem {
     }
 
     public void lowerTotes(){
-//        if (bottomLimitSwitch.get()) {
-//            stop();
-//            return;
-//        }
+        if (bottomLimitSwitch.get()) {
+            stop();
+            return;
+        }
 
     	talonSRX0.set(LOWER_SPEED);
     	talonSRX1.set(LOWER_SPEED);
