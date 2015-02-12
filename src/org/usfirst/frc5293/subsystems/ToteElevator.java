@@ -27,17 +27,9 @@ public class ToteElevator extends Subsystem {
     private final SpeedController talonSRX0 = RobotMap.ToteElevator.talonSRX0;
     private final SpeedController talonSRX1 = RobotMap.ToteElevator.talonSRX1;
 
-    public void raise() {
-        raise(1.0);
-    }
-
     public void raise(double percentage) {
     	talonSRX0.set(percentage * RAISE_SPEED);
     	talonSRX1.set(percentage * RAISE_SPEED);
-    }
-
-    public void lower() {
-        lower(1.0);
     }
 
     public void lower(double percentage) {

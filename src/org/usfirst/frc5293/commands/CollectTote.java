@@ -10,51 +10,86 @@
 
 package org.usfirst.frc5293.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc5293.Robot;
+import org.usfirst.frc5293.commands.util.EmptyCommand;
+import org.usfirst.frc5293.commands.util.LimitFunction;
+import org.usfirst.frc5293.commands.util.TimedEaseIn;
+import org.usfirst.frc5293.util.Util;
 
-public class CollectTote extends Command {
+public class CollectTote extends EmptyCommand {
 
-    public static int UP_BUTTON = 11;
-    public static int DOWN_BUTTON = 10;
+    private static enum ControlState {
+        NONE,
+        RAISE,
+        LOWER
+    }
+
+    private final double MOTOR_MAX = 1.0;
+    private final double MOTOR_MIN = 0.0;
+    private final int EASE_IN_DURATION_MILLIS = 500;
+
+    private final double EASE_IN_CHANGE = 0.1;
+
+    private boolean isRunning;
+    private TimedEaseIn easeIn;
 
     public CollectTote() {
         requires(Robot.toteElevator);
+
+        this.isRunning = false;
+        this.easeIn = new TimedEaseIn(MOTOR_MIN, EASE_IN_CHANGE, EASE_IN_DURATION_MILLIS);
     }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    }
-
-    // Called repeatedly when this Command is scheduled to run
+    @Override
     protected void execute() {
-        // TODO: For debugging right now...
-        boolean isUp = Robot.oi.getJoystick1().getRawButton(UP_BUTTON);
-        boolean isDown = Robot.oi.getJoystick1().getRawButton(DOWN_BUTTON);
+        ControlState state = getControlState();
 
-        if (!isUp && !isDown) {
-            Robot.toteElevator.stop();
-            return;
-        }
+        switch (state) {
+            case NONE:
+                Robot.toteElevator.stop();
+                return;
 
-        if (isUp) {
-            Robot.toteElevator.raise();
-        } else {
-            Robot.toteElevator.lower();
+            case RAISE:
+                updateWithNextValue(Robot.toteElevator::raise);
+                break;
+
+            case LOWER:
+                updateWithNextValue(Robot.toteElevator::lower);
+                break;
         }
     }
 
-    // Make this return true when this Command no longer needs to run execute()
+    @Override
     protected boolean isFinished() {
         return false;
     }
 
-    // Called once after isFinished returns true
-    protected void end() {
+    private void updateWithNextValue(LimitFunction func) {
+        if (!isRunning) {
+            easeIn.reset();
+        }
+
+        double clamped = getNextValue();
+        func.run(clamped);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
+    private double getNextValue() {
+        double value = easeIn.loop();
+        return Util.clampMax(value, MOTOR_MAX);
+    }
+
+    private ControlState getControlState() {
+        boolean isUp = Robot.oi.getToteElevator().getUpButton().get();
+        boolean isDown = Robot.oi.getToteElevator().getDownButton().get();
+
+        if (!isUp && !isDown) {
+            return ControlState.NONE;
+        }
+
+        if (isUp) {
+            return ControlState.RAISE;
+        } else {
+            return ControlState.LOWER;
+        }
     }
 }
