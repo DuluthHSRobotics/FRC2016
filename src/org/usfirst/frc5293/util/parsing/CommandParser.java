@@ -1,5 +1,5 @@
 
-package org.usfirst.frc5293.util;
+package org.usfirst.frc5293.util.parsing;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;

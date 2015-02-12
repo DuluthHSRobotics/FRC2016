@@ -12,7 +12,7 @@ package org.usfirst.frc5293.autoncommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.usfirst.frc5293.util.IParsable;
+import org.usfirst.frc5293.util.parsing.IParsable;
 import org.usfirst.frc5293.Robot;
 
 public class AutonDrive extends Command implements IParsable {

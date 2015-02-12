@@ -1,4 +1,4 @@
-package org.usfirst.frc5293.util;
+package org.usfirst.frc5293.util.parsing;
 
 import edu.wpi.first.wpilibj.command.WaitCommand;
 

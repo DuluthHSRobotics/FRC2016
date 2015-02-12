@@ -24,12 +24,14 @@ public class ToteElevator extends Subsystem {
     private static double LOWER_SPEED = -1.0;
 
     private final DigitalInput bottomLimitSwitch = RobotMap.ToteElevator.bottomLimitSwitch;
-    private final SpeedController talonSRX0 = RobotMap.ToteElevator.talonSRX0;
-    private final SpeedController talonSRX1 = RobotMap.ToteElevator.talonSRX1;
+    private final SpeedController master = RobotMap.ToteElevator.master;
+
+    public void initDefaultCommand() {
+        setDefaultCommand(new CollectTote());
+    }
 
     public void raise(double percentage) {
-    	talonSRX0.set(percentage * RAISE_SPEED);
-    	talonSRX1.set(percentage * RAISE_SPEED);
+    	master.set(percentage * RAISE_SPEED);
     }
 
     public void lower(double percentage) {
@@ -38,18 +40,11 @@ public class ToteElevator extends Subsystem {
             return;
         }
 
-    	talonSRX0.set(percentage * LOWER_SPEED);
-    	talonSRX1.set(percentage * LOWER_SPEED);
+    	master.set(percentage * LOWER_SPEED);
     }
 
     public void stop() {
-    	talonSRX0.set(0);
-    	talonSRX1.set(0);
-    }
-
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        setDefaultCommand(new CollectTote());
+    	master.set(0);
     }
 }
 

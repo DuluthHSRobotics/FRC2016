@@ -14,6 +14,7 @@ import org.usfirst.frc5293.Robot;
 import org.usfirst.frc5293.commands.util.EmptyCommand;
 import org.usfirst.frc5293.commands.util.LimitFunction;
 import org.usfirst.frc5293.commands.util.TimedEaseIn;
+import org.usfirst.frc5293.util.Prefs;
 import org.usfirst.frc5293.util.Util;
 
 public class CollectTote extends EmptyCommand {
@@ -24,11 +25,8 @@ public class CollectTote extends EmptyCommand {
         LOWER
     }
 
-    private final double MOTOR_MAX = 1.0;
-    private final double MOTOR_MIN = 0.0;
-    private final int EASE_IN_DURATION_MILLIS = 500;
-
-    private final double EASE_IN_CHANGE = 0.1;
+    private static final double MOTOR_MAX = 1.0;
+    private static final double MOTOR_MIN = 0.0;
 
     private boolean isRunning;
     private TimedEaseIn easeIn;
@@ -37,7 +35,7 @@ public class CollectTote extends EmptyCommand {
         requires(Robot.toteElevator);
 
         this.isRunning = false;
-        this.easeIn = new TimedEaseIn(MOTOR_MIN, EASE_IN_CHANGE, EASE_IN_DURATION_MILLIS);
+        this.easeIn = null;
     }
 
     @Override
@@ -66,7 +64,12 @@ public class CollectTote extends EmptyCommand {
 
     private void updateWithNextValue(LimitFunction func) {
         if (!isRunning) {
-            easeIn.reset();
+            easeIn = new TimedEaseIn(
+                    MOTOR_MIN,
+                    Prefs.EaseIn.easeInChange.get(),
+                    Prefs.EaseIn.easeInDuration.get());
+            
+            isRunning = true;
         }
 
         double clamped = getNextValue();

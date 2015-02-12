@@ -22,18 +22,22 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class RobotMap {
     public static final class ToteElevator {
-        public static SpeedController talonSRX0;
-        public static SpeedController talonSRX1;
+        public static CANTalon master;
+        public static CANTalon slave;
         public static DigitalInput bottomLimitSwitch;
 
         public static void init() {
-            talonSRX0 = new CANTalon(0);
+            master = new CANTalon(0);
+
             // TODO: For what ever reason we cannot directly connect the CANTalon to LiveWindow since it does not implement
             // TODO: the LiveWindowSendable interface.
-            //LiveWindow.addActuator("Tote Elevator", "TalonSRX 4", (CANTalon) talonSRX0);
+//            LiveWindow.addActuator("Tote Elevator", "TalonSRX 4", (CANTalon) master);
 
-            talonSRX1 = new CANTalon(1);
-            //LiveWindow.addActuator("Tote Elevator", "TalonSRX 5", (CANTalon) talonSRX1);
+            // Put the other Talon SRX in Follower mode so that it will just follow what the talon
+            slave = new CANTalon(1);
+            slave.changeControlMode(CANTalon.ControlMode.Follower);
+            slave.set(master.getDeviceID());
+//            LiveWindow.addActuator("Tote Elevator", "TalonSRX 5", (CANTalon) slave);
 
             bottomLimitSwitch = new DigitalInput(4);
             LiveWindow.addSensor("Tote Elevator", "Button Limit Switch", ToteElevator.bottomLimitSwitch);
