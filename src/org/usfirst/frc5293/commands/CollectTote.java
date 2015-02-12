@@ -38,9 +38,9 @@ public class CollectTote extends Command {
         }
 
         if (isUp) {
-            Robot.toteElevator.raiseTotes();
+            Robot.toteElevator.raise();
         } else {
-            Robot.toteElevator.lowerTotes();
+            Robot.toteElevator.lower();
         }
     }
 

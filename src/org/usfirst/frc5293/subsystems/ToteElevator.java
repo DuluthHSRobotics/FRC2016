@@ -20,26 +20,34 @@ public class ToteElevator extends Subsystem {
 
 	// TODO: Implement adjusting the speeds smoothly
     // TODO: Adjust speeds
-    private static double RAISE_SPEED = 0.5;
-    private static double LOWER_SPEED = -0.5;
+    private static double RAISE_SPEED = 1.0;
+    private static double LOWER_SPEED = -1.0;
 
     private final DigitalInput bottomLimitSwitch = RobotMap.ToteElevator.bottomLimitSwitch;
     private final SpeedController talonSRX0 = RobotMap.ToteElevator.talonSRX0;
     private final SpeedController talonSRX1 = RobotMap.ToteElevator.talonSRX1;
 
-    public void raiseTotes(){
-    	talonSRX0.set(RAISE_SPEED);
-    	talonSRX1.set(RAISE_SPEED);
+    public void raise() {
+        raise(1.0);
     }
 
-    public void lowerTotes(){
+    public void raise(double percentage) {
+    	talonSRX0.set(percentage * RAISE_SPEED);
+    	talonSRX1.set(percentage * RAISE_SPEED);
+    }
+
+    public void lower() {
+        lower(1.0);
+    }
+
+    public void lower(double percentage) {
         if (bottomLimitSwitch.get()) {
             stop();
             return;
         }
 
-    	talonSRX0.set(LOWER_SPEED);
-    	talonSRX1.set(LOWER_SPEED);
+    	talonSRX0.set(percentage * LOWER_SPEED);
+    	talonSRX1.set(percentage * LOWER_SPEED);
     }
 
     public void stop() {

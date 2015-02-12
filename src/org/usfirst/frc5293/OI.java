@@ -12,9 +12,13 @@
 package org.usfirst.frc5293;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc5293.autoncommands.AutonDrive;
-import org.usfirst.frc5293.commands.*;
+import org.usfirst.frc5293.commands.AutonomousCommand;
+import org.usfirst.frc5293.commands.CollectTote;
+import org.usfirst.frc5293.commands.MecanumDrive;
+import org.usfirst.frc5293.util.Util;
 
 
 /**
@@ -52,11 +56,93 @@ public class OI {
     private final Joystick joystick1;
     private final Joystick joystick2;
 
+//    private final JoystickButton toteUpButton;
+//    private final JoystickButton toteDownButton;
+
+    private static final int TOTE_UP_BUTTON = 11;
+    private static final int TOTE_DOWN_BUTTON = 10;
+
+    public static interface LimitFunction {
+        void run(double percentage);
+    }
+
+    private static class StopToteElevator extends Command {
+        @Override
+        protected void initialize() {
+            requires(Robot.toteElevator);
+        }
+
+        @Override
+        protected void execute() {
+            Robot.toteElevator.stop();
+        }
+
+        @Override
+        protected boolean isFinished() {
+            return false;
+        }
+
+        @Override
+        protected void end() {
+        }
+
+        @Override
+        protected void interrupted() {
+        }
+    }
+
+    private static class EaseIn extends Command {
+        private static final long EASE_IN_DURATION_MS = 750;
+
+        private long startMs = 0;
+        private long durationMs = 0;
+
+        private LimitFunction func;
+
+        public EaseIn(LimitFunction func) {
+            this.func = func;
+
+            // TODO: Figure how to refactor this out
+            requires(Robot.toteElevator);
+        }
+
+        @Override
+        protected void initialize() {
+            startMs = System.currentTimeMillis();
+        }
+
+        @Override
+        protected void execute() {
+            durationMs = System.currentTimeMillis() - startMs;
+
+            double percentage = Util.easeInQuad(durationMs, 0.0, 0.2, EASE_IN_DURATION_MS);
+            percentage = Util.clampMax(percentage, 1.0);
+            func.run(percentage);
+        }
+
+        @Override
+        protected boolean isFinished() {
+            return false;
+        }
+
+        @Override
+        protected void end() { }
+
+        @Override
+        protected void interrupted() {  }
+    }
+
     public OI() {
         joystick1 = new Joystick(0);
         joystick2 = new Joystick(1);
 
-        // TODO: Use the button.when*() methods instead
+//        toteUpButton = new JoystickButton(joystick1, TOTE_UP_BUTTON);
+//        toteUpButton.whenPressed(new EaseIn(Robot.toteElevator::raise));
+//        toteUpButton.whenReleased(new StopToteElevator());
+//
+//        toteDownButton = new JoystickButton(joystick1, TOTE_DOWN_BUTTON);
+//        toteDownButton.whenPressed(new EaseIn(Robot.toteElevator::lower));
+//        toteDownButton.whenReleased(new StopToteElevator());
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
