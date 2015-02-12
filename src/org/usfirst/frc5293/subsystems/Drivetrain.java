@@ -13,14 +13,14 @@ package org.usfirst.frc5293.subsystems;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc5293.RobotMap;
-import org.usfirst.frc5293.commands.MecanumDrive;
+import org.usfirst.frc5293.commands.MecanumDriveControl;
 
 public class Drivetrain extends Subsystem {
 
     private final RobotDrive drive = RobotMap.Drivetrain.control;
 
     public void initDefaultCommand() {
-        setDefaultCommand(new MecanumDrive());
+        setDefaultCommand(new MecanumDriveControl());
     }
 
     public void drive(double x, double y, double r) {

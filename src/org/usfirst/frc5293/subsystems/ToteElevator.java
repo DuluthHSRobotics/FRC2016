@@ -10,11 +10,12 @@
 
 package org.usfirst.frc5293.subsystems;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc5293.RobotMap;
-import org.usfirst.frc5293.commands.CollectTote;
+import org.usfirst.frc5293.commands.ToteElevatorControl;
+import org.usfirst.frc5293.util.Prefs;
 
 public class ToteElevator extends Subsystem {
 
@@ -24,14 +25,14 @@ public class ToteElevator extends Subsystem {
     private static double LOWER_SPEED = -1.0;
 
     private final DigitalInput bottomLimitSwitch = RobotMap.ToteElevator.bottomLimitSwitch;
-    private final SpeedController master = RobotMap.ToteElevator.master;
+    private final CANTalon master = RobotMap.ToteElevator.master;
 
     public void initDefaultCommand() {
-        setDefaultCommand(new CollectTote());
+        setDefaultCommand(new ToteElevatorControl());
     }
 
     public void raise(double percentage) {
-    	master.set(percentage * RAISE_SPEED);
+    	master.set(percentage * getSpeed());
     }
 
     public void lower(double percentage) {
@@ -40,11 +41,15 @@ public class ToteElevator extends Subsystem {
             return;
         }
 
-    	master.set(percentage * LOWER_SPEED);
+    	master.set(percentage * -getSpeed());
     }
 
     public void stop() {
     	master.set(0);
+    }
+
+    private Double getSpeed() {
+        return Prefs.ToteElevator.speed.get();
     }
 }
 

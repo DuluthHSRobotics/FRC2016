@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc5293.autoncommands.AutonDrive;
 import org.usfirst.frc5293.commands.AutonomousCommand;
-import org.usfirst.frc5293.commands.CollectTote;
-import org.usfirst.frc5293.commands.MecanumDrive;
+import org.usfirst.frc5293.commands.ToteElevatorControl;
+import org.usfirst.frc5293.commands.MecanumDriveControl;
 
 
 /**
@@ -92,9 +92,9 @@ public class OI {
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
 
-        SmartDashboard.putData("Collect Tote", new CollectTote());
+        SmartDashboard.putData("Collect Tote", new ToteElevatorControl());
 
-        SmartDashboard.putData("Mecanum Drive", new MecanumDrive());
+        SmartDashboard.putData("Mecanum Drive", new MecanumDriveControl());
 
         SmartDashboard.putData("Auton Drive", new AutonDrive());
     }

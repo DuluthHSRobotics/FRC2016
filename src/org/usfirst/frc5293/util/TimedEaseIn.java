@@ -1,6 +1,4 @@
-package org.usfirst.frc5293.commands.util;
-
-import org.usfirst.frc5293.util.Util;
+package org.usfirst.frc5293.util;
 
 public class TimedEaseIn {
     private final long duration;
