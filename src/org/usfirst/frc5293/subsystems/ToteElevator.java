@@ -13,7 +13,8 @@ package org.usfirst.frc5293.subsystems;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc5293.RobotMap;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc5293.Devices;
 import org.usfirst.frc5293.commands.ToteElevatorControl;
 import org.usfirst.frc5293.util.Prefs;
 
@@ -24,24 +25,29 @@ public class ToteElevator extends Subsystem {
     private static double RAISE_SPEED = 1.0;
     private static double LOWER_SPEED = -1.0;
 
-    private final DigitalInput bottomLimitSwitch = RobotMap.ToteElevator.bottomLimitSwitch;
-    private final CANTalon master = RobotMap.ToteElevator.master;
+    private final DigitalInput bottomLimitSwitch = Devices.ToteElevator.getBottomLimitSwitch();
+    private final CANTalon master = Devices.ToteElevator.getMaster();
 
     public void initDefaultCommand() {
         setDefaultCommand(new ToteElevatorControl());
     }
 
     public void raise(double percentage) {
-    	master.set(percentage * getSpeed());
+    	setPower(percentage * -getSpeed());
     }
 
     public void lower(double percentage) {
-        if (bottomLimitSwitch.get()) {
-            stop();
-            return;
-        }
+        // TODO: Re-enable this once we get the bottom limit switch implemented
+//        if (bottomLimitSwitch.get()) {
+//            stop();
+//            return;
+//        }
+    	setPower(percentage * getSpeed());
+    }
 
-    	master.set(percentage * -getSpeed());
+    private void setPower(double value) {
+        master.set(value);
+        SmartDashboard.putNumber("tote_elevator:last_power", value);
     }
 
     public void stop() {

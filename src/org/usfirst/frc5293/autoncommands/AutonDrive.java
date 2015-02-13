@@ -11,9 +11,8 @@
 package org.usfirst.frc5293.autoncommands;
 
 import edu.wpi.first.wpilibj.command.Command;
-
+import org.usfirst.frc5293.Subsystems;
 import org.usfirst.frc5293.util.parsing.IParsable;
-import org.usfirst.frc5293.Robot;
 
 public class AutonDrive extends Command implements IParsable {
 	private double xstrafe, ystrafe, rrotation, t;
@@ -34,7 +33,7 @@ public class AutonDrive extends Command implements IParsable {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.drive(xstrafe, ystrafe, rrotation);
+    	Subsystems.getDrivetrain().drive(xstrafe, ystrafe, rrotation);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -44,7 +43,7 @@ public class AutonDrive extends Command implements IParsable {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.stop();
+    	Subsystems.getDrivetrain().stop();
     }
 
     // Called when another command which requires one or more of the same

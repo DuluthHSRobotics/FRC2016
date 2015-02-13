@@ -7,6 +7,7 @@ public abstract class Pref<T> {
     public Pref(String key, T defaultValue) {
         this.key = key;
         this.defaultValue = defaultValue;
+        set(defaultValue);
     }
 
     public abstract T get();

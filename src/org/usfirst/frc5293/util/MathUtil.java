@@ -1,6 +1,6 @@
 package org.usfirst.frc5293.util;
 
-public class Util {
+public class MathUtil {
     /**
      * A quadratic ease-in function.
      * @param time      the current time

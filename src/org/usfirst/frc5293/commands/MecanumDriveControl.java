@@ -11,12 +11,13 @@
 package org.usfirst.frc5293.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc5293.Robot;
+import org.usfirst.frc5293.Input;
+import org.usfirst.frc5293.Subsystems;
 
 public class MecanumDriveControl extends Command {
 
     public MecanumDriveControl() {
-        requires(Robot.drivetrain);
+        requires(Subsystems.getDrivetrain());
     }
 
     // Called just before this Command runs the first time
@@ -25,11 +26,11 @@ public class MecanumDriveControl extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double x = Robot.oi.getJoystick1().getX();
-        double y = Robot.oi.getJoystick1().getY();
-        double r = Robot.oi.getJoystick2().getTwist();
+        double x = Input.getJoystick1().getX();
+        double y = Input.getJoystick1().getY();
+        double r = Input.getJoystick2().getTwist();
 
-        Robot.drivetrain.drive(x, y, -r);
+        Subsystems.getDrivetrain().drive(x, y, -r);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -39,7 +40,7 @@ public class MecanumDriveControl extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.stop();
+    	Subsystems.getDrivetrain().stop();
     }
 
     // Called when another command which requires one or more of the same

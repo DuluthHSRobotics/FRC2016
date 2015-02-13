@@ -20,7 +20,7 @@ public class TimedEaseIn {
 
         long deltaMs = System.currentTimeMillis() - startMs;
 
-        return Util.easeInQuad(deltaMs, start, change, duration);
+        return MathUtil.easeInQuad(deltaMs, start, change, duration);
     }
 
     public void reset() {
