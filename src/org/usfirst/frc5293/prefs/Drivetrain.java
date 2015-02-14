@@ -26,10 +26,28 @@ public class Drivetrain implements PrefGroup {
             true
     );
 
+    private final DoublePref scaleX = new DoublePref(
+            "drivetrain:scaleX",
+            1.0
+    );
+
+    private final DoublePref scaleY = new DoublePref(
+            "drivetrain:scaleY",
+            1.0
+    );
+
+    private final DoublePref scaleRotation = new DoublePref(
+            "drivetrain:scaleRotation",
+            1.0
+    );
+
     public Drivetrain() {
         all.add(isXEnabled);
         all.add(isYEnabled);
         all.add(isRotationEnabled);
+        all.add(scaleX);
+        all.add(scaleY);
+        all.add(scaleRotation);
     }
 
     @Override
@@ -47,5 +65,17 @@ public class Drivetrain implements PrefGroup {
 
     public BooleanPref isRotationEnabled() {
         return isRotationEnabled;
+    }
+
+    public DoublePref getScaleX() {
+        return scaleX;
+    }
+
+    public DoublePref getScaleY() {
+        return scaleY;
+    }
+
+    public DoublePref getScaleRotation() {
+        return scaleRotation;
     }
 }

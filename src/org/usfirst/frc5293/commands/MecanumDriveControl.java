@@ -4,8 +4,11 @@ import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.Subsystems;
 import org.usfirst.frc5293.commands.util.ContinuousCommand;
+import org.usfirst.frc5293.prefs.Drivetrain;
 
 public class MecanumDriveControl extends ContinuousCommand {
+
+    private Drivetrain prefs = Prefs.getDrivetrain();
 
     public MecanumDriveControl() {
         requires(Subsystems.getDrivetrain());
@@ -17,19 +20,22 @@ public class MecanumDriveControl extends ContinuousCommand {
         double y = Input.getJoystick1().getY();
         double r = Input.getJoystick2().getTwist();
 
-        if (!Prefs.getDrivetrain().isXEnabled().get()) {
+        if (!prefs.isXEnabled().get()) {
             x = 0;
         }
 
-        if (!Prefs.getDrivetrain().isYEnabled().get()) {
+        if (!prefs.isYEnabled().get()) {
             y = 0;
         }
 
-        if (!Prefs.getDrivetrain().isRotationEnabled().get()) {
+        if (!prefs.isRotationEnabled().get()) {
             r = 0;
         }
 
-        Subsystems.getDrivetrain().drive(x, y, -r);
+        Subsystems.getDrivetrain().drive(
+                prefs.getScaleX().get() * -x,
+                prefs.getScaleY().get() * y,
+                prefs.getScaleRotation().get() * -r);
     }
 
     @Override
