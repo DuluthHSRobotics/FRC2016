@@ -13,10 +13,9 @@ package org.usfirst.frc5293.subsystems;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc5293.Devices;
+import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.commands.ToteElevatorControl;
-import org.usfirst.frc5293.util.Prefs;
 
 public class ToteElevator extends Subsystem {
 
@@ -46,8 +45,12 @@ public class ToteElevator extends Subsystem {
     }
 
     private void setPower(double value) {
+        if (Prefs.ToteElevator.isVoltageRampEnabled.get()) {
+            master.setVoltageRampRate(Prefs.ToteElevator.voltageRamp.get());
+        }
+
         master.set(value);
-        SmartDashboard.putNumber("tote_elevator:last_power", value);
+        // SmartDashboard.putNumber("tote_elevator:last_power", value);
     }
 
     public void stop() {

@@ -4,7 +4,7 @@ import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.Subsystems;
 import org.usfirst.frc5293.commands.util.EmptyCommand;
 import org.usfirst.frc5293.commands.util.LimitFunction;
-import org.usfirst.frc5293.util.Prefs;
+import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.util.TimedEaseIn;
 import org.usfirst.frc5293.util.MathUtil;
 

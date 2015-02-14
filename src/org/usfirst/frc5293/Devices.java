@@ -29,6 +29,10 @@ public class Devices {
         public static void init() {
             master = new CANTalon(0);
 
+            if (Prefs.ToteElevator.isVoltageRampEnabled.get()) {
+                master.setVoltageRampRate(Prefs.ToteElevator.voltageRamp.get());
+            }
+
             // TODO: For what ever reason we cannot directly connect the CANTalon to LiveWindow since it does not implement
             // TODO: the LiveWindowSendable interface.
 //            LiveWindow.addActuator("Tote Elevator", "TalonSRX 4", (CANTalon) master);
