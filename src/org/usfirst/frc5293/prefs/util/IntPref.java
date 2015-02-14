@@ -1,4 +1,4 @@
-package org.usfirst.frc5293.util.preferences;
+package org.usfirst.frc5293.prefs.util;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

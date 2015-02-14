@@ -1,46 +1,45 @@
 package org.usfirst.frc5293;
 
-import org.usfirst.frc5293.util.preferences.BooleanPref;
-import org.usfirst.frc5293.util.preferences.DoublePref;
-import org.usfirst.frc5293.util.preferences.IntPref;
+import org.usfirst.frc5293.prefs.EaseIn;
+import org.usfirst.frc5293.prefs.util.PrefGroup;
+import org.usfirst.frc5293.prefs.ToteElevator;
+import org.usfirst.frc5293.prefs.util.Pref;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Prefs {
 
     // TOOD: Have global switch to completely disable the remote settings if we need to
+    private static EaseIn easeIn;
+    private static ToteElevator toteElevator;
 
-    public static class EaseIn {
-        public static final IntPref easeInDuration = new IntPref(
-                "ease_in:duration",
-                500
-        );
+    private static List<PrefGroup> groups = new ArrayList<>();
 
-        public static final DoublePref easeInChange = new DoublePref(
-                "ease_in:change",
-                0.1
-        );
+    public static void init() {
+        easeIn = new EaseIn();
+        groups.add(easeIn);
 
-        public static final BooleanPref isEnabled = new BooleanPref(
-                "ease_in:enabled",
-                false
-        );
+        toteElevator = new ToteElevator();
+        groups.add(toteElevator);
+
+        // Try to read in all the current settings and then push all the defaults otherwise
+        // TODO: This is trying to fix that stupid bug where there was either a delay trying to get
+        //       the remote settings
+        refreshAll();
     }
 
-    public static class ToteElevator {
-        public static final DoublePref speed = new DoublePref(
-                "tote_elevator:speed",
-                0.5
-        );
-
-        public static final DoublePref voltageRamp = new DoublePref(
-                "tote_elevator:voltage_ramp",
-                6.0
-        );
-
-        public static final BooleanPref isVoltageRampEnabled = new BooleanPref(
-                "tote_elevator:is_voltage_ramp_enabled",
-                false // TODO: at least for right now
-        );
+    private static void refreshAll() {
+        groups.stream()
+              .flatMap(group -> group.getAll().stream())
+              .forEach(Pref::refresh);
     }
 
+    public static EaseIn getEaseIn() {
+        return easeIn;
+    }
 
+    public static ToteElevator getToteElevator() {
+        return toteElevator;
+    }
 }

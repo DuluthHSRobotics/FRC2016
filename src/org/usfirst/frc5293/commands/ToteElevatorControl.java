@@ -1,12 +1,12 @@
 package org.usfirst.frc5293.commands;
 
 import org.usfirst.frc5293.Input;
+import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.Subsystems;
 import org.usfirst.frc5293.commands.util.EmptyCommand;
 import org.usfirst.frc5293.commands.util.LimitFunction;
-import org.usfirst.frc5293.Prefs;
-import org.usfirst.frc5293.util.TimedEaseIn;
 import org.usfirst.frc5293.util.MathUtil;
+import org.usfirst.frc5293.util.TimedEaseIn;
 
 public class ToteElevatorControl extends EmptyCommand {
 
@@ -56,8 +56,8 @@ public class ToteElevatorControl extends EmptyCommand {
         if (!isRunning) {
             easeIn = new TimedEaseIn(
                     MOTOR_MIN,
-                    Prefs.EaseIn.easeInChange.get(),
-                    Prefs.EaseIn.easeInDuration.get());
+                    Prefs.getEaseIn().getEaseInChange().get(),
+                    Prefs.getEaseIn().getEaseInDuration().get());
 
             isRunning = true;
         }
@@ -67,7 +67,7 @@ public class ToteElevatorControl extends EmptyCommand {
     }
 
     private double getNextValue() {
-        if (!Prefs.EaseIn.isEnabled.get()) {
+        if (!Prefs.getEaseIn().isEnabled().get()) {
             return MOTOR_MAX;
         }
 

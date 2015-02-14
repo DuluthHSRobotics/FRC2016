@@ -45,8 +45,8 @@ public class ToteElevator extends Subsystem {
     }
 
     private void setPower(double value) {
-        if (Prefs.ToteElevator.isVoltageRampEnabled.get()) {
-            master.setVoltageRampRate(Prefs.ToteElevator.voltageRamp.get());
+        if (Prefs.getToteElevator().getIsVoltageRampEnabled().get()) {
+            master.setVoltageRampRate(Prefs.getToteElevator().getVoltageRamp().get());
         }
 
         master.set(value);
@@ -58,7 +58,7 @@ public class ToteElevator extends Subsystem {
     }
 
     private Double getSpeed() {
-        return Prefs.ToteElevator.speed.get();
+        return Prefs.getToteElevator().getSpeed().get();
     }
 }
 

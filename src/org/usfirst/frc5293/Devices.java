@@ -29,8 +29,8 @@ public class Devices {
         public static void init() {
             master = new CANTalon(0);
 
-            if (Prefs.ToteElevator.isVoltageRampEnabled.get()) {
-                master.setVoltageRampRate(Prefs.ToteElevator.voltageRamp.get());
+            if (Prefs.getToteElevator().getIsVoltageRampEnabled().get()) {
+                master.setVoltageRampRate(Prefs.getToteElevator().getVoltageRamp().get());
             }
 
             // TODO: For what ever reason we cannot directly connect the CANTalon to LiveWindow since it does not implement
