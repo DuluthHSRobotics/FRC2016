@@ -20,8 +20,8 @@ public class Input {
     private static Joystick joystick3;
 
     public static class ToteElevator extends UpDownInput {
-        private static final int UP_BUTTON = 5;
-        private static final int DOWN_BUTTON = 3;
+        private static final int UP_BUTTON = 6;
+        private static final int DOWN_BUTTON = 4;
 
         public ToteElevator() {
             super(joystick3, UP_BUTTON, DOWN_BUTTON);
@@ -49,7 +49,7 @@ public class Input {
     public static void init() {
         joystick1 = new Joystick(0);
         joystick2 = new Joystick(1);
-        joystick3 = new Joystick(3);
+        joystick3 = new Joystick(2);
 
         toteElevator = new ToteElevator();
         binElevator = new BinElevator();
