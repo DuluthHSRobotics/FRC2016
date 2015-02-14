@@ -18,12 +18,12 @@ public class ToteElevator implements PrefGroup {
 
     private final DoublePref voltageRamp = new DoublePref(
             "tote_elevator:voltage_ramp",
-            6.0
+            24.0
     );
 
     private final BooleanPref isVoltageRampEnabled = new BooleanPref(
             "tote_elevator:is_voltage_ramp_enabled",
-            false // TODO: at least for right now
+            true
     );
 
     public ToteElevator() {

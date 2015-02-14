@@ -24,10 +24,10 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         // Do not change the initialization order as systems that rely
         // on other systems to be previously initialized will break
+        Prefs.init();
     	Devices.init();
         Subsystems.init();
         Input.init();
-        Prefs.init();
 
         // instantiate the command used for the autonomous period
         autonomousCommand = new AutonomousCommand();
