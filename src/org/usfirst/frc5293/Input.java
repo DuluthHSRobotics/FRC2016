@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc5293.autoncommands.AutonDrive;
 import org.usfirst.frc5293.commands.AutonomousCommand;
+import org.usfirst.frc5293.commands.BinElevatorOnPressed;
 import org.usfirst.frc5293.commands.MecanumDriveControl;
 import org.usfirst.frc5293.commands.ToteElevatorControl;
-import org.usfirst.frc5293.commands.util.EmptyCommand;
 import org.usfirst.frc5293.util.input.UpDownInput;
 
 /**
@@ -34,22 +34,7 @@ public class Input {
 
         public BinElevator() {
             toggleButton = new JoystickButton(joystick1, BUTTON);
-
-            // TODO: refactor this
-            toggleButton.whenPressed(new EmptyCommand() {
-                private boolean isFinished = false;
-
-                @Override
-                protected void execute() {
-                    Subsystems.getBinElevator().getControlCommand().reverse();
-                    isFinished = true;
-                }
-
-                @Override
-                protected boolean isFinished() {
-                    return isFinished;
-                }
-            });
+            toggleButton.whenPressed(new BinElevatorOnPressed());
         }
 
         public JoystickButton getToggleButton() {
