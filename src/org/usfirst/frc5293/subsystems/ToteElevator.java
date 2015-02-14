@@ -19,11 +19,6 @@ import org.usfirst.frc5293.commands.ToteElevatorControl;
 
 public class ToteElevator extends Subsystem {
 
-	// TODO: Implement adjusting the speeds smoothly
-    // TODO: Adjust speeds
-    private static double RAISE_SPEED = 1.0;
-    private static double LOWER_SPEED = -1.0;
-
     private final DigitalInput bottomLimitSwitch = Devices.ToteElevator.getBottomLimitSwitch();
     private final CANTalon master = Devices.ToteElevator.getMaster();
 

@@ -1,6 +1,5 @@
 package org.usfirst.frc5293;
 
-import org.usfirst.frc5293.prefs.EaseIn;
 import org.usfirst.frc5293.prefs.util.PrefGroup;
 import org.usfirst.frc5293.prefs.ToteElevator;
 import org.usfirst.frc5293.prefs.util.Pref;
@@ -11,15 +10,10 @@ import java.util.List;
 public final class Prefs {
 
     // TOOD: Have global switch to completely disable the remote settings if we need to
-    private static EaseIn easeIn;
     private static ToteElevator toteElevator;
-
     private static List<PrefGroup> groups = new ArrayList<>();
 
     public static void init() {
-        easeIn = new EaseIn();
-        groups.add(easeIn);
-
         toteElevator = new ToteElevator();
         groups.add(toteElevator);
 
@@ -33,10 +27,6 @@ public final class Prefs {
         groups.stream()
               .flatMap(group -> group.getAll().stream())
               .forEach(Pref::refresh);
-    }
-
-    public static EaseIn getEaseIn() {
-        return easeIn;
     }
 
     public static ToteElevator getToteElevator() {

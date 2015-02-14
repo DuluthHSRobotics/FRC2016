@@ -3,12 +3,13 @@ package org.usfirst.frc5293.commands;
 import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.Subsystems;
+import org.usfirst.frc5293.commands.util.ContinuousCommand;
 import org.usfirst.frc5293.commands.util.EmptyCommand;
 import org.usfirst.frc5293.commands.util.LimitFunction;
 import org.usfirst.frc5293.util.MathUtil;
 import org.usfirst.frc5293.util.TimedEaseIn;
 
-public class ToteElevatorControl extends EmptyCommand {
+public class ToteElevatorControl extends ContinuousCommand {
 
     private static enum ControlState {
         NONE,
@@ -19,13 +20,8 @@ public class ToteElevatorControl extends EmptyCommand {
     private static final double MOTOR_MAX = 1.0;
     private static final double MOTOR_MIN = 0.0;
 
-    private boolean isRunning;
-    private TimedEaseIn easeIn;
-
     public ToteElevatorControl() {
         requires(Subsystems.getToteElevator());
-        this.isRunning = false;
-        this.easeIn = null;
     }
 
     @Override
@@ -48,31 +44,17 @@ public class ToteElevatorControl extends EmptyCommand {
     }
 
     @Override
-    protected boolean isFinished() {
-        return false;
+    protected void end() {
+        Subsystems.getToteElevator().stop();
     }
 
     private void runWithNextValue(LimitFunction func) {
-        if (!isRunning) {
-            easeIn = new TimedEaseIn(
-                    MOTOR_MIN,
-                    Prefs.getEaseIn().getEaseInChange().get(),
-                    Prefs.getEaseIn().getEaseInDuration().get());
-
-            isRunning = true;
-        }
-
         double clamped = getNextValue();
         func.run(clamped);
     }
 
     private double getNextValue() {
-        if (!Prefs.getEaseIn().isEnabled().get()) {
-            return MOTOR_MAX;
-        }
-
-        double value = easeIn.loop();
-        return MathUtil.clampMax(value, MOTOR_MAX);
+        return MOTOR_MAX;
     }
 
     private ControlState getControlState() {
