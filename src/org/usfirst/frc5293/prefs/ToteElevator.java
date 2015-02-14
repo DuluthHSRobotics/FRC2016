@@ -13,7 +13,7 @@ public class ToteElevator implements PrefGroup {
 
     private final DoublePref speed = new DoublePref(
             "tote_elevator:speed",
-            0.5
+            0.75
     );
 
     private final DoublePref voltageRamp = new DoublePref(

@@ -1,5 +1,6 @@
 package org.usfirst.frc5293.prefs.util;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class BooleanPref extends Pref<Boolean> {
@@ -9,11 +10,11 @@ public class BooleanPref extends Pref<Boolean> {
 
     @Override
     public Boolean get() {
-        return SmartDashboard.getBoolean(key, defaultValue);
+        return Preferences.getInstance().getBoolean(key, defaultValue);
     }
 
     @Override
     public void set(Boolean value) {
-        SmartDashboard.putBoolean(key, value);
+        Preferences.getInstance().putBoolean(key, value);
     }
 }

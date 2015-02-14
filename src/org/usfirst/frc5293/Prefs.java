@@ -1,5 +1,6 @@
 package org.usfirst.frc5293;
 
+import org.usfirst.frc5293.prefs.Drivetrain;
 import org.usfirst.frc5293.prefs.util.PrefGroup;
 import org.usfirst.frc5293.prefs.ToteElevator;
 import org.usfirst.frc5293.prefs.util.Pref;
@@ -11,11 +12,16 @@ public final class Prefs {
 
     // TOOD: Have global switch to completely disable the remote settings if we need to
     private static ToteElevator toteElevator;
+    private static Drivetrain drivetrain;
+
     private static List<PrefGroup> groups = new ArrayList<>();
 
     public static void init() {
         toteElevator = new ToteElevator();
         groups.add(toteElevator);
+
+        drivetrain = new Drivetrain();
+        groups.add(drivetrain);
 
         // Try to read in all the current settings and then push all the defaults otherwise
         // TODO: This is trying to fix that stupid bug where there was either a delay trying to get
@@ -31,5 +37,9 @@ public final class Prefs {
 
     public static ToteElevator getToteElevator() {
         return toteElevator;
+    }
+
+    public static Drivetrain getDrivetrain() {
+        return drivetrain;
     }
 }

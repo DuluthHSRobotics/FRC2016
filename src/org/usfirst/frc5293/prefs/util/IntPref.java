@@ -1,5 +1,6 @@
 package org.usfirst.frc5293.prefs.util;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntPref extends Pref<Integer> {
@@ -9,11 +10,11 @@ public class IntPref extends Pref<Integer> {
 
     @Override
     public Integer get() {
-        return (int) SmartDashboard.getNumber(key, defaultValue);
+        return Preferences.getInstance().getInt(key, defaultValue);
     }
 
     @Override
     public void set(Integer value) {
-        SmartDashboard.putNumber(key, value);
+        Preferences.getInstance().putInt(key, value);
     }
 }

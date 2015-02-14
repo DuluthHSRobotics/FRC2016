@@ -1,5 +1,6 @@
 package org.usfirst.frc5293.prefs.util;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DoublePref extends Pref<Double> {
@@ -9,11 +10,11 @@ public class DoublePref extends Pref<Double> {
 
     @Override
     public Double get() {
-        return SmartDashboard.getNumber(key, defaultValue);
+        return Preferences.getInstance().getDouble(key, defaultValue);
     }
 
     @Override
     public void set(Double value) {
-        SmartDashboard.putNumber(key, value);
+        Preferences.getInstance().putDouble(key, value);
     }
 }
