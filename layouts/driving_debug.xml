@@ -1,0 +1,59 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Joystick Rotation" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="532" y="233"/>
+		<width>259</width>
+		<height>206</height>
+		<property name="Buffer Size (samples)" value="100"/>
+	</widget>
+	<widget field="Joystick Y" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="279" y="231"/>
+		<width>251</width>
+		<height>203</height>
+		<property name="Buffer Size (samples)" value="100"/>
+	</widget>
+	<widget field="Joystick X" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="13" y="219"/>
+		<width>253</width>
+		<height>221</height>
+		<property name="Buffer Size (samples)" value="100"/>
+	</widget>
+	<widget field="Front Left" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="812" y="1"/>
+		<width>260</width>
+		<height>218</height>
+		<property name="Buffer Size (samples)" value="100"/>
+	</widget>
+	<widget field="Back Right" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="1077" y="225"/>
+		<width>252</width>
+		<height>229</height>
+		<property name="Buffer Size (samples)" value="100"/>
+	</widget>
+	<widget field="Back Left" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="817" y="223"/>
+		<width>263</width>
+		<height>231</height>
+		<property name="Buffer Size (samples)" value="100"/>
+	</widget>
+	<widget field="Front Right" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="1071" y="4"/>
+		<width>259</width>
+		<height>220</height>
+		<property name="Buffer Size (samples)" value="100"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.RobotPreferences">
+		<location x="3" y="1"/>
+		<width>406</width>
+	</static-widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="Collect Tote"/>
+	<hidden field="Autonomous Command"/>
+	<hidden field="Auton Drive"/>
+	<hidden field="tote_elevator:voltage_ramp"/>
+	<hidden field="tote_elevator:is_voltage_ramp_enabled"/>
+	<hidden field="Mecanum Drive"/>
+	<hidden field="tote_elevator:speed"/>
+</xml>

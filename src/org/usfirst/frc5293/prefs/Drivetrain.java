@@ -26,6 +26,7 @@ public class Drivetrain implements PrefGroup {
             true
     );
 
+
     private final DoublePref scaleX = new DoublePref(
             "drivetrain:scaleX",
             1.0
@@ -33,6 +34,11 @@ public class Drivetrain implements PrefGroup {
 
     private final DoublePref scaleY = new DoublePref(
             "drivetrain:scaleY",
+            1.0
+    );
+
+    private final DoublePref scaleRotation = new DoublePref(
+            "drivetrain:scaleRotation",
             1.0
     );
 
