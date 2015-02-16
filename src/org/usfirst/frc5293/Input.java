@@ -43,8 +43,36 @@ public class Input {
         }
     }
 
+    public static class MecanumDrive {
+        private static final int SENSITIVE_BUTTON = 2;
+
+        private final JoystickButton sensitiveButton;
+        private final Joystick strafeJoystick;
+        private final Joystick rotationJoystick;
+
+        public MecanumDrive(Joystick strafeJoystick, Joystick rotationJoystick) {
+            this.strafeJoystick = strafeJoystick;
+            this.rotationJoystick = rotationJoystick;
+
+            sensitiveButton = new JoystickButton(joystick2, SENSITIVE_BUTTON);
+        }
+
+        public Joystick getStrafeJoystick() {
+            return strafeJoystick;
+        }
+
+        public Joystick getRotationJoystick() {
+            return rotationJoystick;
+        }
+
+        public JoystickButton getSensitiveButton() {
+            return sensitiveButton;
+        }
+    }
+
     private static ToteElevator toteElevator;
     private static BinElevator binElevator;
+    private static MecanumDrive mecanumDrive;
 
     public static void init() {
         joystick1 = new Joystick(0);
@@ -53,6 +81,7 @@ public class Input {
 
         toteElevator = new ToteElevator();
         binElevator = new BinElevator();
+        mecanumDrive = new MecanumDrive(joystick1, joystick2);
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
@@ -64,20 +93,16 @@ public class Input {
         SmartDashboard.putData("Auton Drive", new AutonDrive());
     }
 
-    public static Joystick getJoystick1() {
-        return joystick1;
-    }
-
-    public static Joystick getJoystick2() {
-        return joystick2;
-    }
-
     public static ToteElevator getToteElevator() {
         return toteElevator;
     }
 
     public static BinElevator getBinElevator() {
         return binElevator;
+    }
+
+    public static MecanumDrive getMecanumDrive() {
+        return mecanumDrive;
     }
 }
 
