@@ -4,11 +4,12 @@ import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.Subsystems;
 import org.usfirst.frc5293.commands.util.ContinuousCommand;
+import org.usfirst.frc5293.input.MecanumDrive;
 import org.usfirst.frc5293.prefs.Drivetrain;
 
 public class MecanumDriveControl extends ContinuousCommand {
 
-    private final Input.MecanumDrive input;
+    private final MecanumDrive input;
     private final Drivetrain prefs = Prefs.getDrivetrain();
 
     public MecanumDriveControl() {
@@ -28,6 +29,16 @@ public class MecanumDriveControl extends ContinuousCommand {
         state.x = input.getStrafeJoystick().getX();
         state.y = input.getStrafeJoystick().getY();
         state.r = input.getRotationJoystick().getTwist();
+
+        return state;
+    }
+
+    private DrivingState applySystemDisabling(DrivingState state) {
+        if (!prefs.isSystemEnabled().get()) {
+            state.x = 0;
+            state.y = 0;
+            state.r = 0;
+        }
 
         return state;
     }
@@ -86,6 +97,7 @@ public class MecanumDriveControl extends ContinuousCommand {
     protected void execute() {
         DrivingState state = getState();
 
+        applySystemDisabling(state);
         applyAxisDisabling(state);
         applySensitiveRotation(state);
         applyAxisLocking(state);

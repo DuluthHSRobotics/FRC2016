@@ -19,17 +19,27 @@ public class MathUtil {
     }
 
     /**
-     * Clamps a value to a maximum value.
-     * 
-     * If the value is greater than the max, the max is returned.
-     * Otherwise the value is returned.
+     * Limit a value to a maximum value.
      *
-     * @param value the value to clamp
+     * @param value the value to limit
      * @param max the maximum value to allow
-     * @return the clamped value
+     * @return the limited value
      */
-    public static double clampMax(double value, double max) {
+    public static double limitMax(double value, double max) {
         if (value > max) return max;
+        else return value;
+    }
+
+    /**
+     * Limits a value to be between a minimum and a maximum
+     * @param value the value to limit
+     * @param min the minimum value to allow
+     * @param max the maximum value to allow
+     * @return the limited value
+     */
+    public static double limit(double value, double min, double max) {
+        if (value < min) return min;
+        else if (value > max) return max;
         else return value;
     }
 }

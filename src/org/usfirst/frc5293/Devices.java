@@ -137,9 +137,28 @@ public class Devices {
         }
     }
 
+    public static final class Camera {
+        private static Servo sideServo;
+        private static Servo topServo;
+
+        public static void init() {
+            sideServo = new Servo(4);
+            topServo = new Servo(5);
+        }
+
+        public static Servo getSideServo() {
+            return sideServo;
+        }
+
+        public static Servo getTopServo() {
+            return topServo;
+        }
+    }
+
     public static void init() {
         Drivetrain.init();
         ToteElevator.init();
         BinElevator.init();
+        Camera.init();
     }
 }
