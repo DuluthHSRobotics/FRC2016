@@ -52,6 +52,11 @@ public class Drivetrain implements PrefGroup {
             0.2
     );
 
+    private final BooleanPref isAxisLockingEnabled = new BooleanPref(
+            "drivetrain:is_axis_locking_enabled",
+            true
+    );
+
     public Drivetrain() {
         all.add(isXEnabled);
         all.add(isYEnabled);
@@ -61,6 +66,7 @@ public class Drivetrain implements PrefGroup {
         all.add(scaleRotation);
         all.add(sensitiveScaleRotation);
         all.add(isSensitiveRotationEnabled);
+        all.add(isAxisLockingEnabled);
     }
 
     @Override
@@ -98,5 +104,9 @@ public class Drivetrain implements PrefGroup {
 
     public BooleanPref isSensitiveRotationEnabled() {
         return isSensitiveRotationEnabled;
+    }
+
+    public BooleanPref isAxisLockingEnabled() {
+        return isAxisLockingEnabled;
     }
 }
