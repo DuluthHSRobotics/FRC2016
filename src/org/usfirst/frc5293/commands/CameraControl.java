@@ -18,8 +18,8 @@ public class CameraControl extends ContinuousCommand {
         double xRotation = Input.getCamera().getJoystick().getTwist();
         double yRotation = Input.getCamera().getJoystick().getY();
 
-        xRotation = scaleInput(xRotation);
-        yRotation = scaleInput(yRotation);
+        xRotation = scaleInput(-xRotation);
+        yRotation = scaleInput(-yRotation);
 
         SmartDashboard.putNumber("Camera X Rotation", xRotation);
         SmartDashboard.putNumber("Camera Y ROtation", yRotation);

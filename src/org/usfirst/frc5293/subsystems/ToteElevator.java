@@ -12,6 +12,7 @@ package org.usfirst.frc5293.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc5293.Devices;
 import org.usfirst.frc5293.Prefs;
@@ -19,8 +20,8 @@ import org.usfirst.frc5293.commands.ToteElevatorControl;
 
 public class ToteElevator extends Subsystem {
 
-    private final DigitalInput bottomLimitSwitch = Devices.ToteElevator.getBottomLimitSwitch();
-    private final CANTalon master = Devices.ToteElevator.getMaster();
+    private final DigitalInput bottomLimitSwitch = Devices.getToteElevator().getBottomLimitSwitch();
+    private final SpeedController master = Devices.getToteElevator().getController();
 
     public void initDefaultCommand() {
         setDefaultCommand(new ToteElevatorControl());
@@ -40,8 +41,8 @@ public class ToteElevator extends Subsystem {
     }
 
     private void setPower(double value) {
-        if (Prefs.getToteElevator().getIsVoltageRampEnabled().get()) {
-            master.setVoltageRampRate(Prefs.getToteElevator().getVoltageRamp().get());
+        if (master instanceof CANTalon && Prefs.getToteElevator().getIsVoltageRampEnabled().get()) {
+            ((CANTalon) master).setVoltageRampRate(Prefs.getToteElevator().getVoltageRamp().get());
         }
 
         master.set(value);

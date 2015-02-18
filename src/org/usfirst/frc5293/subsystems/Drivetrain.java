@@ -1,6 +1,5 @@
 package org.usfirst.frc5293.subsystems;
 
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc5293.Devices;
@@ -9,7 +8,7 @@ import org.usfirst.frc5293.util.CustomRobotDrive;
 
 public class Drivetrain extends Subsystem {
 
-    private final CustomRobotDrive drive = Devices.Drivetrain.getControl();
+    private final CustomRobotDrive drive = Devices.getDrivetrain().getControl();
 
     public void initDefaultCommand() {
         setDefaultCommand(new MecanumDriveControl());
@@ -23,10 +22,10 @@ public class Drivetrain extends Subsystem {
 
         drive.mecanumDrive_Cartesian(x, y, r, 0);
 
-        SmartDashboard.putNumber("Front Left", Devices.Drivetrain.getFrontLeft().get());
-        SmartDashboard.putNumber("Front Right", Devices.Drivetrain.getFrontRight().get());
-        SmartDashboard.putNumber("Back Left", Devices.Drivetrain.getBackLeft().get());
-        SmartDashboard.putNumber("Back Right", Devices.Drivetrain.getBackRight().get());
+        SmartDashboard.putNumber("Front Left", Devices.getDrivetrain().getFrontLeft().get());
+        SmartDashboard.putNumber("Front Right", Devices.getDrivetrain().getFrontRight().get());
+        SmartDashboard.putNumber("Back Left", Devices.getDrivetrain().getBackLeft().get());
+        SmartDashboard.putNumber("Back Right", Devices.getDrivetrain().getBackRight().get());
     }
 
     public void stop() {

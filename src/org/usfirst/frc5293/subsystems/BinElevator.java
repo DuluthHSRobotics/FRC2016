@@ -23,8 +23,8 @@ public class BinElevator extends Subsystem {
         }
     }
 
-    private final DoubleSolenoid left = Devices.BinElevator.getLeft();
-    private final DoubleSolenoid right = Devices.BinElevator.getRight();
+    private final DoubleSolenoid left = Devices.getBinElevator().getLeft();
+    private final DoubleSolenoid right = Devices.getBinElevator().getRight();
 
     private BinElevatorControl command;
 

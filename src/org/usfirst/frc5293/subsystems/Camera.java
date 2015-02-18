@@ -21,7 +21,7 @@ public class Camera extends Subsystem {
         xRotation = MathUtil.limit(xRotation, 0.0, 1.0);
         yRotation = MathUtil.limit(yRotation, 0.0, 1.0);
 
-        Devices.Camera.getSideServo().set(xRotation);
-        Devices.Camera.getTopServo().set(yRotation);
+        Devices.getCamera().getSideServo().set(xRotation);
+        Devices.getCamera().getTopServo().set(yRotation);
     }
 }
