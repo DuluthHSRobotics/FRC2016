@@ -2,22 +2,27 @@ package org.usfirst.frc5293.commands.util;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public abstract class SingleActionCommand extends EmptyCommand {
+import java.util.List;
 
-    private final Runnable action;
+public abstract class ActionCommand extends EmptyCommand {
+
     private boolean isFinished = false;
 
-    protected SingleActionCommand(Runnable action, Subsystem... subsystems) {
-        this.action = action;
+    protected ActionCommand(Subsystem subsystem) {
+        requires(subsystem);
+    }
 
+    protected ActionCommand(List<Subsystem> subsystems) {
         for (Subsystem subsystem : subsystems) {
             requires(subsystem);
         }
     }
 
+    protected abstract void action();
+
     @Override
     protected void execute() {
-        action.run();
+        action();
         isFinished = true;
     }
 

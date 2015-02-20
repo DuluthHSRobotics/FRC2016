@@ -1,29 +1,26 @@
-package org.usfirst.frc5293.commands;
+package org.usfirst.frc5293.translations;
 
 import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.Prefs;
-import org.usfirst.frc5293.Subsystems;
-import org.usfirst.frc5293.commands.util.ContinuousCommand;
 import org.usfirst.frc5293.input.MecanumDrive;
 import org.usfirst.frc5293.prefs.Drivetrain;
+import org.usfirst.frc5293.translations.util.DrivingState;
+import org.usfirst.frc5293.translations.util.TranslationEngine;
 
-public class MecanumDriveControl extends ContinuousCommand {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
+public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
     private final MecanumDrive input;
     private final Drivetrain prefs = Prefs.getDrivetrain();
 
-    public MecanumDriveControl() {
-        requires(Subsystems.getDrivetrain());
+    public MecanumDriveEngine() {
         input = Input.getMecanumDrive();
     }
 
-    private static class DrivingState {
-        public double x;
-        public double y;
-        public double r;
-    }
-
-    private DrivingState getState() {
+    @Override
+    protected DrivingState getInitial() {
         DrivingState state = new DrivingState();
 
         state.x = input.getStrafeJoystick().getX();
@@ -31,6 +28,20 @@ public class MecanumDriveControl extends ContinuousCommand {
         state.r = input.getRotationJoystick().getTwist();
 
         return state;
+    }
+
+    @Override
+    protected List<Function<DrivingState, DrivingState>> getOperations() {
+        List<Function<DrivingState, DrivingState>> ops = new ArrayList<>();
+
+        ops.add(this::applySystemDisabling);
+        ops.add(this::applyAxisDisabling);
+        ops.add(this::applySensitiveRotation);
+        ops.add(this::applyAxisLocking);
+        ops.add(this::applyInversions);
+        ops.add(this::applyScaling);
+
+        return ops;
     }
 
     private DrivingState applySystemDisabling(DrivingState state) {
@@ -91,28 +102,5 @@ public class MecanumDriveControl extends ContinuousCommand {
         state.y *=  1;
         state.r *= -1;
         return state;
-    }
-
-    @Override
-    protected void execute() {
-        DrivingState state = getState();
-
-        applySystemDisabling(state);
-        applyAxisDisabling(state);
-        applySensitiveRotation(state);
-        applyAxisLocking(state);
-        applyInversions(state);
-        applyScaling(state);
-
-        drive(state);
-    }
-
-    private void drive(DrivingState state) {
-        Subsystems.getDrivetrain().drive(state.x, state.y, state.r);
-    }
-
-    @Override
-    protected void end() {
-    	Subsystems.getDrivetrain().stop();
     }
 }

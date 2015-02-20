@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc5293.Devices;
 import org.usfirst.frc5293.Prefs;
-import org.usfirst.frc5293.commands.ToteElevatorControl;
+import org.usfirst.frc5293.commands.teleop.control.ToteElevatorControl;
 
 public class ToteElevator extends Subsystem {
 

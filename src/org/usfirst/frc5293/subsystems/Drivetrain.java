@@ -3,12 +3,12 @@ package org.usfirst.frc5293.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc5293.Devices;
-import org.usfirst.frc5293.commands.MecanumDriveControl;
-import org.usfirst.frc5293.util.CustomRobotDrive;
+import org.usfirst.frc5293.commands.teleop.control.MecanumDriveControl;
+import org.usfirst.frc5293.subsystems.util.MecanumDrive;
 
 public class Drivetrain extends Subsystem {
 
-    private final CustomRobotDrive drive = Devices.getDrivetrain().getControl();
+    private final MecanumDrive drive = Devices.getDrivetrain().getControl();
 
     public void initDefaultCommand() {
         setDefaultCommand(new MecanumDriveControl());
@@ -20,7 +20,7 @@ public class Drivetrain extends Subsystem {
         SmartDashboard.putNumber("Joystick Y", y);
         SmartDashboard.putNumber("Joystick Rotation", r);
 
-        drive.mecanumDrive_Cartesian(x, y, r, 0);
+        drive.drive(x, y, r, 0);
 
         SmartDashboard.putNumber("Front Left", Devices.getDrivetrain().getFrontLeft().get());
         SmartDashboard.putNumber("Front Right", Devices.getDrivetrain().getFrontRight().get());
@@ -29,7 +29,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void stop() {
-    	drive.mecanumDrive_Cartesian(0, 0, 0, 0);
+    	drive.drive(0, 0, 0, 0);
     }
 }
 

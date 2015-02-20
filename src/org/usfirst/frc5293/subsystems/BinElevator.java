@@ -3,7 +3,7 @@ package org.usfirst.frc5293.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc5293.Devices;
-import org.usfirst.frc5293.commands.BinElevatorControl;
+import org.usfirst.frc5293.commands.teleop.control.BinElevatorControl;
 
 public class BinElevator extends Subsystem {
 
@@ -26,13 +26,11 @@ public class BinElevator extends Subsystem {
     private final DoubleSolenoid left = Devices.getBinElevator().getLeft();
     private final DoubleSolenoid right = Devices.getBinElevator().getRight();
 
-    private BinElevatorControl command;
-
     private State state = State.STOPPED;
 
+    @Override
     protected void initDefaultCommand() {
-        command = new BinElevatorControl();
-        setDefaultCommand(command);
+        setDefaultCommand(new BinElevatorControl());
     }
 
     public void extend() {
@@ -43,6 +41,18 @@ public class BinElevator extends Subsystem {
         setState(State.RETRACT);
     }
 
+    public void reverse() {
+        if (!isExtended()) {
+            extend();
+        } else {
+            retract();
+        }
+    }
+
+    private boolean isExtended() {
+        return getState().equals(BinElevator.State.EXTEND);
+    }
+
     private void setState(State state) {
         this.state = state;
         left.set(state.getInternalValue());
@@ -51,9 +61,5 @@ public class BinElevator extends Subsystem {
 
     public State getState() {
         return state;
-    }
-
-    public BinElevatorControl getControlCommand() {
-        return command;
     }
 }

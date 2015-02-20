@@ -4,13 +4,14 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-package org.usfirst.frc5293.util;
+package org.usfirst.frc5293.subsystems.util;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.MotorSafety;
+import edu.wpi.first.wpilibj.MotorSafetyHelper;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tInstances;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tResourceType;
 import edu.wpi.first.wpilibj.communication.UsageReporting;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Utility class for handling Robot drive based on a definition of the motor configuration.
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * used for either the drive function (intended for hand created drive code, such as autonomous)
  * or with the Tank/Arcade functions intended to be used for Operator Control driving.
  */
-public class CustomRobotDrive implements MotorSafety {
+public class MecanumDrive implements MotorSafety {
 
     /**
      * The location of a motor on the robot for the purpose of driving
@@ -42,11 +43,9 @@ public class CustomRobotDrive implements MotorSafety {
     }
 
     public static final double DEFAULT_EXPIRATION_TIME = 0.1;
-    public static final double DEFAULT_SENSITIVITY = 0.5;
     public static final double DEFAULT_MAX_OUTPUT = 1.0;
     protected static final int MAX_NUMBER_OF_MOTORS = 4;
 
-    protected static boolean kArcadeRatioCurve_Reported = false;
     protected static boolean kMecanumCartesian_Reported = false;
 
     protected final int invertedMotors[] = new int[4];
@@ -66,18 +65,17 @@ public class CustomRobotDrive implements MotorSafety {
      * @param backRightMotor The back right SpeedController object used to drive the robot.
      * @param frontRightMotor The front right SpeedController object used to drive the robot.
      */
-    public CustomRobotDrive(SpeedController frontLeftMotor, SpeedController backLeftMotor,
-                            SpeedController frontRightMotor, SpeedController backRightMotor) {
+    public MecanumDrive(SpeedController frontLeftMotor, SpeedController backLeftMotor,
+                        SpeedController frontRightMotor, SpeedController backRightMotor) {
         if (frontLeftMotor == null || backLeftMotor == null || frontRightMotor == null || backRightMotor == null) {
             this.frontLeftMotor = this.backLeftMotor = this.frontRightMotor = this.backRightMotor = null;
-            throw new NullPointerException("Null motor provided");
+            throw new IllegalArgumentException("Null motor provided");
         }
 
         this.frontLeftMotor = frontLeftMotor;
         this.backLeftMotor = backLeftMotor;
         this.frontRightMotor = frontRightMotor;
         this.backRightMotor = backRightMotor;
-        this.sensitivity = DEFAULT_SENSITIVITY;
         this.maxOutput = DEFAULT_MAX_OUTPUT;
 
         for (int i = 0; i < MAX_NUMBER_OF_MOTORS; i++) {
@@ -85,51 +83,7 @@ public class CustomRobotDrive implements MotorSafety {
         }
 
         setupMotorSafety();
-        drive(0, 0);
-    }
-
-    /**
-     * Drive the motors at "speed" and "curve".
-     *
-     * The speed and curve are -1.0 to +1.0 values where 0.0 represents stopped and
-     * not turning. The algorithm for adding in the direction attempts to provide a constant
-     * turn radius for differing speeds.
-     *
-     * This function will most likely be used in an autonomous routine.
-     *
-     * @param outputMagnitude The forward component of the output magnitude to send to the motors.
-     * @param curve The rate of turn, constant for different forward speeds.
-     */
-    public void drive(double outputMagnitude, double curve) {
-        double leftOutput, rightOutput;
-
-        if(!kArcadeRatioCurve_Reported) {
-            UsageReporting.report(tResourceType.kResourceType_RobotDrive, getNumMotors(), tInstances.kRobotDrive_ArcadeRatioCurve);
-            kArcadeRatioCurve_Reported = true;
-        }
-
-        if (curve < 0) {
-            double value = Math.log(-curve);
-            double ratio = (value - sensitivity) / (value + sensitivity);
-            if (ratio == 0) {
-                ratio = .0000000001;
-            }
-            leftOutput = outputMagnitude / ratio;
-            rightOutput = outputMagnitude;
-        } else if (curve > 0) {
-            double value = Math.log(curve);
-            double ratio = (value - sensitivity) / (value + sensitivity);
-            if (ratio == 0) {
-                ratio = .0000000001;
-            }
-            leftOutput = outputMagnitude;
-            rightOutput = outputMagnitude / ratio;
-        } else {
-            leftOutput = outputMagnitude;
-            rightOutput = outputMagnitude;
-        }
-
-        setLeftRightMotorOutputs(leftOutput, rightOutput);
+        stopMotor();
     }
 
     /**
@@ -148,7 +102,7 @@ public class CustomRobotDrive implements MotorSafety {
      * the translation. [-1.0..1.0]
      * @param gyroAngle The current angle reading from the gyro.  Use this to implement field-oriented controls.
      */
-    public void mecanumDrive_Cartesian(double x, double y, double rotation, double gyroAngle) {
+    public void drive(double x, double y, double rotation, double gyroAngle) {
         if(!kMecanumCartesian_Reported) {
             UsageReporting.report(tResourceType.kResourceType_RobotDrive, getNumMotors(), tInstances.kRobotDrive_MecanumCartesian);
             kMecanumCartesian_Reported = true;
@@ -166,41 +120,16 @@ public class CustomRobotDrive implements MotorSafety {
         yIn = rotated[1];
 
         double wheelSpeeds[] = new double[MAX_NUMBER_OF_MOTORS];
-        wheelSpeeds[MotorType.FRONT_LEFT.value] = xIn + yIn + rotation;
+        wheelSpeeds[MotorType.FRONT_LEFT.value]  =  xIn + yIn + rotation;
         wheelSpeeds[MotorType.FRONT_RIGHT.value] = -xIn + yIn - rotation;
-        wheelSpeeds[MotorType.BACK_LEFT.value] = -xIn + yIn + rotation;
-        wheelSpeeds[MotorType.BACK_RIGHT.value] = xIn + yIn - rotation;
+        wheelSpeeds[MotorType.BACK_LEFT.value]   = -xIn + yIn + rotation;
+        wheelSpeeds[MotorType.BACK_RIGHT.value]  =  xIn + yIn - rotation;
 
         normalize(wheelSpeeds);
         frontLeftMotor.set(wheelSpeeds[MotorType.FRONT_LEFT.value] * invertedMotors[MotorType.FRONT_LEFT.value] * maxOutput);
         frontRightMotor.set(wheelSpeeds[MotorType.FRONT_RIGHT.value] * invertedMotors[MotorType.FRONT_RIGHT.value] * maxOutput);
         backLeftMotor.set(wheelSpeeds[MotorType.BACK_LEFT.value] * invertedMotors[MotorType.BACK_LEFT.value] * maxOutput);
         backRightMotor.set(wheelSpeeds[MotorType.BACK_RIGHT.value] * invertedMotors[MotorType.BACK_RIGHT.value] * maxOutput);
-
-        if (safetyHelper != null) safetyHelper.feed();
-    }
-
-    /** Set the speed of the right and left motors.
-     * This is used once an appropriate drive setup function is called such as
-     * twoWheelDrive(). The motors are set to "leftSpeed" and "rightSpeed"
-     * and includes flipping the direction of one side for opposing motors.
-     * @param leftOutput The speed to send to the left side of the robot.
-     * @param rightOutput The speed to send to the right side of the robot.
-     */
-    public void setLeftRightMotorOutputs(double leftOutput, double rightOutput) {
-        if (backLeftMotor == null || backRightMotor == null) {
-            throw new NullPointerException("Null motor provided");
-        }
-
-        if (frontLeftMotor != null) {
-            frontLeftMotor.set(limit(leftOutput) * invertedMotors[MotorType.FRONT_LEFT.value] * maxOutput);
-        }
-        backLeftMotor.set(limit(leftOutput) * invertedMotors[MotorType.BACK_LEFT.value] * maxOutput);
-
-        if (frontRightMotor != null) {
-            frontRightMotor.set(-limit(rightOutput) * invertedMotors[MotorType.FRONT_RIGHT.value] * maxOutput);
-        }
-        backRightMotor.set(-limit(rightOutput) * invertedMotors[MotorType.BACK_RIGHT.value] * maxOutput);
 
         if (safetyHelper != null) safetyHelper.feed();
     }
