@@ -21,6 +21,7 @@ public class CameraEngine extends TranslationEngine<Point> {
     protected List<Function<Point, Point>> getOperations() {
         List<Function<Point, Point>> ops = new ArrayList<>();
 
+        ops.add(this::applyQuadScaling);
         ops.add(this::applyInputScaling);
         ops.add(this::applyInverting);
 
@@ -44,6 +45,11 @@ public class CameraEngine extends TranslationEngine<Point> {
 
     private Point applyInputScaling(Point state) {
         state.apply(CameraEngine::scaleInput);
+        return state;
+    }
+
+    private Point applyQuadScaling(Point state) {
+        state.apply(MathUtil::quad);
         return state;
     }
 

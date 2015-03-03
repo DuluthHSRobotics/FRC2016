@@ -19,6 +19,34 @@ public class MathUtil {
     }
 
     /**
+     * Applies quadratic function with no deadzone intended for input of [-1.0..1.0]
+     * @param x  the input in the range of [-1.0..1.0]
+     * @return the output of the function
+     */
+    public static double quad(double x) {
+        return quadDeadzone(x, 0);
+    }
+
+    /**
+     * Applies quadratic function with deadzone intended for input of [-1.0..1.0]
+     * @param x  the input in the range of [-1.0..1.0]
+     * @param deadzone  the range of the deadzone
+     * @return the output of the function
+     */
+    public static double quadDeadzone(double x, double deadzone) {
+        // Half the deadzone since there is two sides to the equation
+        deadzone /= 2;
+
+        if (x > -deadzone && x < deadzone) {
+            return 0;
+        } else if (x < -deadzone) {
+            return -Math.pow(x + deadzone, 2);
+        } else { // x > deadzone
+            return Math.pow(x - deadzone, 2);
+        }
+    }
+
+    /**
      * Limit a value to a maximum value.
      *
      * @param value the value to limit

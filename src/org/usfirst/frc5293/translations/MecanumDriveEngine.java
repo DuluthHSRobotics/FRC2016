@@ -6,12 +6,15 @@ import org.usfirst.frc5293.input.MecanumDrive;
 import org.usfirst.frc5293.prefs.Drivetrain;
 import org.usfirst.frc5293.translations.util.DrivingState;
 import org.usfirst.frc5293.translations.util.TranslationEngine;
+import org.usfirst.frc5293.util.MathUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
 public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
+    private static final double DEADZONE = 0.1;
+
     private final MecanumDrive input;
     private final Drivetrain prefs = Prefs.getDrivetrain();
 
@@ -39,7 +42,7 @@ public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
         ops.add(this::applySensitiveRotation);
         ops.add(this::applyAxisLocking);
         ops.add(this::applyInversions);
-        ops.add(this::applyScaling);
+        ops.add(this::applyQuadScaling);
 
         return ops;
     }
@@ -90,10 +93,8 @@ public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
         return state;
     }
 
-    private DrivingState applyScaling(DrivingState state) {
-        state.x *= prefs.getScaleX().get();
-        state.y *= prefs.getScaleY().get();
-        state.r *= prefs.getScaleRotation().get();
+    private DrivingState applyQuadScaling(DrivingState state) {
+        state.apply(x -> MathUtil.quadDeadzone(x, DEADZONE));
         return state;
     }
 
