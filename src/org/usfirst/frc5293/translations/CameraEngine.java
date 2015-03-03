@@ -11,9 +11,21 @@ import java.util.List;
 import java.util.function.Function;
 
 public class CameraEngine extends TranslationEngine<Point> {
+
+    private static CameraEngine instance;
+
+    public static CameraEngine getInstance() {
+        if (instance == null) {
+            instance = new CameraEngine();
+        }
+        return instance;
+    }
+
+    //
+
     private final Camera input;
 
-    public CameraEngine() {
+    private CameraEngine() {
         input = Input.getCamera();
     }
 
@@ -21,9 +33,10 @@ public class CameraEngine extends TranslationEngine<Point> {
     protected List<Function<Point, Point>> getOperations() {
         List<Function<Point, Point>> ops = new ArrayList<>();
 
+        ops.add(this::applyInverting);
         ops.add(this::applyQuadScaling);
         ops.add(this::applyInputScaling);
-        ops.add(this::applyInverting);
+        ops.add(this::applyOutputLimit);
 
         return ops;
     }
@@ -50,6 +63,11 @@ public class CameraEngine extends TranslationEngine<Point> {
 
     private Point applyQuadScaling(Point state) {
         state.apply(MathUtil::quad);
+        return state;
+    }
+
+    private Point applyOutputLimit(Point state) {
+        state.apply(x -> MathUtil.limit(x, 0.0, 1.0));
         return state;
     }
 

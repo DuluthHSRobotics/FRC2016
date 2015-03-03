@@ -7,15 +7,13 @@ import org.usfirst.frc5293.translations.MecanumDriveEngine;
 
 public class MecanumDriveControl extends ContinuousCommand {
 
-    private MecanumDriveEngine engine = new MecanumDriveEngine();
-
     public MecanumDriveControl() {
         requires(Subsystems.getDrivetrain());
     }
 
     @Override
     protected void execute() {
-        drive(engine.getResult());
+        drive(MecanumDriveEngine.getInstance().getResult());
     }
 
     private void drive(DrivingState state) {

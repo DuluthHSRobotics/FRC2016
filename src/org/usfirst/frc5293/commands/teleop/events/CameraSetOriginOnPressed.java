@@ -6,7 +6,6 @@ import org.usfirst.frc5293.translations.CameraEngine;
 import org.usfirst.frc5293.translations.util.Point;
 
 public class CameraSetOriginOnPressed extends ActionCommand {
-    private CameraEngine engine = new CameraEngine();
 
     public CameraSetOriginOnPressed() {
         super(Subsystems.getCamera());
@@ -14,7 +13,7 @@ public class CameraSetOriginOnPressed extends ActionCommand {
 
     @Override
     protected void action() {
-        Point point = engine.getResult();
+        Point point = CameraEngine.getInstance().getResult();
         Subsystems.getCamera().setOrigin(point.x, point.y);
     }
 }

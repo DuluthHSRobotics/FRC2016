@@ -13,12 +13,24 @@ import java.util.List;
 import java.util.function.Function;
 
 public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
+
+    private static MecanumDriveEngine instance;
+
+    public static MecanumDriveEngine getInstance() {
+        if (instance == null) {
+            instance = new MecanumDriveEngine();
+        }
+        return instance;
+    }
+
+    //
+
     private static final double DEADZONE = 0.1;
 
     private final MecanumDrive input;
     private final Drivetrain prefs = Prefs.getDrivetrain();
 
-    public MecanumDriveEngine() {
+    private MecanumDriveEngine() {
         input = Input.getMecanumDrive();
     }
 
@@ -94,7 +106,9 @@ public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
     }
 
     private DrivingState applyQuadScaling(DrivingState state) {
-        state.apply(x -> MathUtil.quadDeadzone(x, DEADZONE));
+        state.x = MathUtil.quadDeadzone(state.x, DEADZONE);
+        state.y = MathUtil.quadDeadzone(state.y, DEADZONE);
+        state.r = MathUtil.quadDeadzone(state.r, DEADZONE);
         return state;
     }
 

@@ -8,15 +8,13 @@ import org.usfirst.frc5293.translations.util.Point;
 
 public class CameraControl extends ContinuousCommand {
 
-    private CameraEngine engine = new CameraEngine();
-
     public CameraControl() {
         requires(Subsystems.getCamera());
     }
 
     @Override
     protected void execute() {
-        Point result = engine.getResult();
+        Point result = CameraEngine.getInstance().getResult();
 
         SmartDashboard.putNumber("Camera X Rotation", result.x);
         SmartDashboard.putNumber("Camera Y Rotation", result.y);
