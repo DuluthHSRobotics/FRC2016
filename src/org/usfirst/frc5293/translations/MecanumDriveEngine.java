@@ -106,9 +106,9 @@ public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
     }
 
     private DrivingState applyQuadScaling(DrivingState state) {
-        state.x = MathUtil.quadDeadzone(state.x, DEADZONE);
-        state.y = MathUtil.quadDeadzone(state.y, DEADZONE);
-        state.r = MathUtil.quadDeadzone(state.r, DEADZONE);
+        state.x = MathUtil.quadEaseWithDeadzone(state.x, DEADZONE);
+        state.y = MathUtil.quadEaseWithDeadzone(state.y, DEADZONE);
+        state.r = MathUtil.powerEaseWithDeadzone(state.r, 3, DEADZONE);
         return state;
     }
 

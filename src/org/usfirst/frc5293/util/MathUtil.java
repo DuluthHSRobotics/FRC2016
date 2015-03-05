@@ -1,30 +1,14 @@
 package org.usfirst.frc5293.util;
 
 public class MathUtil {
-    /**
-     * A quadratic ease-in function.
-     * @param time      the current time
-     * @param start     the initial starting value
-     * @param change    the change in value
-     * @param duration  the total duration of the ease-in in terms of {@code time}
-     * @return the resulting value of the iteration at {@code time}
-     */
-    public static double easeInQuad(
-            double time,
-            double start,
-            double change,
-            double duration) {
-        time /= duration;
-        return change * Math.pow(time, 2) + start;
-    }
 
     /**
      * Applies quadratic function with no deadzone intended for input of [-1.0..1.0]
      * @param x  the input in the range of [-1.0..1.0]
      * @return the output of the function
      */
-    public static double quad(double x) {
-        return quadDeadzone(x, 0);
+    public static double quadEase(double x) {
+        return quadEaseWithDeadzone(x, 0);
     }
 
     /**
@@ -33,16 +17,27 @@ public class MathUtil {
      * @param deadzone  the range of the deadzone
      * @return the output of the function
      */
-    public static double quadDeadzone(double value, double deadzone) {
+    public static double quadEaseWithDeadzone(double value, double deadzone) {
+        return powerEaseWithDeadzone(value, 2, deadzone);
+    }
+
+    /**
+     * Applies quadratic function with deadzone intended for input of [-1.0..1.0]
+     * @param value  the input in the range of [-1.0..1.0]
+     * @param power  the power to use in the function
+     * @param deadzone  the range of the deadzone
+     * @return the output of the function
+     */
+    public static double powerEaseWithDeadzone(double value, int power, double deadzone) {
         // Half the deadzone since there is two sides to the equation
         deadzone /= 2;
 
         if (value > -deadzone && value < deadzone) {
             return 0;
         } else if (value < -deadzone) {
-            return -Math.pow(value + deadzone, 2);
+            return - Math.abs(Math.pow(value + deadzone, power));
         } else { // value > deadzone
-            return Math.pow(value - deadzone, 2);
+            return Math.abs(Math.pow(value - deadzone, power));
         }
     }
 

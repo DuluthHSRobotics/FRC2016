@@ -62,7 +62,7 @@ public class CameraEngine extends TranslationEngine<Point> {
     }
 
     private Point applyQuadScaling(Point state) {
-        state.apply(MathUtil::quad);
+        state.apply(MathUtil::quadEase);
         return state;
     }
 
