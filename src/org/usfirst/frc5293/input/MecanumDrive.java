@@ -10,7 +10,6 @@ public class MecanumDrive {
 
     private final Joystick strafeJoystick;
     private final Joystick rotationJoystick;
-    private final JoystickButton sensitiveRotationButton;
     private final JoystickButton driveXAxisButton;
     private final JoystickButton driveYAxisButton;
 
@@ -18,7 +17,6 @@ public class MecanumDrive {
         this.strafeJoystick = strafeJoystick;
         this.rotationJoystick = rotationJoystick;
 
-        sensitiveRotationButton = new JoystickButton(this.rotationJoystick, SENSITIVE_ROTATION_BUTTON);
         driveXAxisButton = new JoystickButton(this.strafeJoystick, DRIVE_X_AXIS_BUTTON);
         driveYAxisButton = new JoystickButton(this.strafeJoystick, DRIVE_Y_AXIS_BUTTON);
     }
@@ -29,10 +27,6 @@ public class MecanumDrive {
 
     public Joystick getRotationJoystick() {
         return rotationJoystick;
-    }
-
-    public JoystickButton getSensitiveRotationButton() {
-        return sensitiveRotationButton;
     }
 
     public JoystickButton getDriveXAxisButton() {

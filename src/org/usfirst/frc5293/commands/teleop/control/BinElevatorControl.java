@@ -9,5 +9,8 @@ public class BinElevatorControl extends ContinuousCommand {
         requires(Subsystems.getBinElevator());
     }
 
-
+    @Override
+    protected void execute() {
+        super.execute();
+    }
 }

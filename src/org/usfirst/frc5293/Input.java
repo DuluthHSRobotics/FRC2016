@@ -1,6 +1,7 @@
 package org.usfirst.frc5293;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc5293.input.BinElevator;
 import org.usfirst.frc5293.input.Camera;
 import org.usfirst.frc5293.input.MecanumDrive;
@@ -17,6 +18,8 @@ public class Input {
     private static MecanumDrive mecanumDrive;
     private static Camera camera;
 
+    private static JoystickButton sensitivityModeButton;
+
     public static void init() {
         Joystick joystick1 = new Joystick(0);
         Joystick joystick2 = new Joystick(1);
@@ -26,6 +29,8 @@ public class Input {
         binElevator = new BinElevator(joystick3);
         mecanumDrive = new MecanumDrive(joystick1, joystick2);
         camera = new Camera(joystick3);
+
+        sensitivityModeButton = new JoystickButton(joystick2, 2);
     }
 
     public static ToteElevator getToteElevator() {
@@ -42,6 +47,10 @@ public class Input {
 
     public static Camera getCamera() {
         return camera;
+    }
+
+    public static JoystickButton getSensitivityModeButton() {
+        return sensitivityModeButton;
     }
 }
 

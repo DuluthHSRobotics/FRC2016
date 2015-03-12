@@ -8,12 +8,12 @@ public class InlineActionCommand extends ActionCommand {
 
     private final Runnable action;
 
-    protected InlineActionCommand(Subsystem subsystem, Runnable action) {
+    public InlineActionCommand(Subsystem subsystem, Runnable action) {
         super(subsystem);
         this.action = action;
     }
 
-    protected InlineActionCommand(List<Subsystem> subsystems, Runnable action) {
+    public InlineActionCommand(List<Subsystem> subsystems, Runnable action) {
         super(subsystems);
         this.action = action;
     }

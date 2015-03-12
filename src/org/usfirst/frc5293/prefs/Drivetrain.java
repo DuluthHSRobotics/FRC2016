@@ -46,11 +46,6 @@ public class Drivetrain implements PrefGroup {
             1.0
     ); { all.add(scaleRotation); }
 
-    private final BooleanPref isSensitiveRotationEnabled = new BooleanPref(
-            "drivetrain:is_sensitive_rotation_enabled",
-            true
-    ); { all.add(isSensitiveRotationEnabled); }
-
     private final DoublePref sensitiveScaleRotation = new DoublePref(
             "drivetrain:sensitive_scale_rotation",
             0.2
@@ -60,6 +55,16 @@ public class Drivetrain implements PrefGroup {
             "drivetrain:is_axis_locking_enabled",
             true
     ); { all.add(isAxisLockingEnabled);}
+
+    private final DoublePref deadzone = new DoublePref(
+            "drivetrain:deadzone",
+            0.05
+    ); { all.add(deadzone); }
+
+    private final BooleanPref isScalingFunctionsEnabled = new BooleanPref(
+            "drivetrain:is_scaling_function_enabled",
+            true
+    ); { all.add(isScalingFunctionsEnabled); }
 
     @Override
     public List<Pref<?>> getAll() {
@@ -94,15 +99,13 @@ public class Drivetrain implements PrefGroup {
         return scaleRotation;
     }
 
-    public DoublePref getSensitiveScaleRotation() {
-        return sensitiveScaleRotation;
-    }
-
-    public BooleanPref isSensitiveRotationEnabled() {
-        return isSensitiveRotationEnabled;
-    }
-
     public BooleanPref isAxisLockingEnabled() {
         return isAxisLockingEnabled;
     }
+
+    public DoublePref getDeadzone() {
+        return deadzone;
+    }
+
+    public BooleanPref isScalingFunctionsEnabled() { return isScalingFunctionsEnabled; }
 }

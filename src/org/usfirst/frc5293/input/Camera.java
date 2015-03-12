@@ -12,7 +12,7 @@ public class Camera {
         this.joystick = joystick;
 
         this.originButton = new JoystickButton(this.joystick, 1 /* Trigger */);
-        this.originButton.whenPressed(new CameraSetOriginOnPressed());
+        this.originButton.whenActive(new CameraSetOriginOnPressed());
     }
 
     public Joystick getJoystick() {

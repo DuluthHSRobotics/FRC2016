@@ -25,8 +25,6 @@ public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
 
     //
 
-    private static final double DEADZONE = 0.1;
-
     private final MecanumDrive input;
     private final Drivetrain prefs = Prefs.getDrivetrain();
 
@@ -51,10 +49,10 @@ public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
 
         ops.add(this::applySystemDisabling);
         ops.add(this::applyAxisDisabling);
-        ops.add(this::applySensitiveRotation);
         ops.add(this::applyAxisLocking);
-        ops.add(this::applyInversions);
         ops.add(this::applyQuadScaling);
+        ops.add(this::applySensitiveScaling);
+        ops.add(this::applyInversions);
 
         return ops;
     }
@@ -85,10 +83,15 @@ public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
         return state;
     }
 
-    private DrivingState applySensitiveRotation(DrivingState state) {
-        if (prefs.isSensitiveRotationEnabled().get() && input.getSensitiveRotationButton().get()) {
-            state.r *= prefs.getSensitiveScaleRotation().get();
+    private DrivingState applySensitiveScaling(DrivingState state) {
+        if (!Prefs.getRoot().isSensitiveScalingEnabled().get()
+                || !Input.getSensitivityModeButton().get()) {
+            return state;
         }
+
+        state.x *= prefs.getScaleX().get();
+        state.y *= prefs.getScaleY().get();
+        state.r *= prefs.getScaleRotation().get();
 
         return state;
     }
@@ -106,9 +109,14 @@ public class MecanumDriveEngine extends TranslationEngine<DrivingState> {
     }
 
     private DrivingState applyQuadScaling(DrivingState state) {
-        state.x = MathUtil.quadEaseWithDeadzone(state.x, DEADZONE);
-        state.y = MathUtil.quadEaseWithDeadzone(state.y, DEADZONE);
-        state.r = MathUtil.powerEaseWithDeadzone(state.r, 3, DEADZONE);
+        if (!prefs.isScalingFunctionsEnabled().get()) {
+            return state;
+        }
+
+        double deadzone = prefs.getDeadzone().get();
+        state.x = MathUtil.quadEaseWithDeadzone(state.x, deadzone);
+        state.y = MathUtil.quadEaseWithDeadzone(state.y, deadzone);
+        state.r = MathUtil.powerEaseWithDeadzone(state.r, 3, deadzone);
         return state;
     }
 
