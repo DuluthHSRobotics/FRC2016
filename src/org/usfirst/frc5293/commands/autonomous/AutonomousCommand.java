@@ -9,7 +9,7 @@ public class AutonomousCommand extends CommandGroup {
         addSequential(new TimedCommand(2.0) {
             @Override
             protected void execute() {
-                Subsystems.getDrivetrain().drive(0.0, 0.7, 0);
+                Subsystems.getDrivetrain().drive(0.0, -0.7, 0);
             }
 
             @Override
