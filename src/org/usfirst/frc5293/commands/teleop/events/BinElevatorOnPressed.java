@@ -10,6 +10,6 @@ public class BinElevatorOnPressed extends ActionCommand {
 
     @Override
     protected void action() {
-        Subsystems.getBinElevator().reverse();
+        Subsystems.getBinElevator().getMainExtender().reverse();
     }
 }
