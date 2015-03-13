@@ -32,11 +32,10 @@ public class ToteElevator extends Subsystem {
     }
 
     public void lower(double percentage) {
-        // TODO: Re-enable this once we get the bottom limit switch implemented
-//        if (bottomLimitSwitch.get()) {
-//            stop();
-//            return;
-//        }
+        if (isBottomLimitSwitchPressed()) {
+            stop();
+            return;
+        }
     	setPower(percentage * getSpeed());
     }
 
@@ -55,6 +54,10 @@ public class ToteElevator extends Subsystem {
 
     private Double getSpeed() {
         return Prefs.getToteElevator().getSpeed().get();
+    }
+
+    private boolean isBottomLimitSwitchPressed() {
+        return !bottomLimitSwitch.get();
     }
 }
 

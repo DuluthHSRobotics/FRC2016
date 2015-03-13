@@ -13,7 +13,7 @@ public final class ToteElevatorPrototype implements ToteElevator {
     public ToteElevatorPrototype() {
         controllerGroup = new SpeedControllerGroup(new Victor(9), new Victor(8));
 
-        bottomLimitSwitch = new DigitalInput(4);
+        bottomLimitSwitch = new DigitalInput(0);
         LiveWindow.addSensor("Tote Elevator", "Button Limit Switch", bottomLimitSwitch);
     }
 
