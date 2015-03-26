@@ -18,8 +18,8 @@ public class Devices {
     public static void init() {
         drivetrain = new Drivetrain();
 
-        // TODO: Please get me some configurable IoC please
-        toteElevator = new ToteElevatorPrototype();
+        // TODO: Please get me some configurable IoC or something please
+        toteElevator = new ToteElevatorCompetition();
 
         binElevator = new BinElevator();
         camera = new Camera();
