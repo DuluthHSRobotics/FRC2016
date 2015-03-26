@@ -7,6 +7,15 @@ public class DrivingState {
     public double y;
     public double r;
 
+    public DrivingState() {
+    }
+
+    public DrivingState(double x, double y, double r) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+    }
+
     public void apply(Function<Double, Double> func) {
         x = func.apply(x);
         y = func.apply(y);
