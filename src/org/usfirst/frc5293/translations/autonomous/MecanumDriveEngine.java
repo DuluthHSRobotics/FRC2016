@@ -2,7 +2,6 @@ package org.usfirst.frc5293.translations.autonomous;
 
 import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.prefs.Drivetrain;
-import org.usfirst.frc5293.translations.common.MacanumDriveFilters;
 import org.usfirst.frc5293.translations.util.DrivingState;
 import org.usfirst.frc5293.translations.util.InputTranslationEngine;
 
@@ -34,7 +33,6 @@ public class MecanumDriveEngine extends InputTranslationEngine<DrivingState> {
         List<Function<DrivingState, DrivingState>> ops = new ArrayList<>();
 
         ops.add(this::applySystemDisabling);
-        ops.add(MacanumDriveFilters::applyInversions);
 
         return ops;
     }

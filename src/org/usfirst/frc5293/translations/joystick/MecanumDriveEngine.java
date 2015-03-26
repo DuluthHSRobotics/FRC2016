@@ -4,7 +4,6 @@ import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.input.MecanumDrive;
 import org.usfirst.frc5293.prefs.Drivetrain;
-import org.usfirst.frc5293.translations.common.MacanumDriveFilters;
 import org.usfirst.frc5293.translations.util.DrivingState;
 import org.usfirst.frc5293.translations.util.StreamingTranslationEngine;
 import org.usfirst.frc5293.util.MathUtil;
@@ -53,7 +52,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         ops.add(this::applyAxisLocking);
         ops.add(this::applyQuadScaling);
         ops.add(this::applySensitiveScaling);
-        ops.add(MacanumDriveFilters::applyInversions);
+        ops.add(this::applyInversions);
 
         return ops;
     }
@@ -121,4 +120,10 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
+    private DrivingState applyInversions(DrivingState state) {
+        state.x *=  1;
+        state.y *=  1;
+        state.r *= -1;
+        return state;
+    }
 }
