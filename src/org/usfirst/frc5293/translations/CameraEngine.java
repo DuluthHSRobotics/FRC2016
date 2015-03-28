@@ -3,14 +3,14 @@ package org.usfirst.frc5293.translations;
 import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.input.Camera;
 import org.usfirst.frc5293.translations.util.Point;
-import org.usfirst.frc5293.translations.util.TranslationEngine;
+import org.usfirst.frc5293.translations.util.StreamingTranslationEngine;
 import org.usfirst.frc5293.util.MathUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class CameraEngine extends TranslationEngine<Point> {
+public class CameraEngine extends StreamingTranslationEngine<Point> {
 
     private static CameraEngine instance;
 

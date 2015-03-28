@@ -7,10 +7,10 @@ import org.usfirst.frc5293.commands.util.InlineActionCommand;
 
 public class BinElevator {
 
-    private static final int MAIN_EXPAND_BUTTON = 5;
-    private static final int MAIN_RETRACT_BUTTON = 3;
-    private static final int EXTENDER_EXPAND_BUTTON = 9;
-    private static final int EXTENDER_RETRACT_BUTTON = 11;
+    private static final int MAIN_EXPAND_BUTTON = 9;
+    private static final int MAIN_RETRACT_BUTTON = 11;
+    private static final int EXTENDER_EXPAND_BUTTON = 5;
+    private static final int EXTENDER_RETRACT_BUTTON = 3;
 
     private final Joystick joystick;
     private final JoystickButton mainExpandButton;
