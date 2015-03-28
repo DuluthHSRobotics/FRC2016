@@ -8,9 +8,9 @@ import org.usfirst.frc5293.translations.util.DrivingState;
 
 public class AutonomousCommandGroup extends CommandGroup {
 
-    private static final double SECONDS = 3.0;
+    private static final double SECONDS = 2.0;
     private static final MecanumDriveEngine engine = MecanumDriveEngine.getInstance();
-    private static final DrivingState movement = new DrivingState(0.0, 0.4, 0.0);
+    private static final DrivingState movement = new DrivingState(0.7, 0.0, 0.0);
 
     public AutonomousCommandGroup() {
         addSequential(new TimedCommand(SECONDS) {
