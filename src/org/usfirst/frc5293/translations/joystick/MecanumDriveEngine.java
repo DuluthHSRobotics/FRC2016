@@ -38,7 +38,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
 
         state.x = input.getStrafeJoystick().getX();
         state.y = input.getStrafeJoystick().getY();
-        state.r = input.getRotationJoystick().getTwist();
+        state.r = input.getRotationJoystick().getTwist() * 0.3; // TODO: HACK!!!
 
         return state;
     }
