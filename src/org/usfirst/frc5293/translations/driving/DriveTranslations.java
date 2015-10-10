@@ -1,21 +1,22 @@
-package org.usfirst.frc5293.translations;
+package org.usfirst.frc5293.translations.driving;
 
 import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.input.MecanumDrive;
+import org.usfirst.frc5293.prefs.DriveScalingPref;
 import org.usfirst.frc5293.prefs.Drivetrain;
 import org.usfirst.frc5293.translations.util.DrivingState;
-import org.usfirst.frc5293.translations.util.StreamingTranslationEngine;
 import org.usfirst.frc5293.util.MathUtil;
 
-public abstract class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState> {
+public class DriveTranslations {
 
-    private static MecanumDriveEngine instance;
+    private static DriveTranslations instance;
 
-    public static MecanumDriveEngine getInstance() {
+    public static DriveTranslations getInstance() {
         if (instance == null) {
-            instance = new MecanumDriveEngine();
+            instance = new DriveTranslations();
         }
+
         return instance;
     }
 
@@ -24,22 +25,11 @@ public abstract class MecanumDriveEngine extends StreamingTranslationEngine<Driv
     private final MecanumDrive input;
     private final Drivetrain prefs = Prefs.getDrivetrain();
 
-    protected MecanumDriveEngine() {
+    public DriveTranslations() {
         input = Input.getMecanumDrive();
     }
 
-    @Override
-    protected DrivingState getInitial() {
-        DrivingState state = new DrivingState();
-
-        state.x = input.getStrafeJoystick().getX();
-        state.y = input.getStrafeJoystick().getY();
-        state.r = input.getRotationJoystick().getTwist() * 0.3; // TODO: HACK!!!
-
-        return state;
-    }
-
-    protected DrivingState applySystemDisabling(DrivingState state) {
+    public DrivingState applySystemDisabling(DrivingState state) {
         if (!prefs.isSystemEnabled().get()) {
             state.x = 0;
             state.y = 0;
@@ -49,7 +39,7 @@ public abstract class MecanumDriveEngine extends StreamingTranslationEngine<Driv
         return state;
     }
 
-    protected DrivingState applyAxisDisabling(DrivingState state) {
+    public DrivingState applyAxisDisabling(DrivingState state) {
         if (!prefs.isXEnabled().get()) {
             state.x = 0;
         }
@@ -65,20 +55,31 @@ public abstract class MecanumDriveEngine extends StreamingTranslationEngine<Driv
         return state;
     }
 
-    protected DrivingState applySensitiveScaling(DrivingState state) {
-        if (!Prefs.getRoot().isSensitiveScalingEnabled().get()
-                || !Input.getSensitivityModeButton().get()) {
+    public DrivingState applyDriveScalingPref(DrivingState state, DriveScalingPref pref) {
+        if (!pref.isEnabled().get()) {
             return state;
         }
 
-        state.x *= prefs.getScaleX().get();
-        state.y *= prefs.getScaleY().get();
-        state.r *= prefs.getScaleRotation().get();
+        state.x *= pref.getX().get();
+        state.y *= pref.getY().get();
+        state.r *= pref.getRotation().get();
 
         return state;
     }
 
-    protected DrivingState applyAxisLocking(DrivingState state) {
+    public DrivingState applyDefaultScaling(DrivingState state) {
+        return applyDriveScalingPref(state, prefs.getDefaultScaling());
+    }
+
+    public DrivingState applySensitiveScaling(DrivingState state) {
+        if (!(Input.getSensitivityModeButton().get())) {
+            return state;
+        }
+
+        return applyDriveScalingPref(state, prefs.getSensitiveScaling());
+    }
+
+    public DrivingState applyAxisLocking(DrivingState state) {
         if (prefs.isAxisLockingEnabled().get()) {
             if (input.getDriveXAxisButton().get()) {
                 state.y = 0;
@@ -90,7 +91,7 @@ public abstract class MecanumDriveEngine extends StreamingTranslationEngine<Driv
         return state;
     }
 
-    protected DrivingState applyQuadScaling(DrivingState state) {
+    public DrivingState applyQuadScaling(DrivingState state) {
         if (!prefs.isScalingFunctionsEnabled().get()) {
             return state;
         }
@@ -102,7 +103,7 @@ public abstract class MecanumDriveEngine extends StreamingTranslationEngine<Driv
         return state;
     }
 
-    protected DrivingState applyInversions(DrivingState state) {
+    public DrivingState applyInversions(DrivingState state) {
         state.x *=  1;
         state.y *=  1;
         state.r *= -1;

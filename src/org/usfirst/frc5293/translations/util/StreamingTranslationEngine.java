@@ -1,17 +1,21 @@
 package org.usfirst.frc5293.translations.util;
 
-import java.util.List;
 import java.util.function.Function;
 
-public abstract class StreamingTranslationEngine<T> extends TranslationEngine<T> {
-    protected abstract T getInitial();
+public abstract class StreamingTranslationEngine<T> {
 
-    protected abstract List<Function<T, T>> getOperations();
+    private OperationPipeline<T> pipeline;
+
+    public StreamingTranslationEngine(OperationPipeline<T> pipeline) {
+        this.pipeline = pipeline;
+    }
+
+    protected abstract T getInitial();
 
     public T getResult() {
         T state = getInitial();
 
-        for (Function<T, T> op : getOperations()) {
+        for (Function<T, T> op : pipeline.getOperations()) {
             state = op.apply(state);
         }
 

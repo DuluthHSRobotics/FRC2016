@@ -3,7 +3,7 @@ package org.usfirst.frc5293.commands.teleop.control;
 import org.usfirst.frc5293.Subsystems;
 import org.usfirst.frc5293.commands.util.ContinuousCommand;
 import org.usfirst.frc5293.translations.util.DrivingState;
-import org.usfirst.frc5293.translations.MecanumDriveEngine;
+import org.usfirst.frc5293.translations.driving.JoystickDriveEngine;
 
 public class MecanumDriveControl extends ContinuousCommand {
 
@@ -13,7 +13,7 @@ public class MecanumDriveControl extends ContinuousCommand {
 
     @Override
     protected void execute() {
-        drive(MecanumDriveEngine.getInstance().getResult());
+        drive(JoystickDriveEngine.getInstance().getResult());
     }
 
     private void drive(DrivingState state) {

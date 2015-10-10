@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc5293.commands.AccelerationCommand;
-import org.usfirst.frc5293.commands.autonomous.AutonomousCommandGroup;
+import org.usfirst.frc5293.commands.util.EmptyCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,7 +31,7 @@ public class Robot extends IterativeRobot {
         Input.init();
 
         // create the command used for the autonomous period
-        autonomousCommand = new AutonomousCommandGroup();
+        autonomousCommand = new EmptyCommand(); // disable autonomous
 
         // create background task for updating the acceleration from the board
         new AccelerationCommand().start();
