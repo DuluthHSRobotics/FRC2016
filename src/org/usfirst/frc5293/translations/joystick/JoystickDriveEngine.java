@@ -1,16 +1,13 @@
-package org.usfirst.frc5293.translations.autonomous;
+package org.usfirst.frc5293.translations.joystick;
 
-import org.usfirst.frc5293.Prefs;
-import org.usfirst.frc5293.prefs.Drivetrain;
 import org.usfirst.frc5293.translations.MecanumDriveEngine;
 import org.usfirst.frc5293.translations.util.DrivingState;
-import org.usfirst.frc5293.translations.util.InputTranslationEngine;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class DriveEngine extends MecanumDriveEngine {
+public class JoystickDriveEngine extends MecanumDriveEngine {
 
     @Override
     protected List<Function<DrivingState, DrivingState>> getOperations() {

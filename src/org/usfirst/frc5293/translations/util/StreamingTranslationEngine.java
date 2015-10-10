@@ -3,7 +3,7 @@ package org.usfirst.frc5293.translations.util;
 import java.util.List;
 import java.util.function.Function;
 
-public abstract class StreamingTranslationEngine<T> {
+public abstract class StreamingTranslationEngine<T> extends TranslationEngine<T> {
     protected abstract T getInitial();
 
     protected abstract List<Function<T, T>> getOperations();

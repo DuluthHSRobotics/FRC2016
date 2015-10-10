@@ -1,4 +1,4 @@
-package org.usfirst.frc5293.translations.joystick;
+package org.usfirst.frc5293.translations;
 
 import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.Prefs;
@@ -8,11 +8,7 @@ import org.usfirst.frc5293.translations.util.DrivingState;
 import org.usfirst.frc5293.translations.util.StreamingTranslationEngine;
 import org.usfirst.frc5293.util.MathUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-
-public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState> {
+public abstract class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState> {
 
     private static MecanumDriveEngine instance;
 
@@ -28,7 +24,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
     private final MecanumDrive input;
     private final Drivetrain prefs = Prefs.getDrivetrain();
 
-    private MecanumDriveEngine() {
+    protected MecanumDriveEngine() {
         input = Input.getMecanumDrive();
     }
 
@@ -43,21 +39,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    @Override
-    protected List<Function<DrivingState, DrivingState>> getOperations() {
-        List<Function<DrivingState, DrivingState>> ops = new ArrayList<>();
-
-        ops.add(this::applySystemDisabling);
-        ops.add(this::applyAxisDisabling);
-        ops.add(this::applyAxisLocking);
-        ops.add(this::applyQuadScaling);
-        ops.add(this::applySensitiveScaling);
-        ops.add(this::applyInversions);
-
-        return ops;
-    }
-
-    private DrivingState applySystemDisabling(DrivingState state) {
+    protected DrivingState applySystemDisabling(DrivingState state) {
         if (!prefs.isSystemEnabled().get()) {
             state.x = 0;
             state.y = 0;
@@ -67,7 +49,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    private DrivingState applyAxisDisabling(DrivingState state) {
+    protected DrivingState applyAxisDisabling(DrivingState state) {
         if (!prefs.isXEnabled().get()) {
             state.x = 0;
         }
@@ -83,7 +65,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    private DrivingState applySensitiveScaling(DrivingState state) {
+    protected DrivingState applySensitiveScaling(DrivingState state) {
         if (!Prefs.getRoot().isSensitiveScalingEnabled().get()
                 || !Input.getSensitivityModeButton().get()) {
             return state;
@@ -96,7 +78,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    private DrivingState applyAxisLocking(DrivingState state) {
+    protected DrivingState applyAxisLocking(DrivingState state) {
         if (prefs.isAxisLockingEnabled().get()) {
             if (input.getDriveXAxisButton().get()) {
                 state.y = 0;
@@ -108,7 +90,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    private DrivingState applyQuadScaling(DrivingState state) {
+    protected DrivingState applyQuadScaling(DrivingState state) {
         if (!prefs.isScalingFunctionsEnabled().get()) {
             return state;
         }
@@ -120,7 +102,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    private DrivingState applyInversions(DrivingState state) {
+    protected DrivingState applyInversions(DrivingState state) {
         state.x *=  1;
         state.y *=  1;
         state.r *= -1;

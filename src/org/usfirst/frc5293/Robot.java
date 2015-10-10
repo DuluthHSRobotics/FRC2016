@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.usfirst.frc5293.commands.AccelerationCommand;
 import org.usfirst.frc5293.commands.autonomous.AutonomousCommandGroup;
 
 /**
@@ -29,8 +30,11 @@ public class Robot extends IterativeRobot {
         Subsystems.init();
         Input.init();
 
-        // instantiate the command used for the autonomous period
+        // create the command used for the autonomous period
         autonomousCommand = new AutonomousCommandGroup();
+
+        // create background task for updating the acceleration from the board
+        new AccelerationCommand().start();
     }
 
     /**
