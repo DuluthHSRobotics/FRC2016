@@ -3,6 +3,7 @@ package org.usfirst.frc5293.devices;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.usfirst.frc5293.devices.util.NullSpeedController;
 import org.usfirst.frc5293.subsystems.util.MecanumDrive;
 
 public final class Drivetrain {
@@ -18,17 +19,17 @@ public final class Drivetrain {
     private final MecanumDrive control;
 
     public Drivetrain() {
-        frontLeft = new Talon(FRONT_LEFT_ID);
-        LiveWindow.addActuator("Drivetrain", "Front Left (Talon)", (Talon) frontLeft);
+        frontLeft = NullSpeedController.INSTANCE;
+//        LiveWindow.addActuator("Drivetrain", "Front Left (Talon)", (Talon) frontLeft);
 
-        backLeft = new Talon(BACK_LEFT_ID);
-        LiveWindow.addActuator("Drivetrain", "Back Left (Talon)", (Talon) backLeft);
+        backLeft = NullSpeedController.INSTANCE;
+//        LiveWindow.addActuator("Drivetrain", "Back Left (Talon)", (Talon) backLeft);
 
-        frontRight = new Talon(FRONT_RIGHT_ID);
-        LiveWindow.addActuator("Drivetrain", "Front Right (Talon)", (Talon) frontRight);
+        frontRight = NullSpeedController.INSTANCE;
+//        LiveWindow.addActuator("Drivetrain", "Front Right (Talon)", (Talon) frontRight);
 
-        backRight = new Talon(BACK_RIGHT_ID);
-        LiveWindow.addActuator("Drivetrain", "Back Right (Talon)", (Talon) backRight);
+        backRight = NullSpeedController.INSTANCE;
+//        LiveWindow.addActuator("Drivetrain", "Back Right (Talon)", (Talon) backRight);
 
         control = new MecanumDrive(
                 frontLeft, backLeft,

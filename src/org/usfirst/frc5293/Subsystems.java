@@ -1,21 +1,20 @@
 package org.usfirst.frc5293;
 
-import org.usfirst.frc5293.subsystems.BinElevator;
-import org.usfirst.frc5293.subsystems.Camera;
-import org.usfirst.frc5293.subsystems.Drivetrain;
-import org.usfirst.frc5293.subsystems.ToteElevator;
+import org.usfirst.frc5293.subsystems.*;
 
 public class Subsystems {
     private static Drivetrain drivetrain;
     private static ToteElevator toteElevator;
     private static BinElevator binElevator;
     private static Camera camera;
+    private static Shooter shooter;
 
     public static void init() {
         drivetrain = new Drivetrain();
         toteElevator = new ToteElevator();
         binElevator = new BinElevator();
         camera = new Camera();
+        shooter = new Shooter();
     }
 
     public static Drivetrain getDrivetrain() {
@@ -32,5 +31,9 @@ public class Subsystems {
 
     public static Camera getCamera() {
         return camera;
+    }
+
+    public static Shooter getShooter() {
+        return shooter;
     }
 }
