@@ -1,11 +1,10 @@
 package org.usfirst.frc5293;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.usfirst.frc5293.input.BinElevator;
-import org.usfirst.frc5293.input.Camera;
-import org.usfirst.frc5293.input.MecanumDrive;
-import org.usfirst.frc5293.input.ToteElevator;
+import org.usfirst.frc5293.input.*;
+import org.usfirst.frc5293.input.util.NullJoystick;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -17,6 +16,7 @@ public class Input {
     private static BinElevator binElevator;
     private static MecanumDrive mecanumDrive;
     private static Camera camera;
+    private static Shooter shooter;
 
     private static JoystickButton sensitivityModeButton;
 
@@ -25,12 +25,13 @@ public class Input {
         Joystick joystick2 = new Joystick(1);
         Joystick joystick3 = new Joystick(2);
 
-        toteElevator = new ToteElevator(joystick3);
-        binElevator = new BinElevator(joystick3);
-        mecanumDrive = new MecanumDrive(joystick1, joystick2);
-        camera = new Camera(joystick3);
+        toteElevator = new ToteElevator(NullJoystick.INSTANCE);
+        binElevator = new BinElevator(NullJoystick.INSTANCE);
+        mecanumDrive = new MecanumDrive(NullJoystick.INSTANCE, NullJoystick.INSTANCE);
+        camera = new Camera(NullJoystick.INSTANCE);
+        shooter = new Shooter(joystick3);
 
-        sensitivityModeButton = new JoystickButton(joystick2, 2);
+        sensitivityModeButton = new JoystickButton(NullJoystick.INSTANCE, 2);
     }
 
     public static ToteElevator getToteElevator() {
@@ -47,6 +48,10 @@ public class Input {
 
     public static Camera getCamera() {
         return camera;
+    }
+
+    public static Shooter getShooter() {
+        return shooter;
     }
 
     public static JoystickButton getSensitivityModeButton() {

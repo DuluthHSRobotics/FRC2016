@@ -15,6 +15,8 @@ public class Devices {
     private static BinElevator binElevator;
     private static Camera camera;
 
+    private static Shooter shooter;
+
     public static void init() {
         drivetrain = new Drivetrain();
 
@@ -23,6 +25,8 @@ public class Devices {
 
         binElevator = new BinElevator();
         camera = new Camera();
+
+        shooter = new Shooter();
     }
 
     public static Drivetrain getDrivetrain() {
@@ -39,5 +43,9 @@ public class Devices {
 
     public static Camera getCamera() {
         return camera;
+    }
+
+    public static Shooter getShooter() {
+        return shooter;
     }
 }
