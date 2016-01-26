@@ -7,8 +7,8 @@ public final class Camera {
     private final Servo topServo;
 
     public Camera() {
-        sideServo = new Servo(4);
-        topServo = new Servo(5);
+        sideServo = new Servo(5);
+        topServo = new Servo(4);
     }
 
     public Servo getSideServo() {

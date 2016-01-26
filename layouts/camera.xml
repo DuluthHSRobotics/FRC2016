@@ -1,22 +1,43 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Camera X Rotation" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1400" y="175"/>
+	</widget>
+	<widget field="Back Right" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1440" y="105"/>
+	</widget>
+	<widget field="Back Left" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1440" y="84"/>
+	</widget>
+	<widget field="Front Left" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1440" y="63"/>
+	</widget>
+	<widget field="Front Right" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1440" y="42"/>
+	</widget>
+	<widget field="Joystick X" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1440" y="21"/>
+	</widget>
+	<widget field="Joystick Y" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1440" y="0"/>
+	</widget>
+	<widget field="Camera Y Rotation" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1400" y="148"/>
+	</widget>
+	<widget field="Joystick Rotation" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1408" y="201"/>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.VideoStreamViewerExtension">
-		<location x="413" y="3"/>
-		<width>1026</width>
+		<location x="427" y="0"/>
+		<width>936</width>
 		<height>588</height>
 	</static-widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.RobotPreferences">
-		<location x="3" y="1"/>
+		<location x="5" y="1"/>
 		<width>406</width>
+		<height>590</height>
 	</static-widget>
 </dashboard>
 <live-window>
 </live-window>
-	<hidden field="Front Left"/>
-	<hidden field="Joystick Y"/>
-	<hidden field="Joystick X"/>
-	<hidden field="Back Left"/>
-	<hidden field="Back Right"/>
-	<hidden field="Joystick Rotation"/>
-	<hidden field="Front Right"/>
 </xml>

@@ -33,23 +33,40 @@ public class ToteElevator extends Subsystem {
 
     public void lower(double percentage) {
         if (isBottomLimitSwitchPressed()) {
-            stop();
+            stopImmediately();
             return;
         }
     	setPower(percentage * getSpeed());
     }
 
     private void setPower(double value) {
-        if (master instanceof CANTalon && Prefs.getToteElevator().getIsVoltageRampEnabled().get()) {
-            ((CANTalon) master).setVoltageRampRate(Prefs.getToteElevator().getVoltageRamp().get());
-        }
-
+        enableVoltageRamp();
         master.set(value);
         // SmartDashboard.putNumber("tote_elevator:last_power", value);
     }
 
+    private void enableVoltageRamp() {
+        setVoltageRampRate(Prefs.getToteElevator().getVoltageRamp().get());
+    }
+
+    private void disableVoltageRamp() {
+        setVoltageRampRate(0);
+    }
+
+    private void setVoltageRampRate(double rate) {
+        if (master instanceof CANTalon
+                && Prefs.getToteElevator().getIsVoltageRampEnabled().get()) {
+            ((CANTalon) master).setVoltageRampRate(rate);
+        }
+    }
+
     public void stop() {
     	master.set(0);
+    }
+
+    public void stopImmediately() {
+        disableVoltageRamp();
+        stop();
     }
 
     private Double getSpeed() {
