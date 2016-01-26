@@ -23,7 +23,7 @@ public final class ToteElevatorCompetition implements ToteElevator {
         slave.changeControlMode(CANTalon.ControlMode.Follower);
         slave.set(master.getDeviceID());
 
-        bottomLimitSwitch = new DigitalInput(4);
+        bottomLimitSwitch = new DigitalInput(0);
         LiveWindow.addSensor("Tote Elevator", "Button Limit Switch", bottomLimitSwitch);
     }
 

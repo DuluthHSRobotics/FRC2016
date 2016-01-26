@@ -1,4 +1,4 @@
-package org.usfirst.frc5293.commands.autonomous;
+package org.usfirst.frc5293.commands.util;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;

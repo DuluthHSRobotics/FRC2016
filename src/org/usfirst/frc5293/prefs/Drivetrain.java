@@ -31,25 +31,11 @@ public class Drivetrain implements PrefGroup {
             true
     ); { all.add(isRotationEnabled); }
 
-    private final DoublePref scaleX = new DoublePref(
-            "drivetrain:scale_x",
-            1.0
-    ); { all.add(scaleX); }
+    private final DriveScalingPref defaultScaling = new DriveScalingPref("default");
+    { all.addAll(defaultScaling.getAll()); }
 
-    private final DoublePref scaleY = new DoublePref(
-            "drivetrain:scale_y",
-            1.0
-    ); { all.add(scaleY); }
-
-    private final DoublePref scaleRotation = new DoublePref(
-            "drivetrain:scale_rotation",
-            1.0
-    ); { all.add(scaleRotation); }
-
-    private final DoublePref sensitiveScaleRotation = new DoublePref(
-            "drivetrain:sensitive_scale_rotation",
-            0.2
-    ); { all.add(sensitiveScaleRotation); }
+    private final DriveScalingPref sensitiveScaling = new DriveScalingPref("sensitive");
+    { all.addAll(sensitiveScaling.getAll()); }
 
     private final BooleanPref isAxisLockingEnabled = new BooleanPref(
             "drivetrain:is_axis_locking_enabled",
@@ -87,16 +73,12 @@ public class Drivetrain implements PrefGroup {
         return isRotationEnabled;
     }
 
-    public DoublePref getScaleX() {
-        return scaleX;
+    public DriveScalingPref getDefaultScaling() {
+        return defaultScaling;
     }
 
-    public DoublePref getScaleY() {
-        return scaleY;
-    }
-
-    public DoublePref getScaleRotation() {
-        return scaleRotation;
+    public DriveScalingPref getSensitiveScaling() {
+        return sensitiveScaling;
     }
 
     public BooleanPref isAxisLockingEnabled() {

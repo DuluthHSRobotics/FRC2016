@@ -1,24 +1,26 @@
 package org.usfirst.frc5293.input.util;
 
-import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * A "psuedo-button" that wraps around a group of buttons. This "pseudo-button" is considered down
- * when <b>any</b> of the underlying buttons are down.
+ * A "psuedo-button" that wraps around a group of buttons. This "pseudo-button" is considered
+ * pressed when <b>any</b> of the underlying buttons are down.
  */
-public class OrButtonGroup extends Button {
-    private final List<JoystickButton> buttons;
+public class OrButtonGroup extends ButtonGroup {
+
+    public OrButtonGroup(Joystick joystick, int[] buttons) {
+        super(joystick, buttons);
+    }
 
     public OrButtonGroup(JoystickButton... buttons) {
-        this(Arrays.asList(buttons));
+        super(buttons);
     }
 
     public OrButtonGroup(List<JoystickButton> buttons) {
-        this.buttons = buttons;
+        super(buttons);
     }
 
     @Override
