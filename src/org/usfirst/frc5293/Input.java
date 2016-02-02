@@ -28,7 +28,7 @@ public class Input {
         toteElevator = new ToteElevator(NullJoystick.INSTANCE);
         binElevator = new BinElevator(NullJoystick.INSTANCE);
         mecanumDrive = new MecanumDrive(NullJoystick.INSTANCE, NullJoystick.INSTANCE);
-        camera = new Camera(NullJoystick.INSTANCE);
+        camera = new Camera(joystick2);
         shooter = new Shooter(joystick3);
 
         sensitivityModeButton = new JoystickButton(NullJoystick.INSTANCE, 2);
