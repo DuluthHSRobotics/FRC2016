@@ -12,6 +12,7 @@ package org.usfirst.frc5293.subsystems;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc5293.Devices;
 import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.commands.teleop.control.ShooterControl;
@@ -25,15 +26,16 @@ public class Shooter extends Subsystem {
     }
 
     public void setPower(double x) {
+        SmartDashboard.putNumber("Shooter Power", x);
         master.set(x);
     }
 
     public void stop() {
-    	master.set(0);
+        setPower(0);
     }
 
-    private Double getSpeed() {
-        return Prefs.getToteElevator().getSpeed().get();
-    }
+//    private Double getSpeed() {
+//        return Prefs.getToteElevator().getSpeed().get();
+//    }
 }
 
