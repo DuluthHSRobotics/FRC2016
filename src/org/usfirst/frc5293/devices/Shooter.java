@@ -13,7 +13,7 @@ public final class Shooter {
     public Shooter() {
         controllerGroup = new SpeedControllerGroup(
                 new InvertedSpeedController(new Talon(0)),
-                new InvertedSpeedController(new Talon(1)));
+                new Talon(1));
     }
 
     public SpeedController getController() {
