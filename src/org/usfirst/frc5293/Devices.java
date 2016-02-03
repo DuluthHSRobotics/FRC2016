@@ -14,6 +14,7 @@ public class Devices {
     private static ToteElevator toteElevator;
     private static BinElevator binElevator;
     private static Camera camera;
+    private static CameraRingLight cameraRingLight;
 
     private static Shooter shooter;
 
@@ -25,6 +26,7 @@ public class Devices {
 
         binElevator = new BinElevator();
         camera = new Camera();
+        cameraRingLight = new CameraRingLight();
 
         shooter = new Shooter();
     }
@@ -44,6 +46,8 @@ public class Devices {
     public static Camera getCamera() {
         return camera;
     }
+
+    public static CameraRingLight getCameraRingLight() { return cameraRingLight; }
 
     public static Shooter getShooter() {
         return shooter;
