@@ -16,6 +16,7 @@ public class Input {
     private static BinElevator binElevator;
     private static MecanumDrive mecanumDrive;
     private static Camera camera;
+    private static CameraRingLight cameraRingLight;
     private static Shooter shooter;
 
     private static JoystickButton sensitivityModeButton;
@@ -29,6 +30,7 @@ public class Input {
         binElevator = new BinElevator(NullJoystick.INSTANCE);
         mecanumDrive = new MecanumDrive(NullJoystick.INSTANCE, NullJoystick.INSTANCE);
         camera = new Camera(joystick2);
+        cameraRingLight = new CameraRingLight(joystick3);
         shooter = new Shooter(joystick3);
 
         sensitivityModeButton = new JoystickButton(NullJoystick.INSTANCE, 2);
@@ -48,6 +50,10 @@ public class Input {
 
     public static Camera getCamera() {
         return camera;
+    }
+
+    public static CameraRingLight getCameraRingLight() {
+        return cameraRingLight;
     }
 
     public static Shooter getShooter() {
