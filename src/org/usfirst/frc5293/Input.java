@@ -12,8 +12,6 @@ import org.usfirst.frc5293.input.util.NullJoystick;
  */
 public class Input {
 
-    private static ToteElevator toteElevator;
-    private static BinElevator binElevator;
     private static MecanumDrive mecanumDrive;
     private static Camera camera;
     private static CameraRingLight cameraRingLight;
@@ -26,22 +24,12 @@ public class Input {
         Joystick joystick2 = new Joystick(1);
         Joystick joystick3 = new Joystick(2);
 
-        toteElevator = new ToteElevator(NullJoystick.INSTANCE);
-        binElevator = new BinElevator(NullJoystick.INSTANCE);
         mecanumDrive = new MecanumDrive(NullJoystick.INSTANCE, NullJoystick.INSTANCE);
         camera = new Camera(joystick2);
         cameraRingLight = new CameraRingLight(joystick3);
         shooter = new Shooter(joystick3);
 
         sensitivityModeButton = new JoystickButton(NullJoystick.INSTANCE, 2);
-    }
-
-    public static ToteElevator getToteElevator() {
-        return toteElevator;
-    }
-
-    public static BinElevator getBinElevator() {
-        return binElevator;
     }
 
     public static MecanumDrive getMecanumDrive() {

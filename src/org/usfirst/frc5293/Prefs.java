@@ -2,7 +2,6 @@ package org.usfirst.frc5293;
 
 import org.usfirst.frc5293.prefs.Drivetrain;
 import org.usfirst.frc5293.prefs.Root;
-import org.usfirst.frc5293.prefs.ToteElevator;
 import org.usfirst.frc5293.prefs.util.Pref;
 import org.usfirst.frc5293.prefs.util.PrefGroup;
 
@@ -13,7 +12,6 @@ public final class Prefs {
 
     // TOOD: Have global switch to completely disable the remote settings if we need to
     private static Root root;
-    private static ToteElevator toteElevator;
     private static Drivetrain drivetrain;
 
     private static List<PrefGroup> groups = new ArrayList<>();
@@ -21,9 +19,6 @@ public final class Prefs {
     public static void init() {
         root = new Root();
         groups.add(root);
-
-        toteElevator = new ToteElevator();
-        groups.add(toteElevator);
 
         drivetrain = new Drivetrain();
         groups.add(drivetrain);
@@ -42,10 +37,6 @@ public final class Prefs {
 
     public static Root getRoot() {
         return root;
-    }
-
-    public static ToteElevator getToteElevator() {
-        return toteElevator;
     }
 
     public static Drivetrain getDrivetrain() {
