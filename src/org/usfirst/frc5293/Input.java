@@ -24,12 +24,12 @@ public class Input {
         Joystick joystick2 = new Joystick(1);
         Joystick joystick3 = new Joystick(2);
 
-        mecanumDrive = new MecanumDrive(NullJoystick.INSTANCE, NullJoystick.INSTANCE);
+        mecanumDrive = new MecanumDrive(NullJoystick.getInstance(), NullJoystick.getInstance());
         camera = new Camera(joystick2);
         cameraRingLight = new CameraRingLight(joystick3);
         shooter = new Shooter(joystick3);
 
-        sensitivityModeButton = new JoystickButton(NullJoystick.INSTANCE, 2);
+        sensitivityModeButton = new JoystickButton(NullJoystick.getInstance(), 2);
     }
 
     public static MecanumDrive getMecanumDrive() {

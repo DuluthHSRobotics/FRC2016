@@ -19,16 +19,16 @@ public final class Drivetrain {
     private final MecanumDrive control;
 
     public Drivetrain() {
-        frontLeft = NullSpeedController.INSTANCE;
+        frontLeft = NullSpeedController.getInstance();
 //        LiveWindow.addActuator("Drivetrain", "Front Left (Talon)", (Talon) frontLeft);
 
-        backLeft = NullSpeedController.INSTANCE;
+        backLeft = NullSpeedController.getInstance();
 //        LiveWindow.addActuator("Drivetrain", "Back Left (Talon)", (Talon) backLeft);
 
-        frontRight = NullSpeedController.INSTANCE;
+        frontRight = NullSpeedController.getInstance();
 //        LiveWindow.addActuator("Drivetrain", "Front Right (Talon)", (Talon) frontRight);
 
-        backRight = NullSpeedController.INSTANCE;
+        backRight = NullSpeedController.getInstance();
 //        LiveWindow.addActuator("Drivetrain", "Back Right (Talon)", (Talon) backRight);
 
         control = new MecanumDrive(
