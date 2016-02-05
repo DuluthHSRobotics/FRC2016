@@ -1,6 +1,8 @@
 # IntelliJ Project Files
-.idea/
-*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/uiDesigner.xml
+.idea/misc.xml
 
 # Build Files
 /bin/
