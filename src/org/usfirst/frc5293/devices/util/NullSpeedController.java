@@ -4,10 +4,22 @@ import edu.wpi.first.wpilibj.SpeedController;
 
 public final class NullSpeedController implements SpeedController {
 
-    private NullSpeedController() {
+    private static NullSpeedController instance;
+
+    public static NullSpeedController getInstance() {
+        if (instance == null) {
+            instance = new NullSpeedController();
+        }
+
+        return instance;
     }
 
-    public static final NullSpeedController INSTANCE = new NullSpeedController();
+    //
+
+    private boolean isInverted = false;
+
+    private NullSpeedController() {
+    }
 
     @Override
     public double get() {
@@ -20,6 +32,16 @@ public final class NullSpeedController implements SpeedController {
 
     @Override
     public void set(double speed) {
+    }
+
+    @Override
+    public void setInverted(boolean isInverted) {
+        this.isInverted = isInverted;
+    }
+
+    @Override
+    public boolean getInverted() {
+        return this.isInverted;
     }
 
     @Override

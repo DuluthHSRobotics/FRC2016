@@ -1,15 +1,24 @@
 package org.usfirst.frc5293.input.util;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 
 public final class NullJoystick extends Joystick {
 
+    private static NullJoystick instance;
+
+    public static NullJoystick getInstance() {
+        if (instance == null) {
+            instance = new NullJoystick();
+        }
+
+        return instance;
+    }
+
+    //
+
     private NullJoystick() {
         super(0, 0, 0);
     }
-
-    public static final NullJoystick INSTANCE = new NullJoystick();
 
     @Override
     public double getX(Hand hand) {

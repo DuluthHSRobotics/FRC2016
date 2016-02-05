@@ -16,7 +16,6 @@ public class ParsedRobot extends IterativeRobot {
     public void robotInit(){
         if(!prefs.containsKey(commandName)){
             prefs.putString(commandName, defaultString);
-            prefs.save();
         }
     }
 

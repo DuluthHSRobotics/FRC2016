@@ -13,6 +13,9 @@ import java.util.function.Consumer;
 public class SpeedControllerGroup implements SpeedController {
     private final List<SpeedController> controllers;
 
+    private boolean isInverted = false;
+    private boolean isDisabled = false;
+
     public SpeedControllerGroup(SpeedController... controllers) {
         this(Arrays.asList(controllers));
     }
@@ -32,17 +35,28 @@ public class SpeedControllerGroup implements SpeedController {
 
     @Override
     public void set(double speed, byte syncGroup) {
-        apply(x -> x.set(speed, syncGroup));
+        if (isDisabled) return;
+
+        final double actualSpeed = getSign() * speed;
+        apply(x -> x.set(actualSpeed, syncGroup));
     }
 
     @Override
     public void set(double speed) {
-        apply(x -> x.set(speed));
+        if (isDisabled) return;
+
+        final double actualSpeed = getSign() * speed;
+        apply(x -> x.set(actualSpeed));
     }
 
     @Override
-    public void disable() {
-        apply(SpeedController::disable);
+    public void setInverted(boolean isInverted) {
+        this.isInverted = isInverted;
+    }
+
+    @Override
+    public boolean getInverted() {
+        return this.isInverted;
     }
 
     @Override
@@ -50,7 +64,18 @@ public class SpeedControllerGroup implements SpeedController {
         apply(x -> x.pidWrite(output));
     }
 
+    @Override
+    public void disable() {
+        set(0);
+        this.isDisabled = true;
+        apply(SpeedController::disable);
+    }
+
     private void apply(Consumer<? super SpeedController> func) {
         controllers.stream().forEach(func);
+    }
+
+    private double getSign() {
+        return isInverted ? -1 : +1;
     }
 }
