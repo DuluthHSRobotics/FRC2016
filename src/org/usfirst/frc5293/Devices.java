@@ -15,12 +15,14 @@ public final class Devices {
     private static CameraRingLight cameraRingLight;
 
     private static Shooter shooter;
+    private static Lifter lifter;
 
     public static void init() {
         drivetrain = new Drivetrain();
         camera = new Camera();
         cameraRingLight = new CameraRingLight();
         shooter = new Shooter();
+        lifter = new Lifter();
     }
 
     public static Drivetrain getDrivetrain() {
@@ -35,5 +37,9 @@ public final class Devices {
 
     public static Shooter getShooter() {
         return shooter;
+    }
+
+    public static Lifter getLifter() {
+        return lifter;
     }
 }
