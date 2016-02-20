@@ -4,8 +4,11 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc5293.commands.AccelerationCommand;
 import org.usfirst.frc5293.commands.util.EmptyCommand;
+
+import java.util.Optional;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -16,7 +19,7 @@ import org.usfirst.frc5293.commands.util.EmptyCommand;
  */
 public class Robot extends IterativeRobot {
 
-    private Command autonomousCommand;
+    private Optional<Command> autonomousCommand = Optional.empty();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -31,10 +34,13 @@ public class Robot extends IterativeRobot {
         Input.init();
 
         // create the command used for the autonomous period
-        autonomousCommand = new EmptyCommand(); // disable autonomous
+        autonomousCommand = Optional.empty(); // disable autonomous
 
         // create background task for updating the acceleration from the board
         new AccelerationCommand().start();
+
+        // track currently running commands
+        SmartDashboard.putData(Scheduler.getInstance());
     }
 
     /**
@@ -42,9 +48,7 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit() {
-    	if (autonomousCommand != null) {
-            autonomousCommand.cancel();
-        }
+        autonomousCommand.ifPresent(Command::cancel);
     }
 
     public void disabledPeriodic() {
@@ -52,9 +56,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        if (autonomousCommand != null) {
-            autonomousCommand.start();
-        }
+        autonomousCommand.ifPresent(Command::start);
     }
 
     /**
@@ -69,9 +71,7 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        if (autonomousCommand != null) {
-            autonomousCommand.cancel();
-        }
+        autonomousCommand.ifPresent(Command::cancel);
     }
 
     /**
