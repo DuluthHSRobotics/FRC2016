@@ -7,12 +7,14 @@ public class Subsystems {
     private static Camera camera;
     private static CameraRingLight cameraRingLight;
     private static Shooter shooter;
+    private static ShooterKicker shooterKicker;
 
     public static void init() {
         drivetrain = new Drivetrain();
         camera = new Camera();
         cameraRingLight = new CameraRingLight();
         shooter = new Shooter();
+        shooterKicker = new ShooterKicker();
     }
 
     public static Drivetrain getDrivetrain() {
@@ -28,4 +30,6 @@ public class Subsystems {
     public static Shooter getShooter() {
         return shooter;
     }
+
+    public static ShooterKicker getShooterKicker() { return shooterKicker; }
 }

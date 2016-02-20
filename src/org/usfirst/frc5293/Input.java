@@ -15,6 +15,7 @@ public class Input {
     private static Camera camera;
     private static CameraRingLight cameraRingLight;
     private static Shooter shooter;
+    private static ShooterKicker shooterKicker;
 
     private static JoystickButton sensitivityModeButton;
 
@@ -27,6 +28,7 @@ public class Input {
         camera = new Camera(NullJoystick.getInstance());
         cameraRingLight = new CameraRingLight(joystick3);
         shooter = new Shooter(joystick3);
+        shooterKicker = new ShooterKicker(joystick1);
         sensitivityModeButton = new JoystickButton(NullJoystick.getInstance(), 2);
     }
 
@@ -48,6 +50,10 @@ public class Input {
 
     public static JoystickButton getSensitivityModeButton() {
         return sensitivityModeButton;
+    }
+
+    public static ShooterKicker getShooterKicker() {
+        return shooterKicker;
     }
 }
 

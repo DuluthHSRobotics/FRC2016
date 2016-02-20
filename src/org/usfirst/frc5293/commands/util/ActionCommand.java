@@ -8,6 +8,9 @@ public abstract class ActionCommand extends EmptyCommand {
 
     private boolean isFinished = false;
 
+    protected ActionCommand() {
+    }
+
     protected ActionCommand(Subsystem subsystem) {
         requires(subsystem);
     }
