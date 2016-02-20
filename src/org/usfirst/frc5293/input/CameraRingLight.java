@@ -14,10 +14,10 @@ public class CameraRingLight {
 
         this.button = new JoystickButton(joystick, 11);
 
-        this.button.whenPressed(new ActionCommand(Subsystems.getCameraRingLight()) {
+        this.button.whenPressed(new ActionCommand(Subsystems.INSTANCE.getCameraRingLight()) {
             @Override
             protected void action() {
-                Subsystems.getCameraRingLight().swap();
+                Subsystems.INSTANCE.getCameraRingLight().swap();
             }
         });
     }

@@ -2,8 +2,6 @@ package org.usfirst.frc5293.input;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.usfirst.frc5293.commands.teleop.events.CameraSetOriginOnPressed;
-import org.usfirst.frc5293.input.util.UpDownInput;
 
 public class Shooter {
     private static final int BUTTON = 1;

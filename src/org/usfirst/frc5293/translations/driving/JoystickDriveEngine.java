@@ -1,10 +1,7 @@
 package org.usfirst.frc5293.translations.driving;
 
 import org.usfirst.frc5293.Input;
-import org.usfirst.frc5293.Prefs;
-import org.usfirst.frc5293.input.DrivetrainArcade;
 import org.usfirst.frc5293.input.DrivetrainTank;
-import org.usfirst.frc5293.translations.util.ArcadeDrivingState;
 import org.usfirst.frc5293.translations.util.StreamingTranslationEngine;
 import org.usfirst.frc5293.translations.util.TankDrivingState;
 
@@ -22,11 +19,10 @@ public class JoystickDriveEngine extends StreamingTranslationEngine<TankDrivingS
     //
 
     private final DrivetrainTank input;
-    private final org.usfirst.frc5293.prefs.Drivetrain prefs = Prefs.getDrivetrain();
 
     protected JoystickDriveEngine() {
         super(JoystickDrivePipeline.getInstance());
-        input = Input.getDrivetrain();
+        input = Input.INSTANCE.getDrivetrain();
     }
 
     @Override

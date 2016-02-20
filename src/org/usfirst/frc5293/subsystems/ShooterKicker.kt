@@ -7,21 +7,23 @@ import org.usfirst.frc5293.commands.teleop.control.ShooterKickerControl
 
 class ShooterKicker : Subsystem() {
 
-    protected override fun initDefaultCommand() {
+    override fun initDefaultCommand() {
         defaultCommand = ShooterKickerControl()
     }
 
+    private val servo = Devices.shooterKicker.kicker
+
     var value: Double
-        get() = Devices.getShooterKicker().kicker.get()
+        get() = servo.get()
         set(x) {
             SmartDashboard.putNumber("Shooter Kicker", x)
-            Devices.getShooterKicker().kicker.set(x)
+            servo.set(x)
         }
 
     var angle: Double
-        get() = Devices.getShooterKicker().kicker.get() * 180.0
+        get() = servo.angle
         set(angle) {
             SmartDashboard.putNumber("Shooter Kicker Angle", angle)
-            Devices.getShooterKicker().kicker.angle = angle
+            servo.angle = angle
         }
 }

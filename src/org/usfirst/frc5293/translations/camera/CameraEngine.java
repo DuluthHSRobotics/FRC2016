@@ -22,7 +22,7 @@ public class CameraEngine extends StreamingTranslationEngine<Point> {
 
     private CameraEngine() {
         super(CameraPipeline.getInstance());
-        input = Input.getCamera();
+        input = Input.INSTANCE.getCamera();
     }
 
     @Override
