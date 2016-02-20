@@ -3,22 +3,19 @@ package org.usfirst.frc5293.translations.util;
 import java.util.function.Function;
 
 public class DrivingState {
-    public double x;
-    public double y;
-    public double r;
+    public double power;
+    public double rotation;
 
     public DrivingState() {
     }
 
-    public DrivingState(double x, double y, double r) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
+    public DrivingState(double power, double rotation, double r) {
+        this.power = power;
+        this.rotation = rotation;
     }
 
     public void apply(Function<Double, Double> func) {
-        x = func.apply(x);
-        y = func.apply(y);
-        r = func.apply(r);
+        power = func.apply(power);
+        rotation = func.apply(rotation);
     }
 }

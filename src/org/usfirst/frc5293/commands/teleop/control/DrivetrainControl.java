@@ -5,9 +5,9 @@ import org.usfirst.frc5293.commands.util.ContinuousCommand;
 import org.usfirst.frc5293.translations.util.DrivingState;
 import org.usfirst.frc5293.translations.driving.JoystickDriveEngine;
 
-public class MecanumDriveControl extends ContinuousCommand {
+public class DrivetrainControl extends ContinuousCommand {
 
-    public MecanumDriveControl() {
+    public DrivetrainControl() {
         requires(Subsystems.getDrivetrain());
     }
 
@@ -17,7 +17,7 @@ public class MecanumDriveControl extends ContinuousCommand {
     }
 
     private void drive(DrivingState state) {
-        Subsystems.getDrivetrain().drive(state.x, state.y, state.r);
+        Subsystems.getDrivetrain().drive(state.power, state.rotation);
     }
 
     @Override

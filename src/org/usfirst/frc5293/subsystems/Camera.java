@@ -16,9 +16,9 @@ public class Camera extends Subsystem {
     }
 
     /**
-     * Positions the camera to the value of rotation along the x-axis and the y-axis
+     * Positions the camera to the value of rotation along the power-axis and the y-axis
      *
-     * @param xRotation the positionAbsolute of rotation along the x-axis in the range of [0.0,1.0]
+     * @param xRotation the positionAbsolute of rotation along the power-axis in the range of [0.0,1.0]
      * @param yRotation the positionAbsolute of rotation along the y-axis in the range of [0.0,1.0]
      */
     public void positionAbsolute(double xRotation, double yRotation) {

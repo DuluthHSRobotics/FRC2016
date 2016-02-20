@@ -17,15 +17,13 @@ public class JoystickDrivePipeline extends OperationPipeline<DrivingState> {
 
     //
 
-    private final DriveTranslations x = DriveTranslations.getInstance();
-
     private JoystickDrivePipeline() {
-        ops.add(x::applySystemDisabling);
-        ops.add(x::applyAxisDisabling);
-        ops.add(x::applyAxisLocking);
-        ops.add(x::applyQuadScaling);
-        ops.add(x::applyDefaultScaling);
-        ops.add(x::applySensitiveScaling);
-        ops.add(x::applyInversions);
+//        ops.add(x::applySystemDisabling);
+//        ops.add(x::applyAxisDisabling);
+//        ops.add(x::applyAxisLocking);
+//        ops.add(x::applyQuadScaling);
+//        ops.add(x::applyDefaultScaling);
+//        ops.add(x::applySensitiveScaling);
+//        ops.add(x::applyInversions);
     }
 }
