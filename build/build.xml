@@ -14,6 +14,9 @@
   <taskdef resource="net/jtools/classloadertask/antlib.xml"
            classpath="build/support/ant-classloadertask.jar"/>
 
+  <typedef resource="org/jetbrains/kotlin/ant/antlib.xml"
+           classpath="lib/kotlin/kotlin-ant.jar"/>
+
   <target name="clean" description="Clean up all build and distribution artifacts.">
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
@@ -74,6 +77,7 @@
            source="${ant.java.version}"
            compiler="javac${ant.java.version}"
            debug="true">
+      <withKotlin />
     </javac>
   </target>
 

@@ -9,5 +9,6 @@
 	<levels>
 		<level name="wpilib" value="project"/>
 		<level name="networktables" value="project"/>
+		<level name="kotlin-runtime" value="project"/>
 	</levels>
 </component>
