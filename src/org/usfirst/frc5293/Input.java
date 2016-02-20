@@ -1,6 +1,5 @@
 package org.usfirst.frc5293;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc5293.input.*;
@@ -12,7 +11,7 @@ import org.usfirst.frc5293.input.util.NullJoystick;
  */
 public class Input {
 
-    private static MecanumDrive mecanumDrive;
+    private static Drivetrain drivetrain;
     private static Camera camera;
     private static CameraRingLight cameraRingLight;
     private static Shooter shooter;
@@ -24,16 +23,15 @@ public class Input {
         Joystick joystick2 = new Joystick(1);
         Joystick joystick3 = new Joystick(2);
 
-        mecanumDrive = new MecanumDrive(NullJoystick.getInstance(), NullJoystick.getInstance());
-        camera = new Camera(joystick2);
+        drivetrain = new Drivetrain(joystick2);
+        camera = new Camera(NullJoystick.getInstance());
         cameraRingLight = new CameraRingLight(joystick3);
         shooter = new Shooter(joystick3);
-
         sensitivityModeButton = new JoystickButton(NullJoystick.getInstance(), 2);
     }
 
-    public static MecanumDrive getMecanumDrive() {
-        return mecanumDrive;
+    public static Drivetrain getDrivetrain() {
+        return drivetrain;
     }
 
     public static Camera getCamera() {

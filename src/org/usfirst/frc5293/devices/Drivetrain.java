@@ -1,10 +1,16 @@
 package org.usfirst.frc5293.devices;
 
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.usfirst.frc5293.Robot;
 import org.usfirst.frc5293.devices.util.NullSpeedController;
 import org.usfirst.frc5293.subsystems.util.MecanumDrive;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public final class Drivetrain {
     private static final int FRONT_LEFT_ID = 1;
@@ -16,27 +22,34 @@ public final class Drivetrain {
     private final SpeedController backLeft;
     private final SpeedController frontRight;
     private final SpeedController backRight;
-    private final MecanumDrive control;
+    private final RobotDrive control;
 
     public Drivetrain() {
-        frontLeft = NullSpeedController.getInstance();
-//        LiveWindow.addActuator("Drivetrain", "Front Left (Talon)", (Talon) frontLeft);
+        frontLeft = new Talon(1);
+        LiveWindow.addActuator("Drivetrain", "Front Left (Talon)", (Talon) frontLeft);
 
-        backLeft = NullSpeedController.getInstance();
-//        LiveWindow.addActuator("Drivetrain", "Back Left (Talon)", (Talon) backLeft);
+        backLeft = new Talon(0);
+        LiveWindow.addActuator("Drivetrain", "Back Left (Talon)", (Talon) backLeft);
 
-        frontRight = NullSpeedController.getInstance();
-//        LiveWindow.addActuator("Drivetrain", "Front Right (Talon)", (Talon) frontRight);
+        frontRight = new Talon(3);
+        LiveWindow.addActuator("Drivetrain", "Front Right (Talon)", (Talon) frontRight);
 
-        backRight = NullSpeedController.getInstance();
-//        LiveWindow.addActuator("Drivetrain", "Back Right (Talon)", (Talon) backRight);
+        backRight = new Talon(2);
+        LiveWindow.addActuator("Drivetrain", "Back Right (Talon)", (Talon) backRight);
 
-        control = new MecanumDrive(
+        control = new RobotDrive(
                 frontLeft, backLeft,
                 frontRight, backRight);
 
-        control.setInvertedMotor(MecanumDrive.MotorType.FRONT_LEFT, true);
-        control.setInvertedMotor(MecanumDrive.MotorType.BACK_LEFT, true);
+        final List<RobotDrive.MotorType> invertedMotors = Arrays.asList(
+                RobotDrive.MotorType.kFrontLeft,
+                RobotDrive.MotorType.kFrontRight,
+                RobotDrive.MotorType.kRearLeft,
+                RobotDrive.MotorType.kRearRight
+        );
+
+        invertedMotors.stream().forEach(m -> control.setInvertedMotor(m, true));
+
         control.setSafetyEnabled(true);
         control.setExpiration(0.1);
         control.setSensitivity(0.5);
@@ -59,7 +72,7 @@ public final class Drivetrain {
         return backRight;
     }
 
-    public MecanumDrive getControl() {
+    public RobotDrive getControl() {
         return control;
     }
 }

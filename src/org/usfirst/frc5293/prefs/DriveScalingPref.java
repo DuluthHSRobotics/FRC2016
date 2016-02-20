@@ -30,7 +30,7 @@ public class DriveScalingPref implements PrefGroup {
         ); { all.add(isEnabled); }
 
         x = new DoublePref(
-                "drivetrain:scaling:" + name + ":x",
+                "drivetrain:scaling:" + name + ":power",
                 1.0
         ); { all.add(x); }
 
