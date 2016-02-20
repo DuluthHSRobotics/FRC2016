@@ -1,9 +1,10 @@
 package org.usfirst.frc5293.translations.driving;
 
-import org.usfirst.frc5293.translations.util.DrivingState;
+import org.usfirst.frc5293.translations.util.ArcadeDrivingState;
 import org.usfirst.frc5293.translations.util.OperationPipeline;
+import org.usfirst.frc5293.translations.util.TankDrivingState;
 
-public class JoystickDrivePipeline extends OperationPipeline<DrivingState> {
+public class JoystickDrivePipeline extends OperationPipeline<TankDrivingState> {
 
     private static JoystickDrivePipeline instance;
 

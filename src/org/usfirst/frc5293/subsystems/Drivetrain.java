@@ -27,12 +27,25 @@ public class Drivetrain extends Subsystem {
      * @param rotation The rate of rotation for the robot that is completely independent of
      * the translation. [-1.0..1.0]
      */
-    public void drive(double power, double rotation) {
+    public void driveArcade(double power, double rotation) {
         // TODO: Just for debug right now
         SmartDashboard.putNumber("Joystick Power", power);
         SmartDashboard.putNumber("Joystick Rot", rotation);
 
         drive.arcadeDrive(power, rotation);
+
+        SmartDashboard.putNumber("Front Left", Devices.getDrivetrain().getFrontLeft().get());
+        SmartDashboard.putNumber("Front Right", Devices.getDrivetrain().getFrontRight().get());
+        SmartDashboard.putNumber("Back Left", Devices.getDrivetrain().getBackLeft().get());
+        SmartDashboard.putNumber("Back Right", Devices.getDrivetrain().getBackRight().get());
+    }
+
+    public void driveTank(double leftPower, double rightPower) {
+        // TODO: Just for debug right now
+        SmartDashboard.putNumber("Joystick Left Power", leftPower);
+        SmartDashboard.putNumber("Joystick Right Power", rightPower);
+
+        drive.tankDrive(leftPower, rightPower);
 
         SmartDashboard.putNumber("Front Left", Devices.getDrivetrain().getFrontLeft().get());
         SmartDashboard.putNumber("Front Right", Devices.getDrivetrain().getFrontRight().get());

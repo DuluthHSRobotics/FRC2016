@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import org.usfirst.frc5293.input.util.OrButtonGroup;
 
-public class Drivetrain {
+public class DrivetrainArcade {
     private static final int[] DRIVE_X_AXIS_BUTTONS = new int[] { 3, 2 };
     private static final int[] DRIVE_Y_AXIS_BUTTONS = new int[] { 4, 5 };
 
@@ -12,7 +12,7 @@ public class Drivetrain {
     private final Button driveXAxisButton;
     private final Button driveYAxisButton;
 
-    public Drivetrain(Joystick joystick) {
+    public DrivetrainArcade(Joystick joystick) {
         this.joystick = joystick;
 
         driveXAxisButton = new OrButtonGroup(this.joystick, DRIVE_X_AXIS_BUTTONS);

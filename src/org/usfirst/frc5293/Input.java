@@ -11,7 +11,7 @@ import org.usfirst.frc5293.input.util.NullJoystick;
  */
 public class Input {
 
-    private static Drivetrain drivetrain;
+    private static DrivetrainTank drivetrain;
     private static Camera camera;
     private static CameraRingLight cameraRingLight;
     private static Shooter shooter;
@@ -24,15 +24,15 @@ public class Input {
         Joystick joystick2 = new Joystick(1);
         Joystick joystick3 = new Joystick(2);
 
-        drivetrain = new Drivetrain(joystick2);
+        drivetrain = new DrivetrainTank(joystick1, joystick2);
         camera = new Camera(NullJoystick.getInstance());
         cameraRingLight = new CameraRingLight(joystick3);
         shooter = new Shooter(joystick3);
-        shooterKicker = new ShooterKicker(joystick1);
+        shooterKicker = new ShooterKicker(joystick3);
         sensitivityModeButton = new JoystickButton(NullJoystick.getInstance(), 2);
     }
 
-    public static Drivetrain getDrivetrain() {
+    public static DrivetrainTank getDrivetrain() {
         return drivetrain;
     }
 
