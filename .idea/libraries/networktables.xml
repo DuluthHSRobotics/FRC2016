@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="networktables">
     <CLASSES>
-      <root url="jar://$networktables$!/" />
+      <root url="jar://$PROJECT_DIR$/lib/networktables/NetworkTables.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$networktables.sources$!/" />
+      <root url="jar://$PROJECT_DIR$/lib/networktables/NetworkTables-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
