@@ -2,11 +2,13 @@ package org.usfirst.frc5293.translations.driving;
 
 import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.Prefs;
-import org.usfirst.frc5293.input.Drivetrain;
-import org.usfirst.frc5293.translations.util.DrivingState;
+import org.usfirst.frc5293.input.DrivetrainArcade;
+import org.usfirst.frc5293.input.DrivetrainTank;
+import org.usfirst.frc5293.translations.util.ArcadeDrivingState;
 import org.usfirst.frc5293.translations.util.StreamingTranslationEngine;
+import org.usfirst.frc5293.translations.util.TankDrivingState;
 
-public class JoystickDriveEngine extends StreamingTranslationEngine<DrivingState> {
+public class JoystickDriveEngine extends StreamingTranslationEngine<TankDrivingState> {
 
     private static JoystickDriveEngine instance;
 
@@ -19,7 +21,7 @@ public class JoystickDriveEngine extends StreamingTranslationEngine<DrivingState
 
     //
 
-    private final Drivetrain input;
+    private final DrivetrainTank input;
     private final org.usfirst.frc5293.prefs.Drivetrain prefs = Prefs.getDrivetrain();
 
     protected JoystickDriveEngine() {
@@ -28,11 +30,11 @@ public class JoystickDriveEngine extends StreamingTranslationEngine<DrivingState
     }
 
     @Override
-    protected DrivingState getInitial() {
-        DrivingState state = new DrivingState();
+    protected TankDrivingState getInitial() {
+        TankDrivingState state = new TankDrivingState();
 
-        state.power = input.getJoystick().getY();
-        state.rotation = input.getJoystick().getTwist();
+        state.left = input.getLeftJoystick().getY();
+        state.right = input.getRightJoystick().getY();
 
         return state;
     }
