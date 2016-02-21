@@ -116,8 +116,12 @@
    Reference: http://stackoverflow.com/questions/6430001/ant-doesnt-recompile-constants -->
   <target name="deploy" depends="clean,jar,get-target-ip,dependencies"
           description="Deploy the jar and start the program running.">
+
     <echo>[athena-deploy] Copying code over.</echo>
-    <scp file="${dist.jar}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true"/>
+    <scp file="${dist.jar}"
+         todir="${username}@${target}:${deploy.dir}"
+         password="${password}"
+         trust="true"/>
 
     <!-- Suppress the exit status so that if no netconsole was running then
          it doesn't show up red on the output. -->
@@ -128,7 +132,9 @@
              failonerror="false"
              command="killall -q netconsole-host || :"/>
 
-    <scp file="${wpilib.ant.dir}/robotCommand" todir="${username}@${target}:${command.dir}" password="${password}"
+    <scp file="${wpilib.ant.dir}/robotCommand"
+         todir="${username}@${target}:${command.dir}"
+         password="${password}"
          trust="true"/>
 
     <echo>[athena-deploy] Starting program.</echo>
@@ -144,19 +150,29 @@
              password="${password}"
              trust="true"
              command="sync"/>
-
   </target>
 
   <target name="debug-deploy" depends="jar,get-target-ip,dependencies"
           description="Deploy the jar and start the program running.">
+
     <echo>[athena-deploy] Copying code over.</echo>
-    <scp file="${dist.jar}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true"/>
+    <scp file="${dist.jar}"
+         todir="${username}@${target}:${deploy.dir}"
+         password="${password}"
+         trust="true"/>
+
     <!-- The remoteDebugCommand file is used by /usr/local/frc/bin/frcRunRobot.sh on the roboRIO  -->
-    <scp file="${wpilib.ant.dir}/robotDebugCommand" todir="${username}@${target}:${command.dir}" password="${password}"
+    <scp file="${wpilib.ant.dir}/robotDebugCommand"
+         todir="${username}@${target}:${command.dir}"
+         password="${password}"
          trust="true"/>
+
     <!-- The frcdebug file is used as a flag for /usr/local/frc/bin/frcRunRobot.sh to run the robot program in debug mode -->
-    <scp file="${wpilib.ant.dir}/frcdebug" todir="${username}@${target}:${debug.flag.dir}" password="${password}"
+    <scp file="${wpilib.ant.dir}/frcdebug"
+         todir="${username}@${target}:${debug.flag.dir}"
+         password="${password}"
          trust="true"/>
+
     <sshexec host="${target}"
              username="${username}"
              password="${password}"
@@ -170,7 +186,6 @@
              trust="true"
              failonerror="false"
              command="${deploy.kill.command}"/>
-
   </target>
 
   <!-- Simulate -->
@@ -220,18 +235,23 @@
       <prop name="Plugins" value="nisyscfg"/>
       <prop name="Items" value="system"/>
     </post>
+
     <loadfile srcFile="${sysProps}" encoding="UTF-16LE" property="roboRIOSysValues"/>
+
     <propertyregex property="roboRIOImage" input="${roboRIOSysValues}" regexp="FRC_roboRIO_2016_v([0-9]+)" select="\1"
                    defaultValue="ImageRegExFail"/>
+
     <assert message="roboRIO Image does not match plugin, allowed image version: ${roboRIOAllowedImages}">
       <bool>
         <contains string="${roboRIOAllowedImages}" substring="${roboRIOImage}"/>
       </bool>
     </assert>
+
     <echo>roboRIO image version validated</echo>
     <echo>Checking for JRE. If this fails install the JRE using these instructions:
       https://wpilib.screenstepslive.com/s/4485/m/13503/l/288822-installing-java-8-on-the-roborio-using-the-frc-roborio-java-installer-java-only
     </echo>
+
     <sshexec host="${target}"
              username="${username}"
              password="${password}"
