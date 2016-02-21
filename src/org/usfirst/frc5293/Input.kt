@@ -15,14 +15,21 @@ object Input {
     private val joystick2 by lazy { Joystick(1) }
     private val joystick3 by lazy { Joystick(2) }
 
-    val drivetrain by lazy { DrivetrainTank(joystick1, joystick2) }
+    private val None = NullJoystick.getInstance()
 
-    val camera by lazy { Camera(NullJoystick.getInstance()) }
+    val drivetrain by lazy { DrivetrainTank(None, None) }
+
+    val camera by lazy { Camera(None) }
 
     val cameraRingLight by lazy { CameraRingLight(joystick3) }
 
-    val shooter by lazy { Shooter(joystick3) }
+    val shooter by lazy { Shooter(joystick1) }
 
-    val shooterKicker by lazy { ShooterKicker(joystick3) }
+    val shooterKicker by lazy {
+        val joystick = joystick2
+
+        ShooterKicker(joystick,
+                kickButton = JoystickButton(joystick, 7))
+    }
 }
 

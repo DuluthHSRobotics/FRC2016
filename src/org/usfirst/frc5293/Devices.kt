@@ -1,5 +1,7 @@
 package org.usfirst.frc5293
 
+import edu.wpi.first.wpilibj.Servo
+import edu.wpi.first.wpilibj.Victor
 import org.usfirst.frc5293.devices.*
 
 /**
@@ -16,9 +18,12 @@ object Devices {
 
     val cameraRingLight by lazy { CameraRingLight() }
 
-    val shooter by lazy { Shooter() }
+    val shooter by lazy { Shooter(
+            leftMotor = Victor(8),
+            rightMotor = Victor(9)
+    ) }
 
-    val lifter by lazy { Shooter() }
+    val lifter by lazy { Lifter() }
 
-    val shooterKicker by lazy { ShooterKicker() }
+    val shooterKicker by lazy { ShooterKicker(Servo(7)) }
 }

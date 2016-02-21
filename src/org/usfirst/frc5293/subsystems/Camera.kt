@@ -29,47 +29,41 @@ class Camera : Subsystem() {
      * @param yRotation the positionAbsolute of rotation along the y-axis in the range of [0.0,1.0]
      */
     fun positionAbsolute(xRotation: Double, yRotation: Double) {
-        var xRotation = xRotation
-        var yRotation = yRotation
-        xRotation = MathUtil.limit(xRotation, 0.0, 1.0)
-        yRotation = MathUtil.limit(yRotation, 0.0, 1.0)
+        val limitedX = MathUtil.limit(xRotation, 0.0, 1.0)
+        val limitedY = MathUtil.limit(yRotation, 0.0, 1.0)
 
-        Devices.camera.sideServo.set(xRotation)
-        Devices.camera.topServo.set(yRotation)
+        Devices.camera.sideServo.set(limitedX)
+        Devices.camera.topServo.set(limitedY)
     }
 
     fun positionRelative(rotationX: Double, rotationY: Double) {
-        var rotationX = rotationX
-        var rotationY = rotationY
         // Make the rotation values relative to 0.5 so that left is [0.0, 0.5) and right is (0.5, 0.0]
-        rotationX = MathUtil.limit(rotationX, 0.0, 1.0)
-        rotationY = MathUtil.limit(rotationY, 0.0, 1.0)
+        val limitedRotationX = MathUtil.limit(rotationX, 0.0, 1.0)
+        val limitedRotationY = MathUtil.limit(rotationY, 0.0, 1.0)
 
-        val resultX = getRelativeOffsetResult(rotationX, originX)
-        val resultY = getRelativeOffsetResult(rotationY, originY)
+        val resultX = getRelativeOffsetResult(limitedRotationX, originX)
+        val resultY = getRelativeOffsetResult(limitedRotationY, originY)
 
         positionAbsolute(resultX, resultY)
     }
 
     private fun getRelativeOffsetResult(rotation: Double, origin: Double): Double {
-        var rotation = rotation
-        var origin = origin
         val min = 0.0
         val max = 1.0
         val center = (max - min) / 2
 
-        rotation = MathUtil.limit(rotation, min, max)
-        origin = MathUtil.limit(origin, min, max)
+        val limitedRotation = MathUtil.limit(rotation, min, max)
+        val limitedOrigin = MathUtil.limit(origin, min, max)
 
-        if (rotation == center) {
-            return origin
-        } else if (rotation < center) {
-            val percent = max - rotation / center
-            return origin - percent * origin
+        if (limitedRotation == center) {
+            return limitedOrigin
+        } else if (limitedRotation < center) {
+            val percent = max - limitedRotation / center
+            return limitedOrigin - percent * limitedOrigin
         } else {
             // rotation > center
-            val p = (rotation - center) / center
-            return origin + p * (1 - origin)
+            val p = (limitedRotation - center) / center
+            return limitedOrigin + p * (1 - limitedOrigin)
         }
     }
 

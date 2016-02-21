@@ -17,9 +17,6 @@
   <typedef resource="org/jetbrains/kotlin/ant/antlib.xml"
            classpath="lib/kotlin/kotlin-ant.jar"/>
 
-  <typedef resource="org/apache/tools/ant/types/conditions/antlib.xml"
-           classpath="${ant.core.lib}" />
-
   <target name="clean" description="Clean up all build and distribution artifacts.">
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
@@ -217,13 +214,13 @@
 
   <target name="dependencies" depends="get-target-ip">
     <property name="ant.enable.asserts" value="true"/>
-    <post to="http://${target}/nisysapi/server" logfile="remote/sysProps.xml" verbose="false" encoding="UTF-16LE"
+    <post to="http://${target}/nisysapi/server" logfile="${sysProps}" verbose="false" encoding="UTF-16LE"
           append="false">
       <prop name="Function" value="GetPropertiesOfItem"/>
       <prop name="Plugins" value="nisyscfg"/>
       <prop name="Items" value="system"/>
     </post>
-    <loadfile srcFile="remote/sysProps.xml" encoding="UTF-16LE" property="roboRIOSysValues"/>
+    <loadfile srcFile="${sysProps}" encoding="UTF-16LE" property="roboRIOSysValues"/>
     <propertyregex property="roboRIOImage" input="${roboRIOSysValues}" regexp="FRC_roboRIO_2016_v([0-9]+)" select="\1"
                    defaultValue="ImageRegExFail"/>
     <assert message="roboRIO Image does not match plugin, allowed image version: ${roboRIOAllowedImages}">
