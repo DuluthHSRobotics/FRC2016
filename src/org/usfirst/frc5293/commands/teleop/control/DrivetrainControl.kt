@@ -12,7 +12,7 @@ class DrivetrainControl : ContinuousCommand() {
     }
 
     override fun execute() {
-        drive(JoystickDriveEngine.getInstance().result)
+        drive(JoystickDriveEngine.result)
     }
 
     private fun drive(state: TankDrivingState) {

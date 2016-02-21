@@ -7,7 +7,7 @@ import org.usfirst.frc5293.translations.camera.CameraEngine
 class CameraSetOriginOnPressed : ActionCommand(Subsystems.camera) {
 
     override fun action() {
-        val point = CameraEngine.getInstance().result
+        val point = CameraEngine.result
         Subsystems.camera.setOrigin(point.x, point.y)
     }
 }

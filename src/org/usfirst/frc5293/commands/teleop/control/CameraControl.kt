@@ -12,7 +12,7 @@ class CameraControl : ContinuousCommand() {
     }
 
     override fun execute() {
-        val result = CameraEngine.getInstance().result
+        val result = CameraEngine.result
 
         SmartDashboard.putNumber("Camera X Rotation", result.x)
         SmartDashboard.putNumber("Camera Y Rotation", result.y)

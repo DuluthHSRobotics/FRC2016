@@ -23,8 +23,6 @@ class Robot : IterativeRobot() {
      * used for any initialization code.
      */
     override fun robotInit() {
-        // Do not change the initialization order as systems that rely
-        // on other systems to be previously initialized will break
         Prefs.init()
 
         // create the command used for the autonomous period
