@@ -4,7 +4,7 @@ abstract class ActionCommand : EmptyCommand() {
 
     protected abstract fun action()
 
-    override fun execute() {
+    final override fun execute() {
         action()
         done()
     }

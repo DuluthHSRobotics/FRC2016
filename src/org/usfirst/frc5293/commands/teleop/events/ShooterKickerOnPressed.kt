@@ -1,22 +1,16 @@
 package org.usfirst.frc5293.commands.teleop.events
 
-import edu.wpi.first.wpilibj.command.WaitCommand
 import org.usfirst.frc5293.Subsystems
-import org.usfirst.frc5293.commands.util.ActionCommand
-import org.usfirst.frc5293.commands.util.ActionCommandGroup
+import org.usfirst.frc5293.commands.util.ScheduledCommandGroup
 
-class ShooterKickerOnPressed : ActionCommandGroup(Subsystems.shooterKicker) {
-
+class ShooterKickerOnPressed : ScheduledCommandGroup() {
     init {
-        addSequential(ActionCommand {
-            Subsystems.shooterKicker.angle = 70.0
-        })
+        schedule {
+            requires(Subsystems.shooterKicker)
 
-        addSequential(WaitCommand(3.0 /* seconds */))
-
-        addSequential(ActionCommand {
-            Subsystems.shooterKicker.angle = 0.0
-            done()
-        })
+            await { Subsystems.shooterKicker.angle = 70.0 }
+            delay(seconds = 3.0)
+            await { Subsystems.shooterKicker.angle = 0.0 }
+        }
     }
 }

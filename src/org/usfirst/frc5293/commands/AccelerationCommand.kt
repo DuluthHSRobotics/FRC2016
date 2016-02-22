@@ -7,15 +7,15 @@ import org.usfirst.frc5293.commands.util.EmptyCommand
 
 class AccelerationCommand : EmptyCommand() {
 
-    private var accelerometer: BuiltInAccelerometer? = null
+    private lateinit var accelerometer: BuiltInAccelerometer
 
     override fun initialize() {
         accelerometer = BuiltInAccelerometer(Accelerometer.Range.k2G)
     }
 
     override fun execute() {
-        SmartDashboard.putNumber("Acceleration X", accelerometer!!.x)
-        SmartDashboard.putNumber("Acceleration Y", accelerometer!!.y)
-        SmartDashboard.putNumber("Acceleration Z", accelerometer!!.z)
+        SmartDashboard.putNumber("Acceleration X", accelerometer.x)
+        SmartDashboard.putNumber("Acceleration Y", accelerometer.y)
+        SmartDashboard.putNumber("Acceleration Z", accelerometer.z)
     }
 }
