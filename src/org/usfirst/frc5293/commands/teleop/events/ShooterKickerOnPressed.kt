@@ -8,18 +8,15 @@ import org.usfirst.frc5293.commands.util.ActionCommandGroup
 class ShooterKickerOnPressed : ActionCommandGroup(Subsystems.shooterKicker) {
 
     init {
-        addSequential(object : ActionCommand(Subsystems.shooterKicker) {
-            override fun action() {
-                Subsystems.shooterKicker.angle = 70.0
-            }
+        addSequential(ActionCommand {
+            Subsystems.shooterKicker.angle = 70.0
         })
 
         addSequential(WaitCommand(3.0 /* seconds */))
 
-        addSequential(object : ActionCommand(Subsystems.shooterKicker) {
-            override fun action() {
-                Subsystems.shooterKicker.angle = 0.0
-            }
+        addSequential(ActionCommand {
+            Subsystems.shooterKicker.angle = 0.0
+            done()
         })
     }
 }

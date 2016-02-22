@@ -2,9 +2,9 @@ package org.usfirst.frc5293.commands.teleop.control
 
 import org.usfirst.frc5293.Input
 import org.usfirst.frc5293.Subsystems
-import org.usfirst.frc5293.commands.util.ContinuousCommand
+import org.usfirst.frc5293.commands.util.EmptyCommand
 
-class ShooterControl : ContinuousCommand() {
+class ShooterControl : EmptyCommand() {
 
     init {
         requires(Subsystems.shooter)

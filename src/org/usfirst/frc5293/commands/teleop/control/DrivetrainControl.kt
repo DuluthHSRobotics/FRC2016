@@ -1,11 +1,11 @@
 package org.usfirst.frc5293.commands.teleop.control
 
 import org.usfirst.frc5293.Subsystems
-import org.usfirst.frc5293.commands.util.ContinuousCommand
+import org.usfirst.frc5293.commands.util.EmptyCommand
 import org.usfirst.frc5293.translations.driving.JoystickDriveEngine
 import org.usfirst.frc5293.translations.util.TankDrivingState
 
-class DrivetrainControl : ContinuousCommand() {
+class DrivetrainControl : EmptyCommand() {
 
     init {
         requires(Subsystems.drivetrain)

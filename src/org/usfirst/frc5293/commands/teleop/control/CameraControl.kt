@@ -2,10 +2,10 @@ package org.usfirst.frc5293.commands.teleop.control
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.usfirst.frc5293.Subsystems
-import org.usfirst.frc5293.commands.util.ContinuousCommand
+import org.usfirst.frc5293.commands.util.EmptyCommand
 import org.usfirst.frc5293.translations.camera.CameraEngine
 
-class CameraControl : ContinuousCommand() {
+class CameraControl : EmptyCommand() {
 
     init {
         requires(Subsystems.camera)

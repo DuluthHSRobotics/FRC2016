@@ -4,22 +4,17 @@ import edu.wpi.first.wpilibj.command.Subsystem
 
 abstract class ActionCommandGroup : EmptyCommandGroup {
 
-    protected var _isFinished = false
+    private var _isFinished = false
 
-    protected constructor() {
-    }
-
-    protected constructor(subsystem: Subsystem) {
-        requires(subsystem)
-    }
-
-    protected constructor(subsystems: List<Subsystem>) {
-        for (subsystem in subsystems) {
-            requires(subsystem)
-        }
+    protected constructor(vararg subsystems: Subsystem) {
+        subsystems.forEach { requires(it) }
     }
 
     override fun isFinished(): Boolean {
         return _isFinished
+    }
+
+    protected fun done() {
+        _isFinished = true
     }
 }

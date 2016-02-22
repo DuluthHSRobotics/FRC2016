@@ -3,9 +3,9 @@ package org.usfirst.frc5293.commands
 import edu.wpi.first.wpilibj.BuiltInAccelerometer
 import edu.wpi.first.wpilibj.interfaces.Accelerometer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import org.usfirst.frc5293.commands.util.ContinuousCommand
+import org.usfirst.frc5293.commands.util.EmptyCommand
 
-class AccelerationCommand : ContinuousCommand() {
+class AccelerationCommand : EmptyCommand() {
 
     private var accelerometer: BuiltInAccelerometer? = null
 
