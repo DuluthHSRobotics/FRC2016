@@ -1,0 +1,2 @@
+# keep build remote files in LF for Linux
+build/remote/ -crlf
