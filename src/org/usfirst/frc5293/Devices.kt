@@ -19,7 +19,7 @@ object Devices {
             frontLeft  = Talon(1).makeInverted(),
             frontRight = Talon(2).makeInverted(),
             backLeft   = Talon(0).makeInverted(),
-            backRight  = Talon(2).makeInverted())
+            backRight  = Talon(3).makeInverted())
     }
 
     val camera by lazy {
