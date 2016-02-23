@@ -1,9 +1,7 @@
 package org.usfirst.frc5293
 
-import edu.wpi.first.wpilibj.Relay
-import edu.wpi.first.wpilibj.Servo
-import edu.wpi.first.wpilibj.Talon
-import edu.wpi.first.wpilibj.Victor
+import edu.wpi.first.wpilibj.*
+import edu.wpi.first.wpilibj.interfaces.Accelerometer
 import org.usfirst.frc5293.devices.*
 import org.usfirst.frc5293.devices.util.NullSpeedController
 import org.usfirst.frc5293.util.devices.makeInverted
@@ -50,5 +48,33 @@ object Devices {
     val shooterKicker by lazy {
         ShooterKicker(
             kicker = Servo(7))
+    }
+
+    val shooterBallLimitSwitch by lazy {
+        ShooterBallLimitSwitch(
+            limitSwitch = DigitalInput(0)
+        )
+    }
+
+    val builtInAccelerometer by lazy {
+        AccelerometerWrapped("Built-in Accelerometer",
+                BuiltInAccelerometer(Accelerometer.Range.k2G))
+    }
+
+    val accelerometer by lazy {
+        AccelerometerWrapped("Extra Accelerometer",
+                ADXL345_SPI(SPI.Port.kOnboardCS0, Accelerometer.Range.k2G))
+    }
+
+    val gyro by lazy {
+        AccelerometerWrapped("Built-in Accelerometer",
+                BuiltInAccelerometer(Accelerometer.Range.k2G))
+    }
+
+    fun initBackground() {
+        shooterBallLimitSwitch;
+        builtInAccelerometer;
+        accelerometer;
+        gyro
     }
 }

@@ -17,8 +17,8 @@ object Input {
 
     val drivetrain by lazy {
         DrivetrainTank(
-                left = NullJoystick,
-                right = NullJoystick)
+                left = joystick1,
+                right = joystick2)
     }
 
     val camera by lazy {
@@ -34,11 +34,11 @@ object Input {
     }
 
     val shooter by lazy {
-        Shooter(joystick1)
+        Shooter(joystick3)
     }
 
     val shooterKicker by lazy {
-        val j = joystick2
+        val j = joystick3
 
         ShooterKicker(
                 joystick = j,

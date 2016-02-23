@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.Scheduler
 import edu.wpi.first.wpilibj.livewindow.LiveWindow
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import org.usfirst.frc5293.commands.AccelerationCommand
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,12 +23,10 @@ class Robot : IterativeRobot() {
      */
     override fun robotInit() {
         Prefs.init()
+        Devices.initBackground()
 
         // create the command used for the autonomous period
         autonomousCommand = null // disable autonomous
-
-        // create background task for updating the acceleration from the board
-        AccelerationCommand().start()
 
         // track currently running commands
         SmartDashboard.putData(Scheduler.getInstance())
