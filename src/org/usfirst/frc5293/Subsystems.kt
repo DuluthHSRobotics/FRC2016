@@ -4,13 +4,13 @@ import org.usfirst.frc5293.subsystems.*
 
 object Subsystems {
 
-    val drivetrain by lazy { Drivetrain() }
+    val drivetrain = Drivetrain()
 
-    val camera by lazy { Camera() }
+    val camera = Camera()
 
-    val cameraRingLight by lazy { CameraRingLight() }
+    val cameraRingLight = CameraRingLight()
 
-    val shooter by lazy { Shooter() }
+    val shooter = Shooter()
 
-    val shooterKicker by lazy { ShooterKicker() }
+    val shooterKicker = ShooterKicker()
 }

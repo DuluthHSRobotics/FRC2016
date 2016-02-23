@@ -7,11 +7,11 @@ import org.usfirst.frc5293.commands.teleop.control.ShooterKickerControl
 
 class ShooterKicker : Subsystem() {
 
+    private val servo by lazy { Devices.shooterKicker.kicker }
+
     override fun initDefaultCommand() {
         defaultCommand = ShooterKickerControl()
     }
-
-    private val servo = Devices.shooterKicker.kicker
 
     var value: Double
         get() = servo.get()

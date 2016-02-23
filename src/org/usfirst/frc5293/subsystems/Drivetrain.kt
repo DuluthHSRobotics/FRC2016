@@ -8,7 +8,7 @@ import org.usfirst.frc5293.commands.teleop.control.DrivetrainControl
 
 class Drivetrain : Subsystem() {
 
-    private val drive = Devices.drivetrain.control
+    private val drive by lazy { Devices.drivetrain.control }
 
     override fun initDefaultCommand() {
         defaultCommand = DrivetrainControl()

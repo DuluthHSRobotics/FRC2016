@@ -7,6 +7,8 @@ import org.usfirst.frc5293.subsystems.util.EmptySubsytem
 
 class CameraRingLight : EmptySubsytem() {
 
+    private val relay by lazy { Devices.cameraRingLight.relay }
+
     var isEnabled: Boolean
         get() = relay.get() == Relay.Value.kOn
         set(isEnabled) {
@@ -23,7 +25,4 @@ class CameraRingLight : EmptySubsytem() {
     fun swap() {
         isEnabled = !isEnabled
     }
-
-    private val relay: Relay
-        get() = Devices.cameraRingLight.relay
 }

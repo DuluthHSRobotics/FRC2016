@@ -17,7 +17,7 @@ import org.usfirst.frc5293.commands.teleop.control.ShooterControl
 
 class Shooter : Subsystem() {
 
-    private val controller = Devices.shooter.controller
+    private val controller by lazy { Devices.shooter.controller }
 
     public override fun initDefaultCommand() {
         defaultCommand = ShooterControl()

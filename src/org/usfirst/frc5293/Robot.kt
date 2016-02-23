@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.Scheduler
 import edu.wpi.first.wpilibj.livewindow.LiveWindow
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.usfirst.frc5293.commands.teleop.control.DrivetrainControl
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,13 +24,10 @@ class Robot : IterativeRobot() {
      */
     override fun robotInit() {
         Prefs.init()
-        Devices.initBackground()
+        Devices.init()
 
         // create the command used for the autonomous period
         autonomousCommand = null // disable autonomous
-
-        // track currently running commands
-        SmartDashboard.putData(Scheduler.getInstance())
     }
 
     /**
@@ -73,6 +71,8 @@ class Robot : IterativeRobot() {
      * This function is called periodically during operator control
      */
     override fun teleopPeriodic() {
+        // track currently running commands
+        SmartDashboard.putData(Scheduler.getInstance())
         Scheduler.getInstance().run()
     }
 

@@ -71,10 +71,13 @@ object Devices {
                 BuiltInAccelerometer(Accelerometer.Range.k2G))
     }
 
-    fun initBackground() {
-        shooterBallLimitSwitch;
-        builtInAccelerometer;
-        accelerometer;
+    fun init() {
+        drivetrain
+        shooter
+        shooterKicker
+        shooterBallLimitSwitch
+        builtInAccelerometer
+        accelerometer
         gyro
     }
 }

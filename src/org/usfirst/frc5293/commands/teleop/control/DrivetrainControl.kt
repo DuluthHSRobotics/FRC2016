@@ -1,5 +1,6 @@
 package org.usfirst.frc5293.commands.teleop.control
 
+import org.usfirst.frc5293.Input
 import org.usfirst.frc5293.Subsystems
 import org.usfirst.frc5293.commands.util.EmptyCommand
 import org.usfirst.frc5293.translations.driving.JoystickDriveEngine
@@ -12,12 +13,15 @@ class DrivetrainControl : EmptyCommand() {
     }
 
     override fun execute() {
-        drive(JoystickDriveEngine.result)
+        Subsystems.drivetrain.driveTank(
+                leftPower = Input.drivetrain.left.y,
+                rightPower = Input.drivetrain.right.y
+        )
     }
 
-    private fun drive(state: TankDrivingState) {
-        Subsystems.drivetrain.driveTank(state.left, state.right)
-    }
+//    private fun drive(state: TankDrivingState) {
+//        Subsystems.drivetrain.driveTank(state.left, state.right)
+//    }
 
     override fun end() {
         Subsystems.drivetrain.stop()
