@@ -1,17 +1,22 @@
 package org.usfirst.frc5293
 
 import org.usfirst.frc5293.subsystems.*
+import org.usfirst.frc5293.util.Initializable
 import org.usfirst.frc5293.util.LazyGroup
 
-object Subsystems : LazyGroup("Subsystems") {
+object Subsystems : Initializable {
 
-    val drivetrain by lazyByRequest { Drivetrain() }
+    lateinit var drivetrain: Drivetrain
+    lateinit var camera: Camera
+    lateinit var cameraRingLight: CameraRingLight
+    lateinit var shooter: Shooter
+    lateinit var shooterKicker: ShooterKicker
 
-    val camera by lazyByRequest { Camera() }
-
-    val cameraRingLight by lazyByRequest { CameraRingLight() }
-
-    val shooter by lazyByRequest { Shooter() }
-
-    val shooterKicker by lazyByRequest { ShooterKicker() }
+    override fun init() {
+        drivetrain = Drivetrain()
+        camera = Camera()
+        cameraRingLight = CameraRingLight()
+        shooter = Shooter()
+        shooterKicker = ShooterKicker()
+    }
 }

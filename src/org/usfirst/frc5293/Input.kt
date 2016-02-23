@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.buttons.JoystickButton
 import org.usfirst.frc5293.input.*
 import org.usfirst.frc5293.input.util.NullJoystick
+import org.usfirst.frc5293.util.Initializable
 import org.usfirst.frc5293.util.LazyGroup
 
 /**
@@ -11,40 +12,37 @@ import org.usfirst.frc5293.util.LazyGroup
  * interface to the commands and command groups that allow control of the robot.
  */
 @Suppress("unused")
-object Input : LazyGroup("Input") {
+object Input : Initializable {
 
-    private val joystick1 by lazyByRequest { Joystick(0) }
-    private val joystick2 by lazyByRequest { Joystick(1) }
-    private val joystick3 by lazyByRequest { Joystick(2) }
+    private lateinit var joystick1: Joystick
+    private lateinit var joystick2: Joystick
+    private lateinit var joystick3: Joystick
 
-    val drivetrain by lazyByRequest {
-        DrivetrainTank(
+    lateinit var drivetrain: DrivetrainTank
+    lateinit var camera: Camera
+    lateinit var cameraRingLight:CameraRingLight
+    lateinit var shooter: Shooter
+    lateinit var shooterKicker: ShooterKicker
+
+    override fun init() {
+        joystick1 = Joystick(0)
+        joystick2 = Joystick(1)
+        joystick3 = Joystick(2)
+
+        drivetrain = DrivetrainTank(
                 left = joystick1,
                 right = joystick2)
-    }
 
-    val camera by lazyByRequest {
-        Camera(NullJoystick)
-    }
+        camera = Camera(NullJoystick)
 
-    val cameraRingLight by lazyByRequest {
-        val j = joystick3
+        cameraRingLight = CameraRingLight(
+                joystick = joystick3,
+                button = JoystickButton(joystick3, 11))
 
-        CameraRingLight(
-                joystick = j,
-                button = JoystickButton(j, 11))
-    }
+        shooter = Shooter(joystick3)
 
-    val shooter by lazyByRequest {
-        Shooter(joystick3)
-    }
-
-    val shooterKicker by lazyByRequest {
-        val j = joystick3
-
-        ShooterKicker(
-                joystick = j,
-                kickButton = JoystickButton(j, 7))
+        shooterKicker = ShooterKicker(joystick3,
+                kickButton = JoystickButton(joystick3, 7))
     }
 }
 
