@@ -6,7 +6,7 @@ import org.usfirst.frc5293.translations.util.StreamingTranslationEngine
 
 object CameraEngine : StreamingTranslationEngine<Point>(CameraPipeline) {
 
-    private val input = Input.camera
+    private val input by lazy { Input.camera }
 
     override val initial =
             Point(x = input.joystick.twist,

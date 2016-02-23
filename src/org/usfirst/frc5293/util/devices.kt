@@ -1,4 +1,4 @@
-package org.usfirst.frc5293.util.devices
+package org.usfirst.frc5293.util
 
 import edu.wpi.first.wpilibj.SpeedController
 

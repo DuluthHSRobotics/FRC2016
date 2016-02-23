@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.*
 import edu.wpi.first.wpilibj.interfaces.Accelerometer
 import org.usfirst.frc5293.devices.*
 import org.usfirst.frc5293.devices.util.NullSpeedController
-import org.usfirst.frc5293.util.devices.makeInverted
+import org.usfirst.frc5293.util.*
 
 /**
  * The Devices is a mapping from the ports sensors and actuators are wired into
@@ -12,72 +12,60 @@ import org.usfirst.frc5293.util.devices.makeInverted
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-object Devices {
+@Suppress("unused")
+object Devices : LazyGroup("Devices") {
 
-    val drivetrain by lazy {
+    val drivetrain by lazyByRequest {
         Drivetrain(
-            frontLeft  = Talon(1).makeInverted(),
-            frontRight = Talon(2).makeInverted(),
-            backLeft   = Talon(0).makeInverted(),
-            backRight  = Talon(3).makeInverted())
+                frontLeft = Talon(1).makeInverted(),
+                frontRight = Talon(2).makeInverted(),
+                backLeft = Talon(0).makeInverted(),
+                backRight = Talon(3).makeInverted())
     }
 
-    val camera by lazy {
+    val camera by lazyByRequest {
         Camera(
-            sideServo = Servo(5),
-            topServo = Servo(4))
+                sideServo = Servo(5),
+                topServo = Servo(4))
     }
 
-    val cameraRingLight by lazy {
+    val cameraRingLight by lazyByRequest {
         CameraRingLight(
-            relay = Relay(0, Relay.Direction.kForward))
+                relay = Relay(0, Relay.Direction.kForward))
     }
 
-    val shooter by lazy {
-        Shooter(
-            leftMotor = Victor(8).makeInverted(),
-            rightMotor = Victor(9))
+    val shooter by lazyByRequest {
+        Shooter(leftMotor = Victor(8).makeInverted(),
+                rightMotor = Victor(9))
     }
 
-    val lifter by lazy {
-        Lifter(
-            bottomMotor = NullSpeedController,
-            topMotor = NullSpeedController)
+    val lifter by lazyByRequest {
+        Lifter(bottomMotor = NullSpeedController,
+               topMotor = NullSpeedController)
     }
 
-    val shooterKicker by lazy {
+    val shooterKicker by lazyByRequest {
         ShooterKicker(
-            kicker = Servo(7))
+                kicker = Servo(7))
     }
 
-    val shooterBallLimitSwitch by lazy {
+    val shooterBallLimitSwitch by lazyByRequest {
         ShooterBallLimitSwitch(
-            limitSwitch = DigitalInput(0)
-        )
+                limitSwitch = DigitalInput(0))
     }
 
-    val builtInAccelerometer by lazy {
+    val builtInAccelerometer by lazyByRequest {
         AccelerometerWrapped("Built-in Accelerometer",
                 BuiltInAccelerometer(Accelerometer.Range.k2G))
     }
 
-    val accelerometer by lazy {
+    val accelerometer by lazyByRequest {
         AccelerometerWrapped("Extra Accelerometer",
                 ADXL345_SPI(SPI.Port.kOnboardCS0, Accelerometer.Range.k2G))
     }
 
-    val gyro by lazy {
+    val gyro by lazyByRequest {
         AccelerometerWrapped("Built-in Accelerometer",
                 BuiltInAccelerometer(Accelerometer.Range.k2G))
-    }
-
-    fun init() {
-        drivetrain
-        shooter
-        shooterKicker
-        shooterBallLimitSwitch
-        builtInAccelerometer
-        accelerometer
-        gyro
     }
 }
