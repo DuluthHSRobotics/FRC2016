@@ -13,57 +13,59 @@ import org.usfirst.frc5293.util.*
  * floating around.
  */
 @Suppress("unused")
-object Devices : Initializable {
+object Devices : LazyGroup("Devices") {
 
-    lateinit var drivetrain: Drivetrain
-
-    override fun init() {
-        drivetrain = Drivetrain(
+    val drivetrain by lazyByRequest {
+        Drivetrain(
                 frontLeft = Talon(1).makeInverted(),
                 frontRight = Talon(2).makeInverted(),
                 backLeft = Talon(0).makeInverted(),
                 backRight = Talon(3).makeInverted())
+    }
 
-        camera = Camera(
+    val camera by lazyByRequest {
+        Camera(
                 sideServo = Servo(5),
                 topServo = Servo(4))
+    }
 
-        cameraRingLight = CameraRingLight(Relay(0, Relay.Direction.kForward))
+    val cameraRingLight by lazyByRequest {
+        CameraRingLight(
+                relay = Relay(0, Relay.Direction.kForward))
+    }
 
-        shooter = Shooter(
-                leftMotor = Victor(8).makeInverted(),
+    val shooter by lazyByRequest {
+        Shooter(leftMotor = Victor(8).makeInverted(),
                 rightMotor = Victor(9))
+    }
 
-        lifter = Lifter(
-                bottomMotor = NullSpeedController,
-                topMotor = NullSpeedController)
+    val lifter by lazyByRequest {
+        Lifter(bottomMotor = NullSpeedController,
+               topMotor = NullSpeedController)
+    }
 
-        shooterKicker = ShooterKicker(
+    val shooterKicker by lazyByRequest {
+        ShooterKicker(
                 kicker = Servo(7))
+    }
 
-        shooterBallLimitSwitch = ShooterBallLimitSwitch(
+    val shooterBallLimitSwitch by lazyByRequest {
+        ShooterBallLimitSwitch(
                 limitSwitch = DigitalInput(0))
+    }
 
-        builtInAccelerometer = AccelerometerWrapped("Built-in Accelerometer",
+    val builtInAccelerometer by lazyByRequest {
+        AccelerometerWrapped("Built-in Accelerometer",
                 BuiltInAccelerometer(Accelerometer.Range.k2G))
+    }
 
-        accelerometer = AccelerometerWrapped("Extra Accelerometer",
+    val accelerometer by lazyByRequest {
+        AccelerometerWrapped("Extra Accelerometer",
                 ADXL345_SPI(SPI.Port.kOnboardCS0, Accelerometer.Range.k2G))
     }
 
-    lateinit var shooter: Shooter
-
-    lateinit var camera: Camera
-
-    lateinit var cameraRingLight: CameraRingLight
-
-    lateinit var lifter: Lifter
-
-    lateinit var shooterKicker: ShooterKicker
-
-    lateinit var shooterBallLimitSwitch: ShooterBallLimitSwitch
-
-    lateinit var builtInAccelerometer: AccelerometerWrapped
-
-    lateinit var accelerometer: AccelerometerWrapped
+    val gyro by lazyByRequest {
+        AccelerometerWrapped("Built-in Accelerometer",
+                BuiltInAccelerometer(Accelerometer.Range.k2G))
+    }
 }

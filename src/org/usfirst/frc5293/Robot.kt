@@ -24,8 +24,8 @@ class Robot : IterativeRobot() {
      */
     override fun robotInit() {
         // The order of initialization is important!
-        val roots = listOf(Prefs, Devices, Subsystems, Input)
-        roots.forEach { it. init() }
+        val roots = listOf(Prefs, Devices, Input, Subsystems)
+        roots.forEach { it.init() }
 
         // create the command used for the autonomous period
         autonomousCommand = null // disable autonomous

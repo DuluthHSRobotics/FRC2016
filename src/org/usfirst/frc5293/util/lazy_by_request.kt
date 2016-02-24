@@ -34,6 +34,8 @@ class LazyByRequest<T>(
     }
 }
 
+fun <T> lazyByRequest(source: LazySource, initializer: () -> T) = LazyByRequest(source, initializer)
+
 abstract class LazyGroup(val name: String) : Initializable {
 
     private val source = LazySource()
