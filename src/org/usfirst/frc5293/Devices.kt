@@ -18,9 +18,9 @@ object Devices : LazyGroup("Devices") {
     val drivetrain by lazyByRequest {
         Drivetrain(
                 frontLeft = Talon(1).makeInverted(),
-                frontRight = Talon(2).makeInverted(),
+                frontRight = Talon(2),
                 backLeft = Talon(0).makeInverted(),
-                backRight = Talon(3).makeInverted())
+                backRight = Talon(3))
     }
 
     val camera by lazyByRequest {
