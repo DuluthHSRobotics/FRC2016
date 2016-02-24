@@ -3,20 +3,17 @@ package org.usfirst.frc5293.commands.teleop.control
 import org.usfirst.frc5293.Input
 import org.usfirst.frc5293.Subsystems
 import org.usfirst.frc5293.commands.util.EmptyCommand
-import org.usfirst.frc5293.translations.driving.JoystickDriveEngine
-import org.usfirst.frc5293.translations.util.TankDrivingState
 
 class DrivetrainControl : EmptyCommand() {
 
     init {
         requires(Subsystems.drivetrain)
-        println("[init] THE DRIVETRAIN CONTROL!!!")
     }
 
     override fun execute() {
-        Subsystems.drivetrain.driveTank(
-                leftPower = Input.drivetrain.left.y,
-                rightPower = Input.drivetrain.right.y
+        Subsystems.drivetrain.driveArcade(
+                power = Input.drivetrain.powerJoystick.y,
+                rotation = Input.drivetrain.rotationJoystick.twist
         )
     }
 

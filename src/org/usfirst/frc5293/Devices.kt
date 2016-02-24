@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.*
 import edu.wpi.first.wpilibj.interfaces.Accelerometer
 import org.usfirst.frc5293.devices.*
 import org.usfirst.frc5293.devices.util.NullSpeedController
+import org.usfirst.frc5293.groups.lift.Device as Lift
 import org.usfirst.frc5293.util.*
 
 /**
@@ -40,8 +41,8 @@ object Devices : LazyGroup("Devices") {
     }
 
     val lifter by lazyByRequest {
-        Lifter(bottomMotor = NullSpeedController,
-               topMotor = NullSpeedController)
+        Lift(bottomMotor = NullSpeedController,
+             topMotor = NullSpeedController)
     }
 
     val shooterKicker by lazyByRequest {

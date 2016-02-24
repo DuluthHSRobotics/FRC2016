@@ -2,6 +2,7 @@ package org.usfirst.frc5293
 
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.buttons.JoystickButton
+import org.usfirst.frc5293.groups.lift.Input as Lift
 import org.usfirst.frc5293.input.*
 import org.usfirst.frc5293.input.util.NullJoystick
 import org.usfirst.frc5293.util.LazyGroup
@@ -18,9 +19,9 @@ object Input : LazyGroup("Input") {
     private val joystick3 by lazyByRequest { Joystick(2) }
 
     val drivetrain by lazyByRequest {
-        DrivetrainTank(
-                left = joystick1,
-                right = joystick2)
+        DrivetrainArcade(
+                powerJoystick = joystick1,
+                rotationJoystick = joystick2)
     }
 
     val camera by lazyByRequest {
@@ -45,6 +46,13 @@ object Input : LazyGroup("Input") {
         ShooterKicker(
                 joystick = j,
                 kickButton = JoystickButton(j, 7))
+    }
+
+    val lifter by lazyByRequest {
+        val j = joystick3
+
+        Lift(upButton = JoystickButton(j, 9),
+             downButton = JoystickButton(j, 11))
     }
 }
 

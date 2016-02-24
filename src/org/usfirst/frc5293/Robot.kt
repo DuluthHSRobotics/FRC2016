@@ -36,6 +36,8 @@ class Robot : IterativeRobot() {
      * You can use it to reset subsystems before shutting down.
      */
     override fun disabledInit() {
+        LiveWindow.setEnabled(false)
+
         if (autonomousCommand != null) {
             autonomousCommand?.cancel()
         }
@@ -75,6 +77,10 @@ class Robot : IterativeRobot() {
         // track currently running commands
         SmartDashboard.putData(Scheduler.getInstance())
         Scheduler.getInstance().run()
+    }
+
+    override fun testInit() {
+        LiveWindow.setEnabled(true)
     }
 
     /**

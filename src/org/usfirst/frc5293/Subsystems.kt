@@ -1,5 +1,6 @@
 package org.usfirst.frc5293
 
+import org.usfirst.frc5293.groups.lift.Subsystem as Lift
 import org.usfirst.frc5293.subsystems.*
 import org.usfirst.frc5293.util.LazyGroup
 
@@ -14,4 +15,6 @@ object Subsystems : LazyGroup("Subsystems") {
     val shooter by lazyByRequest { Shooter() }
 
     val shooterKicker by lazyByRequest { ShooterKicker() }
+
+    val lift by lazyByRequest { Lift() }
 }
