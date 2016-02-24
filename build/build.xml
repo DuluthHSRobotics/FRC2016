@@ -229,14 +229,14 @@
 
   <target name="dependencies" depends="get-target-ip">
     <property name="ant.enable.asserts" value="true"/>
-    <post to="http://${target}/nisysapi/server" logfile="${wpilib.ant.dir}/sysProps.xml" verbose="false" encoding="UTF-16LE"
+    <post to="http://${target}/nisysapi/server" logfile="build/remote/sysProps.xml" verbose="false" encoding="UTF-16LE"
           append="false">
       <prop name="Function" value="GetPropertiesOfItem"/>
       <prop name="Plugins" value="nisyscfg"/>
       <prop name="Items" value="system"/>
     </post>
 
-    <loadfile srcFile="${wpilib.ant.dir}/sysProps.xml" encoding="UTF-16LE" property="roboRIOSysValues"/>
+    <loadfile srcFile="build/remote/sysProps.xml" encoding="UTF-16LE" property="roboRIOSysValues"/>
 
     <propertyregex property="roboRIOImage" input="${roboRIOSysValues}" regexp="FRC_roboRIO_2016_v([0-9]+)" select="\1"
                    defaultValue="ImageRegExFail"/>

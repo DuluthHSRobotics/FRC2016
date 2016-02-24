@@ -10,6 +10,7 @@ class DrivetrainControl : EmptyCommand() {
 
     init {
         requires(Subsystems.drivetrain)
+        println("[init] THE DRIVETRAIN CONTROL!!!")
     }
 
     override fun execute() {

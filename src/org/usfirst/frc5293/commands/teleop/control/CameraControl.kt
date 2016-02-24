@@ -8,11 +8,11 @@ import org.usfirst.frc5293.translations.camera.CameraEngine
 class CameraControl : SubsystemCommand(Subsystems.camera) {
 
     override fun action() {
-        val result = CameraEngine.result
-
-        SmartDashboard.putNumber("Camera X Rotation", result.x)
-        SmartDashboard.putNumber("Camera Y Rotation", result.y)
-
-        Subsystems.camera.positionRelative(result.x, result.y)
+//        val result = CameraEngine.result
+//
+//        SmartDashboard.putNumber("Camera X Rotation", result.x)
+//        SmartDashboard.putNumber("Camera Y Rotation", result.y)
+//
+//        Subsystems.camera.positionRelative(result.x, result.y)
     }
 }
