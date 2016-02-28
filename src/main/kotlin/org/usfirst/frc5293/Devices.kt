@@ -3,9 +3,10 @@ package org.usfirst.frc5293
 import edu.wpi.first.wpilibj.*
 import edu.wpi.first.wpilibj.interfaces.Accelerometer
 import org.usfirst.frc5293.devices.*
-import org.usfirst.frc5293.groups.shooter.lift.Device as ShooterLift
+import org.usfirst.frc5293.util.LazyGroup
+import org.usfirst.frc5293.util.makeInverted
 import org.usfirst.frc5293.groups.lift.Device as Lift
-import org.usfirst.frc5293.util.*
+import org.usfirst.frc5293.groups.shooter.lift.Device as ShooterLift
 
 /**
  * The Devices is a mapping from the ports sensors and actuators are wired into
@@ -14,7 +15,7 @@ import org.usfirst.frc5293.util.*
  * floating around.
  */
 @Suppress("unused")
-object Devices : LazyGroup("Devices") {
+object Devices : LazyGroup() {
 
     val drivetrain by lazyByRequest {
         Drivetrain(

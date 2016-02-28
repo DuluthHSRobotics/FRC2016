@@ -36,12 +36,11 @@ class LazyByRequest<T>(
 
 fun <T> lazyByRequest(source: LazySource, initializer: () -> T) = LazyByRequest(source, initializer)
 
-abstract class LazyGroup(val name: String) : Initializable {
+abstract class LazyGroup() : Initializable {
 
     private val source = LazySource()
 
     override fun init() {
-//        println("[init] group: '$name'")
         source.invalidate()
     }
 

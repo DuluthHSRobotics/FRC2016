@@ -3,17 +3,17 @@ package org.usfirst.frc5293
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.buttons.JoystickButton
 import org.usfirst.frc5293.groups.lift.Lift
-import org.usfirst.frc5293.groups.shooter.lift.Input as ShooterLift
 import org.usfirst.frc5293.input.*
 import org.usfirst.frc5293.input.util.NullJoystick
 import org.usfirst.frc5293.util.LazyGroup
+import org.usfirst.frc5293.groups.shooter.lift.Input as ShooterLift
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 @Suppress("unused")
-object Inputs : LazyGroup("Input") {
+object Inputs : LazyGroup() {
 
     private val joystick1 by lazyByRequest { Joystick(0) }
     private val joystick2 by lazyByRequest { Joystick(1) }

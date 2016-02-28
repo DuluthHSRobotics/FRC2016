@@ -8,7 +8,7 @@ import org.usfirst.frc5293.util.LazyGroup
 
 import java.util.ArrayList
 
-object Prefs : LazyGroup("Prefs") {
+object Prefs : LazyGroup() {
 
     // TOOD: Have global switch to completely disable the remote settings if we need to
     val root by lazyByRequest { Root() }

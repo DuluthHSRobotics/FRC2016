@@ -1,11 +1,11 @@
 package org.usfirst.frc5293
 
-import org.usfirst.frc5293.groups.shooter.lift.Subsystem as ShooterLift
-import org.usfirst.frc5293.groups.lift.Subsystem as Lift
 import org.usfirst.frc5293.subsystems.*
 import org.usfirst.frc5293.util.LazyGroup
+import org.usfirst.frc5293.groups.lift.Subsystem as Lift
+import org.usfirst.frc5293.groups.shooter.lift.Subsystem as ShooterLift
 
-object Subsystems : LazyGroup("Subsystems") {
+object Subsystems : LazyGroup() {
 
     val drivetrain by lazyByRequest { Drivetrain() }
 

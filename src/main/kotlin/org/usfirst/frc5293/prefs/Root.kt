@@ -8,7 +8,7 @@ import org.usfirst.frc5293.util.LazyGroup
 
 import java.util.ArrayList
 
-class Root : LazyGroup("Prefs/Root"), PrefGroup {
+class Root : LazyGroup(), PrefGroup {
     // ... there is nothing really here
 
     val shooterLiftSpeed by lazyByRequest {
