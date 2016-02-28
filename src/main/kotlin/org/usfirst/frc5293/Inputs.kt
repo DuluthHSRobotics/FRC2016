@@ -2,7 +2,7 @@ package org.usfirst.frc5293
 
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.buttons.JoystickButton
-import org.usfirst.frc5293.groups.lift.Lift
+import org.usfirst.frc5293.groups.lift.ManualInput
 import org.usfirst.frc5293.input.*
 import org.usfirst.frc5293.input.util.NullJoystick
 import org.usfirst.frc5293.util.LazyGroup
@@ -64,7 +64,7 @@ object Inputs : LazyGroup() {
 
 //        Lift(upButton = j.button(9),
 //             downButton = j.button(11))
-        Lift(j)
+        ManualInput(j)
     }
 }
 

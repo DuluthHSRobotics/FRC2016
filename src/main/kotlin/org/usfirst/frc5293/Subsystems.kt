@@ -19,5 +19,5 @@ object Subsystems : LazyGroup() {
 
     val shooterLift by lazyByRequest { ShooterLift() }
 
-    val lift by lazyByRequest { Lift() }
+    val lift by lazyByRequest { Lift(Devices.lifter) }
 }
