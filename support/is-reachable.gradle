@@ -1,0 +1,58 @@
+
+private static boolean empty(String x) {
+    return x == null || x.length() == 0;
+}
+
+boolean isReachableUrl(String url, int timeout) {
+    logger.debug("Probing url " + url)
+
+    String host
+    try {
+        URL realURL = new URL(url);
+        host = realURL.getHost();
+
+        if (empty(host)) {
+            throw new InvalidUserDataException("No hostname in URL " + url);
+        }
+    } catch (MalformedURLException ex) {
+        throw new InvalidUserDataException("Bad URL " + url, ex);
+    }
+
+    isReachable(host, timeout)
+}
+
+boolean isReachable(String host, int timeout) {
+    logger.debug("Probing host " + host)
+
+    InetAddress address
+    try {
+        address = InetAddress.getByName(host)
+    } catch (UnknownHostException ignored) {
+        logger.warn("Unknown host: " + host)
+        return false;
+    }
+
+    isReachable(address, timeout)
+}
+
+boolean isReachable(InetAddress host, int timeout) {
+    logger.debug("Probing host " + host)
+
+    boolean reachable;
+    try {
+        reachable = address.isReachable(timeout * 1000 /* ms */)
+    } catch (IOException e) {
+        // any kind of fault: not reachable.
+        logger.warn("network error to " + host + ": " + e.toString())
+        reachable = false;
+    }
+
+    logger.debug("host is" + (reachable ? "" : " not") + " reachable")
+    return reachable;
+}
+
+// exports
+ext {
+    isReachable = this.&isReachable
+    isReachableUrl = this.&isReachableUrl
+}

@@ -1,6 +1,3 @@
-group 'org.usfirst.frc5293'
-version '1.0-SNAPSHOT'
-
 buildscript {
     ext.kotlin_version = '1.0.0'
 
@@ -13,6 +10,12 @@ buildscript {
     }
 }
 
+plugins {
+    id 'org.hidetake.ssh' version '1.3.0'
+    id "org.tenne.rest" version "0.4.1"
+}
+
+apply from: 'support/get-target-ip.gradle'
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
@@ -28,4 +31,150 @@ dependencies {
 
 task wrapper(type: Wrapper) {
     gradleVersion = "2.11"
+}
+
+//
+
+group "org.usfirst.frc5293"
+version "1.0-SNAPSHOT"
+
+ext {
+    teamNumber = 5293
+
+    deployment = {
+        rootUsername = 'admin'
+        rootPassword = ''
+
+        username = 'lvuser'
+        password = ''
+
+        deployDir = "/home/$username"
+        commandDir = deployDir
+
+        killCommand =
+                '. /etc/profile.d/natinst-path.sh; ' +
+                '/usr/local/frc/bin/frcKillRobot.sh -t -r; ' +
+                'sync'
+
+        allowedImageVersions = [ 19 ]
+
+        jreDir = "/usr/local/frc/JRE"
+    }
+}
+
+jar {
+    archiveName = "FRCUserProgram.jar"
+
+    manifest {
+        attributes(
+                'Main-Class': 'edu.wpi.first.wpilibj.RobotBase',
+                'Robot-Class': "${group}.Robot",
+                'Class-Path': '.'
+        )
+    }
+}
+
+task setupRemote << {
+    final def target = getTargetIP()
+
+    remotes.create('roborio') {
+        host = target
+        user = deployment.username
+        password = deployment.password
+    }
+
+    remotes.create('roborioRoot') {
+        host = target
+        user = deployment.rootUsername
+        password = deployment.rootPassword
+    }
+}
+
+//noinspection GroovyAssignabilityCheck
+task deploySetup(dependsOn: setupRemote, type: org._10ne.gradle.rest.RestTask) << {
+    httpMethod = 'post'
+    uri = "http://${remotes.roborio.host}/nisysapi/server"
+    username = deployment.username
+    password = deployment.password
+    requestBody = [
+        Function: 'GetPropertiesOfItem',
+        Plugins: 'nisyscfg',
+        Items: 'system'
+    ]
+    requestContentType = groovyx.net.http.ContentType.URLENC
+    contentType = groovyx.net.http.ContentType.XML
+    responseHandler = {
+        def response = it.message
+        def pattern = ~/FRC_roboRIO_2016_v([0-9]+)/
+
+        def version = response =~ pattern
+        if (!version) {
+            throw new GradleException("failed to find roboRIO image version")
+        }
+        version = version.group().toInteger()
+
+        if (!deployment.allowedImageVersions.contains(version)) {
+            throw new GradleException(
+                    "roboRIO Image does not match plugin, allowed image version: " +
+                    "${deployment.allowedImageVersions}")
+        }
+
+        logger.debug("roboRIO image version validated")
+        logger.debug(
+            "Checking for JRE. If this fails install the JRE using these instructions:" +
+            "https://wpilib.screenstepslive.com/s/4485/m/13503/l/288822-installing-java-8-on-the-roborio-using-the-frc-roborio-java-installer-java-only")
+
+        ssh.run {
+            session(remotes.roborio) {
+                execute "test -d ${deployment.jreDir}"
+            }
+        }
+    }
+}
+
+//noinspection GroovyAssignabilityCheck
+task deploy(dependsOn: [setupRemote, jar, deploySetup]) << {
+    ssh.run {
+        session(remotes.roborio) {
+            logger.info("Copying code over.")
+            put from: jar.archivePath, into: deployment.deployDir
+        }
+
+        session(remotes.roborioRoot) {
+            // Suppress the exit status so that if no netconsole was running then
+            // it doesn't show up red on the output.
+            execute 'killall -q netconsole-host || :'
+        }
+
+        session(remotes.roborio) {
+            put from: 'remote/robotCommand', into: deployment.commandDir
+
+            logger.info("Starting program.")
+            execute killCommand
+        }
+    }
+}
+
+//noinspection GroovyAssignabilityCheck
+task debugDeploy(dependsOn: [setupRemote, jar]) << {
+    ssh.run {
+        def flagDir = '/tmp/'
+
+        session(remotes.roborio) {
+            logger.info("Copying code over.")
+            put from: jar.archivePath, into: deployment.deployDir
+
+            // The remoteDebugCommand file is used by /usr/local/frc/bin/frcRunRobot.sh
+            // on the roboRIO
+            put from: 'remote/robotDebugCommand', into: deployment.commandDir
+
+            // The frcdebug file is used as a flag for /usr/local/frc/bin/frcRunRobot.sh
+            // to run the robot program in debug mode
+            put from: 'remote/frcdebug', into: flagDir
+            execute "chown lvuser:ni ${flagDir}/frcdebug"
+
+            logger.debug("Starting debug program.")
+            execute killCommand
+        }
+    }
 }
