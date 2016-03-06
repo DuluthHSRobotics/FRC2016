@@ -15,7 +15,6 @@ plugins {
     id "org.tenne.rest" version "0.4.1"
 }
 
-apply from: 'support/get-target-ip.gradle'
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
@@ -38,28 +37,28 @@ task wrapper(type: Wrapper) {
 group "org.usfirst.frc5293"
 version "1.0-SNAPSHOT"
 
-ext {
+project.ext {
     teamNumber = 5293
 
-    deployment = {
-        rootUsername = 'admin'
-        rootPassword = ''
+    deployment = new Expando(
+        rootUsername: 'admin',
+        rootPassword: '',
 
-        username = 'lvuser'
-        password = ''
+        username: 'lvuser',
+        password: '',
 
-        deployDir = "/home/$username"
-        commandDir = deployDir
+        deployDir: "/home/lvuser",
+        commandDir: "/home/lvuser",
 
-        killCommand =
+        killCommand:
                 '. /etc/profile.d/natinst-path.sh; ' +
                 '/usr/local/frc/bin/frcKillRobot.sh -t -r; ' +
-                'sync'
+                'sync',
 
-        allowedImageVersions = [ 19 ]
+        allowedImageVersions: [ 19 ],
 
-        jreDir = "/usr/local/frc/JRE"
-    }
+        jreDir: "/usr/local/frc/JRE"
+    )
 }
 
 jar {
@@ -81,12 +80,14 @@ task setupRemote << {
         host = target
         user = deployment.username
         password = deployment.password
+        knownHosts = allowAnyHosts
     }
 
     remotes.create('roborioRoot') {
         host = target
         user = deployment.rootUsername
         password = deployment.rootPassword
+        knownHosts = allowAnyHosts
     }
 }
 
@@ -133,7 +134,7 @@ task deploySetup(dependsOn: setupRemote, type: org._10ne.gradle.rest.RestTask) <
 }
 
 //noinspection GroovyAssignabilityCheck
-task deploy(dependsOn: [setupRemote, jar, deploySetup]) << {
+task deploy(dependsOn: [setupRemote, jar, /* deploySetup */ ]) << {
     ssh.run {
         session(remotes.roborio) {
             logger.info("Copying code over.")
@@ -150,7 +151,7 @@ task deploy(dependsOn: [setupRemote, jar, deploySetup]) << {
             put from: 'remote/robotCommand', into: deployment.commandDir
 
             logger.info("Starting program.")
-            execute killCommand
+            execute deployment.killCommand
         }
     }
 }
@@ -174,7 +175,108 @@ task debugDeploy(dependsOn: [setupRemote, jar]) << {
             execute "chown lvuser:ni ${flagDir}/frcdebug"
 
             logger.debug("Starting debug program.")
-            execute killCommand
+            execute deployment.killCommand
         }
     }
+}
+
+//
+
+private static boolean empty(String x) {
+    return x == null || x.length() == 0;
+}
+
+boolean isReachableUrl(String url, int timeout) {
+    logger.debug("Probing url " + url)
+
+    String host
+    try {
+        URL realURL = new URL(url);
+        host = realURL.getHost();
+
+        if (empty(host)) {
+            throw new InvalidUserDataException("No hostname in URL " + url);
+        }
+    } catch (MalformedURLException ex) {
+        throw new InvalidUserDataException("Bad URL " + url, ex);
+    }
+
+    isReachable(host, timeout)
+}
+
+boolean isReachable(String host, int timeout) {
+    logger.debug("Probing host " + host)
+
+    InetAddress address
+    try {
+        address = InetAddress.getByName(host)
+    } catch (UnknownHostException ignored) {
+        logger.warn("Unknown host: " + host)
+        return false;
+    }
+
+    isReachable(address, timeout)
+}
+
+boolean isReachable(InetAddress host, int timeout) {
+    logger.debug("Probing host " + host)
+
+    boolean reachable;
+    try {
+        reachable = host.isReachable(timeout * 1000 /* ms */)
+    } catch (IOException e) {
+        // any kind of fault: not reachable.
+        logger.warn("network error to " + host + ": " + e.toString())
+        reachable = false;
+    }
+
+    logger.debug("host is" + (reachable ? "" : " not") + " reachable")
+    return reachable;
+}
+
+//
+
+
+String getTargetIP() {
+    String target
+    final def timeout = 5 /* seconds */
+
+    target = "roboRIO-${ext.teamNumber}-FRC.local"
+    logger.info("Trying Target: ${target}")
+
+    if (isReachable(target, timeout)) {
+        logger.info("roboRIO found via mDNS")
+        return target
+    }
+
+    //
+
+    target = "172.22.11.2"
+    logger.info("roboRIO not found via mDNS, falling back to static USB on $target")
+
+    if (isReachable(target, timeout)) {
+        logger.info("roboRIO found via static USB")
+        return target
+    }
+
+    //
+
+    target = {
+        def upper = ext.teamNumber / 100
+        def lower = ext.teamNumber % 100
+        "10.$upper.$lower.2"
+    }()
+
+    logger.info("roboRIO not found via USB, falling back to static address of $target")
+
+    if (isReachable(target, timeout)) {
+        logger.info("roboRIO found via Ethernet static")
+        return target
+    }
+
+    //
+
+    throw new GradleException(
+            "roboRIO not found, please check that the roboRIO is connected, imaged" +
+                    " and that the team number is set properly in Eclipse")
 }

@@ -2,7 +2,7 @@ package org.usfirst.frc5293.impl.systems.lift
 
 import edu.wpi.first.wpilibj.CANTalon
 import edu.wpi.first.wpilibj.SpeedController
-import org.usfirst.frc5293.util.LiveWindowExt
+import org.usfirst.frc5293.framework.util.LiveWindowExt
 
 class LiftDevice(val topMotor: SpeedController, val bottomMotor: SpeedController) {
 

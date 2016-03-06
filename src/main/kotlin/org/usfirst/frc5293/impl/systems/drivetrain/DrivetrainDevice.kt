@@ -2,7 +2,7 @@ package org.usfirst.frc5293.impl.systems.drivetrain
 
 import edu.wpi.first.wpilibj.RobotDrive
 import edu.wpi.first.wpilibj.SpeedController
-import org.usfirst.frc5293.util.LiveWindowExt
+import org.usfirst.frc5293.framework.util.LiveWindowExt
 
 class DrivetrainDevice(
         val frontLeft: SpeedController,
