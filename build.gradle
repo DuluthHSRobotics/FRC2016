@@ -67,9 +67,13 @@ jar {
     manifest {
         attributes(
                 'Main-Class': 'edu.wpi.first.wpilibj.RobotBase',
-                'Robot-Class': "${group}.Robot",
+                'Robot-Class': 'org.usfirst.frc5293.impl.Robot',
                 'Class-Path': '.'
         )
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
