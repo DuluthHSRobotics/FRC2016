@@ -6,10 +6,12 @@ import org.usfirst.frc5293.impl.Subsystems
 class DrivetrainTankControl(private val input: DualDrivetrainInput) : EmptyCommand() {
 
     init {
+        println("INIT DRIVE")
         requires(Subsystems.drivetrain)
     }
 
     override fun execute() {
+        println("EXECUTE DRIVETRAIN!!!")
         Subsystems.drivetrain.driveTank(
                 leftPower = input.leftJoystick.y,
                 rightPower = input.rightJoystick.y

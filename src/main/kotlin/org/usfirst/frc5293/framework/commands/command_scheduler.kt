@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.CommandGroup
 import edu.wpi.first.wpilibj.command.Subsystem
 import edu.wpi.first.wpilibj.command.WaitCommand
-import org.slf4j.LoggerFactory
+import org.usfirst.frc5293.framework.util.Logging
 
 abstract class ScheduledCommandGroup : CommandGroup() {
 
@@ -13,9 +13,7 @@ abstract class ScheduledCommandGroup : CommandGroup() {
     protected fun schedule(block: CommandScheduler.() -> Unit) = this.schedule(ctx, block)
 }
 
-class DebugWaitCommand(val timeout: Double) : WaitCommand(timeout) {
-
-    private final val logger = LoggerFactory.getLogger(DebugWaitCommand::class.java)
+class DebugWaitCommand(val timeout: Double) : WaitCommand(timeout), Logging {
 
     override fun initialize() {
         super.initialize()
@@ -28,9 +26,7 @@ class DebugWaitCommand(val timeout: Double) : WaitCommand(timeout) {
     }
 }
 
-class CommandScheduler(private val group: CommandGroup, private val ctx: Ctx) {
-
-    private final val logger = LoggerFactory.getLogger(CommandScheduler::class.java)
+class CommandScheduler(private val group: CommandGroup, private val ctx: Ctx) : Logging {
 
     class Ctx(val onRequire: (Subsystem) -> Unit)
 

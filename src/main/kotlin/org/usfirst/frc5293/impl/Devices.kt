@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.*
 import edu.wpi.first.wpilibj.interfaces.Accelerometer
 import org.usfirst.frc5293.framework.devices.AccelerometerDevice
 import org.usfirst.frc5293.framework.devices.GyroDevice
+import org.usfirst.frc5293.framework.util.DelegatedLazyGroup
 import org.usfirst.frc5293.framework.util.LazyGroup
 import org.usfirst.frc5293.framework.util.makeInverted
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountDevice
@@ -31,6 +32,8 @@ object Devices : LazyGroup() {
     // TODO: Might want to refactor this somewhere else
     private val currentConfig = ConfigSet.PROTOTYPE
 
+    private val isCameraEnabled = false
+
     val drivetrain by lazyByRequest {
         DrivetrainDevice(
                 frontLeft = Talon(1).makeInverted(),
@@ -39,11 +42,15 @@ object Devices : LazyGroup() {
                 backRight = Talon(3).makeInverted())
     }
 
-    object camera : LazyGroup(Devices) {
-        val mount by lazyByRequest {
-            CameraMountDevice(
-                    sideServo = Servo(5),
-                    topServo = Servo(4))
+    object camera : DelegatedLazyGroup(Devices) {
+        val mount: CameraMountDevice? by lazyByRequest {
+            if (isCameraEnabled) {
+                CameraMountDevice(
+                        sideServo = Servo(5),
+                        topServo = Servo(4))
+            } else {
+                null
+            }
         }
 
         val ringLight by lazyByRequest {
@@ -52,7 +59,7 @@ object Devices : LazyGroup() {
         }
     }
 
-    object shooter : LazyGroup(Devices) {
+    object shooter : DelegatedLazyGroup(Devices) {
 
         val wheels by lazyByRequest {
             ShooterWheelsDevice(
@@ -64,12 +71,12 @@ object Devices : LazyGroup() {
             ShooterLifterDevice(motor = Talon(6))
         }
 
-        val kicker by Devices.lazyByRequest {
+        val kicker by lazyByRequest {
             ShooterKickerDevice(
                     servo = Servo(7))
         }
 
-        val limitSwitch by Devices.lazyByRequest {
+        val limitSwitch by lazyByRequest {
             ShooterBallLimitSwitchDevice(
                     limitSwitch = DigitalInput(0))
         }
@@ -90,7 +97,7 @@ object Devices : LazyGroup() {
         }
     }
 
-    object sensors : LazyGroup(Devices) {
+    object sensors : DelegatedLazyGroup(Devices) {
 
         val builtInAccelerometer by lazyByRequest {
             AccelerometerDevice("Built-in Accelerometer",

@@ -1,8 +1,8 @@
 package org.usfirst.frc5293.impl.systems.shooter.kicker
 
 import edu.wpi.first.wpilibj.buttons.Button
-import org.slf4j.LoggerFactory
 import org.usfirst.frc5293.framework.commands.ScheduledCommandGroup
+import org.usfirst.frc5293.framework.util.Logging
 
 class ShooterKickerControl(val kickButton: Button, subsystem: ShooterKickerSubsystem) {
     init {
@@ -10,9 +10,7 @@ class ShooterKickerControl(val kickButton: Button, subsystem: ShooterKickerSubsy
     }
 }
 
-class ShooterKickerOnPressed(val kicker: ShooterKickerSubsystem) : ScheduledCommandGroup() {
-
-    private final val logger = LoggerFactory.getLogger(ShooterKickerOnPressed::class.java)
+class ShooterKickerOnPressed(val kicker: ShooterKickerSubsystem) : ScheduledCommandGroup(), Logging {
 
     init {
         schedule {

@@ -4,37 +4,14 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
 class LazySink {
-    // Using an algebraic data type allows us to represent child lazy objects and sinks as the same
-    // thing so that we can keep the order the registrations
-
-    sealed class Child private constructor() { // private constructor to prevent creating more subclasses outside
-        class OfLazy(val value: Lazy<*>) : Child()
-        class OfSink(val sink: LazySink) : Child()
-    }
-
-    private val _registrations: MutableList<Child> = arrayListOf()
-
-    val registrations = _registrations.toList()
+    val registrations: MutableList<Lazy<*>> = arrayListOf()
 
     fun <T> register(lazy: Lazy<T>) {
-        _registrations.add(Child.OfLazy(lazy))
-    }
-
-    fun register(sink: LazySink) {
-        _registrations.add(Child.OfSink(sink))
+        registrations.add(lazy)
     }
 
     fun invalidate() {
-        _registrations.forEach {
-            when (it) {
-                is Child.OfLazy ->
-                    // reference the lazy object to invalidate it
-                    it.value
-
-                is Child.OfSink ->
-                    it.sink.invalidate()
-            }
-        }
+        registrations.forEach { it.value }
     }
 }
 
@@ -42,61 +19,54 @@ class LazyByRequest<T>(
         sink: LazySink,
         initializer: () -> T) {
 
-    val lazy = lazy(LazyThreadSafetyMode.SYNCHRONIZED, initializer)
+    val lazy = lazy<T>(LazyThreadSafetyMode.SYNCHRONIZED, initializer)
 
     init {
         sink.register(lazy)
     }
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        // Reference the value to invalidate it
+        // Access the value to invalidate it
         val value = lazy.value
+        //        require(lazy.isInitialized(), { "Failed to init lazy prop" })
+
+        //        println("[init] prop: '${property.name}' = `$value`")
         return value
     }
 }
 
 fun <T> lazyByRequest(sink: LazySink, initializer: () -> T) = LazyByRequest(sink, initializer)
 
-abstract class LazyGroup(
-        private val parent: LazyGroup? = null,
-        private val sink: LazySink = LazySink()) : Initializable {
+abstract class LazyGroup() : Initializable {
 
-    init {
-        parent?.register(this)
-    }
+    protected val sink = LazySink()
 
-    /**
-     * Property available for convince when attaching child `LazyGroups` to this parent group
-     */
-    protected val asChild = this
+    private val subgroups = arrayListOf<LazyGroup>()
 
     override fun init() {
+        subgroups.forEach { it.init() }
+
         sink.invalidate()
     }
 
-    protected fun <T> lazyByRequest(sink: LazySink, initializer: () -> T): LazyByRequest<T> {
-        return LazyByRequest(sink, initializer)
+    protected open fun <T> lazyByRequest(initializer: () -> T) =
+            LazyByRequest(sink, initializer)
+
+    protected fun add(group: LazyGroup) {
+        subgroups.add(group)
+    }
+}
+
+abstract class DelegatedLazyGroup(private val actualGroup: LazyGroup) : LazyGroup(), Initializable {
+
+    init {
+        actualGroup.add(this)
     }
 
-    protected inline fun <reified T> lazyByRequest(noinline initializer: () -> T): LazyByRequest<T> {
-        val clazz = T::class
-        val actualSink = onChooseSink(clazz)
-        return lazyByRequest(actualSink, initializer)
+    override fun init() {
+        actualGroup.init()
     }
 
-    fun register(child: LazySink) {
-        sink.register(child)
-    }
-
-    fun register(child: LazyGroup) {
-        register(child.sink)
-    }
-
-    /**
-     * Override this function if you want to filter `initializer` blocks to that you can register
-     * them to a different `LazySink` than the default one depending on the `initializer`'s type.
-     *
-     * Return a non-null `LazySink` to use that one instead of the default one for the `initializer`.
-     */
-    open fun onChooseSink(clazz: KClass<*>, defaultSink: LazySink = sink): LazySink = defaultSink
+    override fun <T> lazyByRequest(initializer: () -> T) =
+            LazyByRequest(actualGroup.sink, initializer)
 }

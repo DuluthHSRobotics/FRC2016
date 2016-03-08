@@ -8,8 +8,10 @@ import org.usfirst.frc5293.framework.controls.SingleAxisButtonControl
 import org.usfirst.frc5293.framework.controls.SingleAxisButtonInput
 import org.usfirst.frc5293.framework.controls.SingleAxisPowerSettings
 import org.usfirst.frc5293.framework.input.NullJoystick
+import org.usfirst.frc5293.framework.util.DelegatedLazyGroup
 import org.usfirst.frc5293.framework.util.LazyGroup
 import org.usfirst.frc5293.framework.util.LazySink
+import org.usfirst.frc5293.framework.util.Logging
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountControl
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountInput
 import org.usfirst.frc5293.impl.systems.camera.ringlight.CameraRingLightControl
@@ -23,25 +25,14 @@ import kotlin.reflect.KClass
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-object Controls : LazyGroup() {
-
-    private val commandSink = LazySink()
-
-    override fun onChooseSink(clazz: KClass<*>, defaultSink: LazySink): LazySink {
-        // filter anything that is a subclass of a command which needs to get registered separately
-        val isCommand = clazz.java.isAssignableFrom(Command::class.java)
-
-        return if (isCommand)
-            commandSink
-        else
-            defaultSink
-    }
+@Suppress("unused")
+object Controls : LazyGroup(), Logging {
 
     private val joystick1 by lazyByRequest { Joystick(0) }
     private val joystick2 by lazyByRequest { Joystick(1) }
     private val joystick3 by lazyByRequest { Joystick(2) }
 
-    object drivetrain : LazyGroup(asChild) {
+    object drivetrain : DelegatedLazyGroup(Controls) {
 
         val input by lazyByRequest {
             DualDrivetrainInput(
@@ -50,13 +41,14 @@ object Controls : LazyGroup() {
         }
 
         val control by lazyByRequest {
+            println("INIT DRIVE")
             DrivetrainTankControl(input)
         }
     }
 
-    object camera : LazyGroup(asChild) {
+    object camera : DelegatedLazyGroup(Controls) {
 
-        object mount : LazyGroup(asChild) {
+        object mount : DelegatedLazyGroup(camera) {
 
             val joystick by lazyByRequest {
                 NullJoystick
@@ -78,7 +70,7 @@ object Controls : LazyGroup() {
             }
         }
 
-        object ringLight: LazyGroup(asChild) {
+        object ringLight: DelegatedLazyGroup(camera) {
 
             val joystick by lazyByRequest {
                 NullJoystick
@@ -94,12 +86,16 @@ object Controls : LazyGroup() {
         }
     }
 
-    object shooter : LazyGroup(asChild) {
+    object shooter : DelegatedLazyGroup(Controls) {
 
-        object wheels : LazyGroup(asChild) {
+        object wheels : DelegatedLazyGroup(shooter) {
+
+            init {
+                println("======= !!! HAHA IT WORKS !!! ==========")
+            }
 
             val joystick by lazyByRequest {
-                joystick2
+                NullJoystick
             }
 
             val input by lazyByRequest {
@@ -118,10 +114,10 @@ object Controls : LazyGroup() {
             }
         }
 
-        object kicker : LazyGroup(asChild) {
+        object kicker : DelegatedLazyGroup(shooter) {
 
             val joystick by lazyByRequest {
-                joystick2
+                NullJoystick
             }
 
             val button by lazyByRequest {
@@ -133,7 +129,7 @@ object Controls : LazyGroup() {
             }
         }
 
-        object lifter : LazyGroup(asChild) {
+        object lifter : DelegatedLazyGroup(shooter) {
 
             val joystick = NullJoystick
 
@@ -147,10 +143,14 @@ object Controls : LazyGroup() {
         }
     }
 
-    object lifter : LazyGroup(asChild) {
+    object lifter : DelegatedLazyGroup(Controls) {
+
+        val joystick by lazyByRequest {
+            NullJoystick
+        }
 
         val button by lazyByRequest {
-            joystick3.button(10)
+            joystick.button(10)
         }
 
         val control by lazyByRequest {
@@ -159,19 +159,19 @@ object Controls : LazyGroup() {
     }
 
     private fun forEach(action: (Command) -> Unit) {
-        commandSink.registrations.forEach {
-            when (it) {
-                is Command -> action(it)
-            }
-        }
+        sink.registrations
+                .mapNotNull { it as? Command }
+                .forEach { action(it) }
     }
 
     fun startAll() {
-        forEach { it.start() }
+        this.forEach { it.start() }
+        logger.info("Started ${sink.registrations.count()} commands")
     }
 
     fun cancelAll() {
-        forEach { it.cancel() }
+        this.forEach { it.cancel() }
+        logger.info("Canceled ${sink.registrations.count()} commands")
     }
 }
 

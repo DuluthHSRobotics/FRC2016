@@ -1,5 +1,6 @@
 package org.usfirst.frc5293.impl
 
+import org.usfirst.frc5293.framework.util.DelegatedLazyGroup
 import org.usfirst.frc5293.framework.util.LazyGroup
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountSubsystem
 import org.usfirst.frc5293.impl.systems.camera.ringlight.CameraRingLightSubsystem
@@ -15,7 +16,7 @@ object Subsystems : LazyGroup() {
         DrivetrainSubsystem(Devices.drivetrain)
     }
 
-    object camera : LazyGroup(Subsystems) {
+    object camera : DelegatedLazyGroup(Subsystems) {
 
         val mount by lazyByRequest {
             CameraMountSubsystem(Devices.camera.mount)
@@ -26,7 +27,7 @@ object Subsystems : LazyGroup() {
         }
     }
 
-    object shooter : LazyGroup(Subsystems) {
+    object shooter : DelegatedLazyGroup(Subsystems) {
 
         val wheels by lazyByRequest {
             ShooterWheelsSubsystem(Devices.shooter.wheels)
