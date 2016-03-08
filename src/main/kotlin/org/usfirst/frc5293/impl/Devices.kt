@@ -4,15 +4,14 @@ import edu.wpi.first.wpilibj.*
 import edu.wpi.first.wpilibj.interfaces.Accelerometer
 import org.usfirst.frc5293.framework.devices.AccelerometerDevice
 import org.usfirst.frc5293.framework.devices.GyroDevice
-import org.usfirst.frc5293.framework.util.DelegatedLazyGroup
 import org.usfirst.frc5293.framework.util.LazyGroup
 import org.usfirst.frc5293.framework.util.makeInverted
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountDevice
 import org.usfirst.frc5293.impl.systems.camera.ringlight.CameraRingLightDevice
 import org.usfirst.frc5293.impl.systems.drivetrain.DrivetrainDevice
-import org.usfirst.frc5293.impl.systems.lift.LiftDevice
+import org.usfirst.frc5293.impl.systems.lifter.LifterDevice
 import org.usfirst.frc5293.impl.systems.shooter.kicker.ShooterKickerDevice
-import org.usfirst.frc5293.impl.systems.shooter.lift.ShooterLiftDevice
+import org.usfirst.frc5293.impl.systems.shooter.lifter.ShooterLifterDevice
 import org.usfirst.frc5293.impl.systems.shooter.limitswitch.ShooterBallLimitSwitchDevice
 import org.usfirst.frc5293.impl.systems.shooter.wheels.ShooterWheelsDevice
 
@@ -24,6 +23,14 @@ import org.usfirst.frc5293.impl.systems.shooter.wheels.ShooterWheelsDevice
  */
 object Devices : LazyGroup() {
 
+    private enum class ConfigSet {
+        PROTOTYPE,
+        COMPETITION
+    }
+
+    // TODO: Might want to refactor this somewhere else
+    private val currentConfig = ConfigSet.PROTOTYPE
+
     val drivetrain by lazyByRequest {
         DrivetrainDevice(
                 frontLeft = Talon(1).makeInverted(),
@@ -32,7 +39,7 @@ object Devices : LazyGroup() {
                 backRight = Talon(3).makeInverted())
     }
 
-    object camera : DelegatedLazyGroup(Devices) {
+    object camera : LazyGroup(Devices) {
         val mount by lazyByRequest {
             CameraMountDevice(
                     sideServo = Servo(5),
@@ -45,7 +52,7 @@ object Devices : LazyGroup() {
         }
     }
 
-    object shooter : DelegatedLazyGroup(Devices) {
+    object shooter : LazyGroup(Devices) {
 
         val wheels by lazyByRequest {
             ShooterWheelsDevice(
@@ -53,8 +60,8 @@ object Devices : LazyGroup() {
                     rightMotor = Victor(9))
         }
 
-        val lift by lazyByRequest {
-            ShooterLiftDevice(motor = Talon(6))
+        val lifter by lazyByRequest {
+            ShooterLifterDevice(motor = Talon(6))
         }
 
         val kicker by Devices.lazyByRequest {
@@ -69,16 +76,21 @@ object Devices : LazyGroup() {
     }
 
     val lift by lazyByRequest {
-//        LiftDevice(
-//                bottomMotor = CANTalon(0),
-//                topMotor = CANTalon(1))
-        LiftDevice(
-                bottomMotor = Talon(4),
-                topMotor = Talon(5)
-        )
+        when (currentConfig) {
+            ConfigSet.PROTOTYPE ->
+                LifterDevice(
+                        bottomMotor = Talon(4),
+                        topMotor = Talon(5)
+                )
+
+            ConfigSet.COMPETITION ->
+                LifterDevice(
+                        bottomMotor = CANTalon(0),
+                        topMotor = CANTalon(1))
+        }
     }
 
-    object sensors : DelegatedLazyGroup(Devices) {
+    object sensors : LazyGroup(Devices) {
 
         val builtInAccelerometer by lazyByRequest {
             AccelerometerDevice("Built-in Accelerometer",

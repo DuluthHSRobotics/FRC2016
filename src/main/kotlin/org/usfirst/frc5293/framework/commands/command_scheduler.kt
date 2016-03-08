@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.CommandGroup
 import edu.wpi.first.wpilibj.command.Subsystem
 import edu.wpi.first.wpilibj.command.WaitCommand
+import org.slf4j.LoggerFactory
 
 abstract class ScheduledCommandGroup : CommandGroup() {
 
@@ -12,7 +13,24 @@ abstract class ScheduledCommandGroup : CommandGroup() {
     protected fun schedule(block: CommandScheduler.() -> Unit) = this.schedule(ctx, block)
 }
 
+class DebugWaitCommand(val timeout: Double) : WaitCommand(timeout) {
+
+    private final val logger = LoggerFactory.getLogger(DebugWaitCommand::class.java)
+
+    override fun initialize() {
+        super.initialize()
+        logger.debug("Started waiting for $timeout seconds...")
+    }
+
+    override fun end() {
+        super.end()
+        logger.debug("Finished waiting for $timeout seconds.")
+    }
+}
+
 class CommandScheduler(private val group: CommandGroup, private val ctx: Ctx) {
+
+    private final val logger = LoggerFactory.getLogger(CommandScheduler::class.java)
 
     class Ctx(val onRequire: (Subsystem) -> Unit)
 
@@ -33,12 +51,16 @@ class CommandScheduler(private val group: CommandGroup, private val ctx: Ctx) {
         requirements += subsystem
     }
 
-    fun await(action: () -> Unit) {
+    fun awaitIgnored(action: () -> Unit) {
         sequence += Element.Sync(ActionCommand(action))
     }
 
+    fun await(action: () -> Command) {
+        sequence += Element.Sync(action())
+    }
+
     fun delay(seconds: Double) {
-        await { WaitCommand(seconds) }
+        await { DebugWaitCommand(seconds) }
     }
 
     fun schedule() {
@@ -52,7 +74,11 @@ class CommandScheduler(private val group: CommandGroup, private val ctx: Ctx) {
                 is Element.Sync -> group.addSequential(it.command)
                 is Element.Async -> group.addParallel(it.command)
             }
+
+            logger.debug("Scheduled `$it`")
         }
+
+        logger.debug("Scheduled ${sequence.count()} command elements")
 
         // note that the `CommandGroup` knows when it's finished
     }

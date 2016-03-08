@@ -1,7 +1,6 @@
 package org.usfirst.frc5293.impl.systems.drivetrain
 
 import org.usfirst.frc5293.framework.commands.EmptyCommand
-import org.usfirst.frc5293.impl.Inputs
 import org.usfirst.frc5293.impl.Subsystems
 
 class DrivetrainTankControl(private val input: DualDrivetrainInput) : EmptyCommand() {

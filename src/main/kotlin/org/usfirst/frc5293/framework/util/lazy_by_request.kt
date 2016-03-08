@@ -1,59 +1,102 @@
 package org.usfirst.frc5293.framework.util
 
+import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-class LazySource {
-    private val registrations: MutableList<Lazy<*>> = arrayListOf()
+class LazySink {
+    // Using an algebraic data type allows us to represent child lazy objects and sinks as the same
+    // thing so that we can keep the order the registrations
+
+    sealed class Child private constructor() { // private constructor to prevent creating more subclasses outside
+        class OfLazy(val value: Lazy<*>) : Child()
+        class OfSink(val sink: LazySink) : Child()
+    }
+
+    private val _registrations: MutableList<Child> = arrayListOf()
+
+    val registrations = _registrations.toList()
 
     fun <T> register(lazy: Lazy<T>) {
-        registrations.add(lazy)
+        _registrations.add(Child.OfLazy(lazy))
+    }
+
+    fun register(sink: LazySink) {
+        _registrations.add(Child.OfSink(sink))
     }
 
     fun invalidate() {
-        registrations.forEach { it.value }
+        _registrations.forEach {
+            when (it) {
+                is Child.OfLazy ->
+                    // reference the lazy object to invalidate it
+                    it.value
+
+                is Child.OfSink ->
+                    it.sink.invalidate()
+            }
+        }
     }
 }
 
 class LazyByRequest<T>(
-        source: LazySource,
+        sink: LazySink,
         initializer: () -> T) {
 
-    val lazy = lazy<T>(LazyThreadSafetyMode.SYNCHRONIZED, initializer)
+    val lazy = lazy(LazyThreadSafetyMode.SYNCHRONIZED, initializer)
 
     init {
-        source.register(lazy)
+        sink.register(lazy)
     }
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        // Access the value to invalidate it
+        // Reference the value to invalidate it
         val value = lazy.value
-//        require(lazy.isInitialized(), { "Failed to init lazy prop" })
-
-//        println("[init] prop: '${property.name}' = `$value`")
         return value
     }
 }
 
-fun <T> lazyByRequest(source: LazySource, initializer: () -> T) = LazyByRequest(source, initializer)
+fun <T> lazyByRequest(sink: LazySink, initializer: () -> T) = LazyByRequest(sink, initializer)
 
-abstract class LazyGroup() : Initializable {
+abstract class LazyGroup(
+        private val parent: LazyGroup? = null,
+        private val sink: LazySink = LazySink()) : Initializable {
 
-    protected val lazySource = LazySource()
-
-    override fun init() {
-        lazySource.invalidate()
+    init {
+        parent?.register(this)
     }
 
-    protected open fun <T> lazyByRequest(initializer: () -> T) =
-            LazyByRequest(lazySource, initializer)
-}
-
-abstract class DelegatedLazyGroup(private val actualGroup: LazyGroup) : LazyGroup(), Initializable {
+    /**
+     * Property available for convince when attaching child `LazyGroups` to this parent group
+     */
+    protected val asChild = this
 
     override fun init() {
-        actualGroup.init()
+        sink.invalidate()
     }
 
-    override fun <T> lazyByRequest(initializer: () -> T) =
-            LazyByRequest(actualGroup.lazySource, initializer)
+    protected fun <T> lazyByRequest(sink: LazySink, initializer: () -> T): LazyByRequest<T> {
+        return LazyByRequest(sink, initializer)
+    }
+
+    protected inline fun <reified T> lazyByRequest(noinline initializer: () -> T): LazyByRequest<T> {
+        val clazz = T::class
+        val actualSink = onChooseSink(clazz)
+        return lazyByRequest(actualSink, initializer)
+    }
+
+    fun register(child: LazySink) {
+        sink.register(child)
+    }
+
+    fun register(child: LazyGroup) {
+        register(child.sink)
+    }
+
+    /**
+     * Override this function if you want to filter `initializer` blocks to that you can register
+     * them to a different `LazySink` than the default one depending on the `initializer`'s type.
+     *
+     * Return a non-null `LazySink` to use that one instead of the default one for the `initializer`.
+     */
+    open fun onChooseSink(clazz: KClass<*>, defaultSink: LazySink = sink): LazySink = defaultSink
 }
