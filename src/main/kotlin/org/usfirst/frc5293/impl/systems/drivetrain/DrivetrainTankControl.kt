@@ -4,22 +4,18 @@ import org.usfirst.frc5293.framework.commands.EmptyCommand
 import org.usfirst.frc5293.impl.Inputs
 import org.usfirst.frc5293.impl.Subsystems
 
-class DrivetrainControl : EmptyCommand() {
+class DrivetrainTankControl(private val input: DualDrivetrainInput) : EmptyCommand() {
 
     init {
         requires(Subsystems.drivetrain)
     }
 
     override fun execute() {
-        Subsystems.drivetrain.driveArcade(
-                power = Inputs.drivetrain.powerJoystick.y,
-                rotation = Inputs.drivetrain.rotationJoystick.twist
+        Subsystems.drivetrain.driveTank(
+                leftPower = input.leftJoystick.y,
+                rightPower = input.rightJoystick.y
         )
     }
-
-//    private fun drive(state: TankDrivingState) {
-//        Subsystems.drivetrain.driveTank(state.left, state.right)
-//    }
 
     override fun end() {
         Subsystems.drivetrain.stop()

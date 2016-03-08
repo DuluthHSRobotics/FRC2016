@@ -2,12 +2,15 @@ package org.usfirst.frc5293.impl
 
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.buttons.JoystickButton
+import edu.wpi.first.wpilibj.command.Subsystem
 import org.usfirst.frc5293.framework.controls.MotorSubsystemControl
+import org.usfirst.frc5293.framework.controls.PushDownButtonControl
 import org.usfirst.frc5293.framework.input.NullJoystick
 import org.usfirst.frc5293.framework.util.LazyGroup
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountInput
 import org.usfirst.frc5293.impl.systems.camera.ringlight.CameraRingLightInput
-import org.usfirst.frc5293.impl.systems.drivetrain.DrivetrainArcadeInput
+import org.usfirst.frc5293.impl.systems.drivetrain.DrivetrainTankControl
+import org.usfirst.frc5293.impl.systems.drivetrain.DualDrivetrainInput
 import org.usfirst.frc5293.impl.systems.shooter.kicker.ShooterKickerInput
 import org.usfirst.frc5293.impl.systems.shooter.lift.ShooterLiftInput as ShooterLift
 
@@ -23,9 +26,12 @@ object Inputs : LazyGroup() {
     private val joystick3 by lazyByRequest { Joystick(2) }
 
     val drivetrain by lazyByRequest {
-        DrivetrainArcadeInput(
-                powerJoystick = joystick1,
-                rotationJoystick = joystick2)
+        val input =
+                DualDrivetrainInput(
+                    leftJoystick = joystick1,
+                    rightJoystick = joystick2)
+
+        val control = DrivetrainTankControl(input)
     }
 
     val camera by lazyByRequest {
@@ -45,7 +51,7 @@ object Inputs : LazyGroup() {
         val j = joystick2
 //        Shooter(inButton = j.button(3),
 //                outButton = j.button(5))
-        MotorSubsystemControl({ j.y }, Subsystems.shooter.wheels)
+//        MotorSubsystemControl({ j.y }, Subsystems.shooter.wheels)
     }
 
     val shooterKicker by lazyByRequest {
@@ -60,8 +66,8 @@ object Inputs : LazyGroup() {
     val shooterLifter by lazyByRequest {
         val j = NullJoystick
 
-        org.usfirst.frc5293.impl.systems.shooter.lift.ShooterLiftInput(
-                joystick = j)
+//        org.usfirst.frc5293.impl.systems.shooter.lift.ShooterLiftInput(
+//                joystick = j)
     }
 
     val lifter by lazyByRequest {
@@ -69,7 +75,18 @@ object Inputs : LazyGroup() {
 
 //        Lift(upButton = j.button(9),
 //             downButton = j.button(11))
-        MotorSubsystemControl({ j.y }, Subsystems.lift)
+        val x = object : PushDownButtonControl(j.button(11)) {
+            override val subsystems: List<Subsystem>
+                get() = listOf(Subsystems.lift)
+
+            override fun onPressed() {
+                Subsystems.lift.power = 1.0
+            }
+
+            override fun onReleased() {
+                Subsystems.lift.stop()
+            }
+        }
     }
 }
 

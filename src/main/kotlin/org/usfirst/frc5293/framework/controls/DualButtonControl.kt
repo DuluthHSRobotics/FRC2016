@@ -4,8 +4,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton
 import edu.wpi.first.wpilibj.command.Subsystem
 import org.usfirst.frc5293.framework.commands.SubsystemCommand
 import org.usfirst.frc5293.framework.subsystems.MotorSubsystem
+import org.usfirst.frc5293.impl.Devices
 
-class ToggleButtonControl<TSubsystem>(
+class DualButtonControl<TSubsystem>(
         val inButton: JoystickButton,
         val outButton: JoystickButton,
         val power: () -> Double,

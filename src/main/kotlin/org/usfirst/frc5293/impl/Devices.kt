@@ -69,8 +69,13 @@ object Devices : LazyGroup() {
     }
 
     val lift by lazyByRequest {
-        LiftDevice(bottomMotor = CANTalon(0),
-                topMotor = CANTalon(1))
+//        LiftDevice(
+//                bottomMotor = CANTalon(0),
+//                topMotor = CANTalon(1))
+        LiftDevice(
+                bottomMotor = Talon(4),
+                topMotor = Talon(5)
+        )
     }
 
     object sensors : DelegatedLazyGroup(Devices) {

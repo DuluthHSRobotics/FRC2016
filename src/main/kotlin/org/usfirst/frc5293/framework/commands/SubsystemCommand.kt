@@ -4,8 +4,11 @@ import edu.wpi.first.wpilibj.command.Subsystem
 
 abstract class SubsystemCommand : ActionCommand {
 
-    constructor(vararg subsystems: Subsystem) : super() {
+    constructor(subsystems: List<Subsystem>) : super() {
         subsystems.forEach { requires(it) }
+    }
+
+    constructor(vararg subsystems: Subsystem) : this(subsystems.asList()) {
     }
 }
 
