@@ -4,9 +4,8 @@ import org.usfirst.frc5293.framework.util.LazyGroup
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountSubsystem
 import org.usfirst.frc5293.impl.systems.camera.ringlight.CameraRingLightSubsystem
 import org.usfirst.frc5293.impl.systems.drivetrain.DrivetrainSubsystem
-import org.usfirst.frc5293.impl.systems.lifter.SpeedControllerSubsystem
+import org.usfirst.frc5293.framework.subsystems.MotorSubsystem
 import org.usfirst.frc5293.impl.systems.shooter.kicker.ShooterKickerSubsystem
-import org.usfirst.frc5293.impl.systems.shooter.lifter.ShooterLifterSubsystem
 import org.usfirst.frc5293.impl.systems.shooter.wheels.ShooterWheelsSubsystem
 
 object Subsystems : LazyGroup() {
@@ -38,17 +37,17 @@ object Subsystems : LazyGroup() {
         }
 
         val lifter by Subsystems.lazyByRequest {
-            ShooterLifterSubsystem(Devices.shooter.lifter)
+            MotorSubsystem(Devices.shooter.lifter)
         }
     }
 
     init { subgroups.add(shooter) }
 
     val winchMotor by Subsystems.lazyByRequest {
-        SpeedControllerSubsystem(Devices.lift.winchMotor)
+        MotorSubsystem(Devices.lifter.winchMotor.motor)
     }
 
     val windowMotor by Subsystems.lazyByRequest {
-        SpeedControllerSubsystem(Devices.lift.windowMotor)
+        MotorSubsystem(Devices.lifter.windowMotor.motor)
     }
 }

@@ -9,9 +9,9 @@ import org.usfirst.frc5293.framework.util.makeInverted
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountDevice
 import org.usfirst.frc5293.impl.systems.camera.ringlight.CameraRingLightDevice
 import org.usfirst.frc5293.impl.systems.drivetrain.DrivetrainDevice
-import org.usfirst.frc5293.impl.systems.lifter.LifterDevice
+import org.usfirst.frc5293.impl.systems.lifter.winchmotor.LifterWinchMotorDevice
+import org.usfirst.frc5293.impl.systems.lifter.windowmotor.LifterWindowMotorDevice
 import org.usfirst.frc5293.impl.systems.shooter.kicker.ShooterKickerDevice
-import org.usfirst.frc5293.impl.systems.shooter.lifter.ShooterLifterDevice
 import org.usfirst.frc5293.impl.systems.shooter.limitswitch.ShooterBallLimitSwitchDevice
 import org.usfirst.frc5293.impl.systems.shooter.wheels.ShooterWheelsDevice
 
@@ -86,20 +86,28 @@ object Devices : LazyGroup() {
 
     init { subgroups.add(shooter) }
 
-    val lift by lazyByRequest {
-        when (currentConfig) {
-            ConfigSet.PROTOTYPE ->
-                LifterDevice(
-                        winchMotor = Victor(4),
-                        windowMotor = Victor(5)
-                )
+    object lifter {
 
-            ConfigSet.COMPETITION ->
-                LifterDevice(
-                        winchMotor = CANTalon(0),
-                        windowMotor = CANTalon(1))
+        val winchMotor by Devices.lazyByRequest {
+            when (currentConfig) {
+                ConfigSet.COMPETITION ->
+                        LifterWinchMotorDevice(Victor(4))
+                ConfigSet.PROTOTYPE ->
+                        LifterWinchMotorDevice(CANTalon(0))
+            }
+        }
+
+        val windowMotor by Devices.lazyByRequest {
+            when (currentConfig) {
+                ConfigSet.COMPETITION ->
+                    LifterWindowMotorDevice(Victor(5))
+                ConfigSet.PROTOTYPE ->
+                    LifterWindowMotorDevice(CANTalon(1))
+            }
         }
     }
+
+    init { subgroups.add(lifter) }
 
     object sensors {
 

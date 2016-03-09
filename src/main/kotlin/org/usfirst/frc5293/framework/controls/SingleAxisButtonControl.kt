@@ -3,7 +3,7 @@ package org.usfirst.frc5293.framework.controls
 import edu.wpi.first.wpilibj.buttons.Button
 import edu.wpi.first.wpilibj.command.Subsystem
 import org.usfirst.frc5293.framework.commands.SubsystemCommand
-import org.usfirst.frc5293.framework.subsystems.MotorSubsystem
+import org.usfirst.frc5293.framework.subsystems.SpeedControllerSubsystem
 
 class SingleAxisButtonInput(
         val positiveButton: Button,
@@ -17,7 +17,7 @@ class SingleAxisButtonControl<TSubsystem>(
         val power: SingleAxisPowerSettings,
         val subsystem: TSubsystem)
             where TSubsystem : Subsystem,
-                  TSubsystem : MotorSubsystem {
+                  TSubsystem : SpeedControllerSubsystem {
 
     init {
         // Since each command will require the subsystem and is interruptible, when the other button

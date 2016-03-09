@@ -3,7 +3,7 @@ package org.usfirst.frc5293.framework.controls
 import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.Subsystem
 import org.usfirst.frc5293.framework.commands.EmptyCommand
-import org.usfirst.frc5293.framework.subsystems.MotorSubsystem
+import org.usfirst.frc5293.framework.subsystems.SpeedControllerSubsystem
 import org.usfirst.frc5293.framework.util.Logging
 
 open class RawMotorSubsystemControl<TSubsystem>(
@@ -12,7 +12,7 @@ open class RawMotorSubsystemControl<TSubsystem>(
         : EmptyCommand(), Logging
 
         where TSubsystem : Subsystem,
-              TSubsystem : MotorSubsystem {
+              TSubsystem : SpeedControllerSubsystem {
 
     init {
         requires(subsystem)
@@ -32,45 +32,41 @@ open class RawMotorSubsystemControl<TSubsystem>(
 class DeadzoneMotorSubsystemControl<TSubsystem>(
         private val input: () -> Double,
         private val subsystem: TSubsystem)
-        : RawMotorSubsystemControl<TSubsystem>(input, subsystem)
+        : RawMotorSubsystemControl<TSubsystem>(input, subsystem),
+          Logging
 
         where TSubsystem : Subsystem,
-              TSubsystem : MotorSubsystem {
+              TSubsystem : SpeedControllerSubsystem {
 
     override fun execute() {
+
         val deadzone = 0.15
         val value = input()
 
         if (Math.abs(value) > deadzone) {
             subsystem.power = value
+            logger.debug("execute() [power = $value]")
         } else {
             subsystem.stop()
+            logger.debug("execute() [power = 0.0]")
         }
     }
 }
 
-class HookedControl(private val isEnabled: () -> Boolean, val child: Command) : EmptyCommand() {
+class HookedControl(
+        private val isEnabled: () -> Boolean,
+        val child: Command)
+        : EmptyCommand(), Logging {
 
     // TODO: Kotlin's class by delegation is not really working right now...
 
-    override fun interrupted() {
-        child.interrupted()
-    }
-
-    override fun end() {
-        child.end()
-    }
-
     override fun execute() {
-        if (!isEnabled()) return
-        child.execute()
-    }
+        logger.debug("execute() [isEnabled() -> ${isEnabled()}]")
 
-    override fun isFinished(): Boolean {
-        return child.isFinished()
-    }
-
-    override fun initialize() {
-        child.initialize()
+        if (isEnabled()) {
+            child.start()
+        } else {
+            child.cancel()
+        }
     }
 }

@@ -180,7 +180,7 @@ object Controls : LazyGroup(), Logging {
         object windowMotor {
 
             val joystick by Controls.lazyByRequest {
-                joystick3
+                joystick2
             }
 
             val input by Controls.lazyByRequest {
@@ -190,15 +190,12 @@ object Controls : LazyGroup(), Logging {
                 )
             }
 
-            val power by Controls.lazyByRequest {
-                SingleAxisPowerSettings(
-                        positivePower = 1.0,
-                        negativePower = -1.0
-                )
+            val childControl by Controls.lazyByRequest {
+                DeadzoneMotorSubsystemControl({ joystick.twist }, Subsystems.windowMotor)
             }
 
             val control by Controls.lazyByRequest {
-                SingleAxisButtonControl(input, power, Subsystems.windowMotor)
+                HookedControl({ joystick.trigger }, childControl)
             }
         }
 
@@ -213,6 +210,7 @@ object Controls : LazyGroup(), Logging {
                 shooter.kicker.control,
                 shooter.lifter.control,
                 lifter.winchMotor.control,
+                lifter.windowMotor.childControl,
                 lifter.windowMotor.control)
     }
 

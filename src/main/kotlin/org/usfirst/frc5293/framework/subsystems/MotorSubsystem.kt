@@ -1,15 +1,17 @@
 package org.usfirst.frc5293.framework.subsystems
 
-interface MotorSubsystem : VariableSubsystem {
-    var power: Double
+import edu.wpi.first.wpilibj.SpeedController
+import org.usfirst.frc5293.framework.subsystems.EmptySubsytem
+import org.usfirst.frc5293.framework.subsystems.SpeedControllerSubsystem
 
-    override var value: Double
-        get() = power
-        set(value) {
-            power = value
-        }
+class MotorSubsystem(private val motor: SpeedController)
+    : EmptySubsytem(), SpeedControllerSubsystem {
 
-    fun stop() {
+    override var power: Double
+        get() = motor.get()
+        set(value) = motor.set(value)
+
+    override fun stop() {
         power = 0.0
     }
 }
