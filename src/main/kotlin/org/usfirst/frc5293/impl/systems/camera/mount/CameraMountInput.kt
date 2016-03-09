@@ -11,7 +11,7 @@ class CameraMountInput(
 
 class CameraMountControl(val input: CameraMountInput, val mount: CameraMountSubsystem) {
 
-    val engine = CameraEngine(input.x, input.y)
+    val engine by lazy { CameraEngine(input.x, input.y) }
 
     init {
         input.originButton.whenActive(SubsystemCommand(mount) {

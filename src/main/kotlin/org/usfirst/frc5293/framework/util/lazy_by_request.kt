@@ -19,7 +19,7 @@ class LazyByRequest<T>(
         sink: LazySink,
         initializer: () -> T) {
 
-    val lazy = lazy<T>(LazyThreadSafetyMode.SYNCHRONIZED, initializer)
+    val lazy = lazy<T>(initializer)
 
     init {
         sink.register(lazy)
@@ -41,32 +41,30 @@ abstract class LazyGroup() : Initializable {
 
     protected val sink = LazySink()
 
-    private val subgroups = arrayListOf<LazyGroup>()
+    protected val subgroups: MutableList<Any> = arrayListOf()
 
     override fun init() {
-        subgroups.forEach { it.init() }
-
         sink.invalidate()
     }
 
     protected open fun <T> lazyByRequest(initializer: () -> T) =
             LazyByRequest(sink, initializer)
 
-    protected fun add(group: LazyGroup) {
-        subgroups.add(group)
-    }
+//    protected fun add(group: LazyGroup) {
+//        subgroups.add(group)
+//    }
 }
 
-abstract class DelegatedLazyGroup(private val actualGroup: LazyGroup) : LazyGroup(), Initializable {
-
-    init {
-        actualGroup.add(this)
-    }
-
-    override fun init() {
-        actualGroup.init()
-    }
-
-    override fun <T> lazyByRequest(initializer: () -> T) =
-            LazyByRequest(actualGroup.sink, initializer)
-}
+//abstract class DelegatedLazyGroup(private val actualGroup: LazyGroup) : LazyGroup(), Initializable {
+//
+//    init {
+//        actualGroup.add(this)
+//    }
+//
+//    override fun init() {
+//        actualGroup.init()
+//    }
+//
+//    override fun <T> lazyByRequest(initializer: () -> T) =
+//            LazyByRequest(actualGroup.sink, initializer)
+//}

@@ -24,7 +24,7 @@ class Robot : IterativeRobot(), Logging {
      */
     override fun robotInit() {
         // The order of initialization is important!
-        val roots = listOf(Prefs, Devices, Subsystems)
+        val roots = listOf(Prefs, Devices, Subsystems, Controls)
         roots.forEach { it.init() }
 
         // create the command used for the autonomous period
@@ -44,7 +44,7 @@ class Robot : IterativeRobot(), Logging {
             autonomousCommand?.cancel()
         }
 
-//        Controls.cancelAll()
+        Controls.cancelAll()
     }
 
     override fun disabledPeriodic() {
@@ -73,7 +73,7 @@ class Robot : IterativeRobot(), Logging {
             autonomousCommand?.cancel()
         }
 
-//        Controls.startAll()
+        Controls.startAll()
     }
 
     /**

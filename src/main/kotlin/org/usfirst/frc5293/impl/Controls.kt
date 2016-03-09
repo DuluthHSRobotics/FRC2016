@@ -3,12 +3,13 @@ package org.usfirst.frc5293.impl
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.buttons.JoystickButton
 import edu.wpi.first.wpilibj.command.Command
+import edu.wpi.first.wpilibj.command.Scheduler
 import org.usfirst.frc5293.framework.controls.MotorSubsystemControl
 import org.usfirst.frc5293.framework.controls.SingleAxisButtonControl
 import org.usfirst.frc5293.framework.controls.SingleAxisButtonInput
 import org.usfirst.frc5293.framework.controls.SingleAxisPowerSettings
 import org.usfirst.frc5293.framework.input.NullJoystick
-import org.usfirst.frc5293.framework.util.DelegatedLazyGroup
+import org.usfirst.frc5293.framework.util.Initializable
 import org.usfirst.frc5293.framework.util.LazyGroup
 import org.usfirst.frc5293.framework.util.LazySink
 import org.usfirst.frc5293.framework.util.Logging
@@ -32,73 +33,81 @@ object Controls : LazyGroup(), Logging {
     private val joystick2 by lazyByRequest { Joystick(1) }
     private val joystick3 by lazyByRequest { Joystick(2) }
 
-    object drivetrain : DelegatedLazyGroup(Controls) {
+    object drivetrain {
 
-        val input by lazyByRequest {
+        val input by Controls.lazyByRequest {
             DualDrivetrainInput(
                     leftJoystick = joystick1,
                     rightJoystick = joystick2)
         }
 
-        val control by lazyByRequest {
-            println("INIT DRIVE")
+        val control by Controls.lazyByRequest {
+            println("INIT DRIVE IN CONTROLS")
             DrivetrainTankControl(input)
         }
     }
 
-    object camera : DelegatedLazyGroup(Controls) {
+    init { subgroups.add(drivetrain) }
 
-        object mount : DelegatedLazyGroup(camera) {
+    object camera {
 
-            val joystick by lazyByRequest {
+        object mount {
+
+            val joystick by Controls.lazyByRequest {
                 NullJoystick
             }
 
-            val originButton by lazyByRequest {
+            val originButton by Controls.lazyByRequest {
                 joystick.button(4) // TODO: Can't remember which button it is...
             }
 
-            val input by lazyByRequest {
+            val input by Controls.lazyByRequest {
                 CameraMountInput(
                         x = { joystick.twist },
                         y = { joystick.y},
                         originButton = originButton)
             }
 
-            val control by lazyByRequest {
+            val control by Controls.lazyByRequest {
                 CameraMountControl(input, Subsystems.camera.mount)
             }
         }
 
-        object ringLight: DelegatedLazyGroup(camera) {
+        init { Controls.subgroups.add(mount) }
 
-            val joystick by lazyByRequest {
+        object ringLight {
+
+            val joystick by Controls.lazyByRequest {
                 NullJoystick
             }
 
-            val input by lazyByRequest {
+            val input by Controls.lazyByRequest {
                 joystick.button(11)
             }
 
-            val control by lazyByRequest {
+            val control by Controls.lazyByRequest {
                 CameraRingLightControl(input, Subsystems.camera.ringLight)
             }
         }
+
+        init { Controls.subgroups.add(ringLight) }
     }
 
-    object shooter : DelegatedLazyGroup(Controls) {
+    init { Controls.subgroups.add(camera) }
 
-        object wheels : DelegatedLazyGroup(shooter) {
+    object shooter {
+
+        object wheels {
 
             init {
                 println("======= !!! HAHA IT WORKS !!! ==========")
             }
 
-            val joystick by lazyByRequest {
+            val joystick by Controls.lazyByRequest {
                 NullJoystick
             }
 
-            val input by lazyByRequest {
+            val input by Controls.lazyByRequest {
                 SingleAxisButtonInput(
                         positiveButton = joystick.button(3),
                         negativeButton = joystick.button(5))
@@ -109,69 +118,96 @@ object Controls : LazyGroup(), Logging {
                     negativePower = -0.3
             )
 
-            val control by lazyByRequest {
+            val control by Controls.lazyByRequest {
                 SingleAxisButtonControl(input, power, Subsystems.shooter.wheels)
             }
         }
 
-        object kicker : DelegatedLazyGroup(shooter) {
+        init { Controls.subgroups.add(wheels) }
 
-            val joystick by lazyByRequest {
+        object kicker {
+
+            val joystick by Controls.lazyByRequest {
                 NullJoystick
             }
 
-            val button by lazyByRequest {
+            val button by Controls.lazyByRequest {
                 joystick.button(10)
             }
 
-            val control by lazyByRequest {
+            val control by Controls.lazyByRequest {
                 ShooterKickerControl(button, Subsystems.shooter.kicker)
             }
         }
 
-        object lifter : DelegatedLazyGroup(shooter) {
+        init { Controls.subgroups.add(kicker) }
+
+        object lifter {
 
             val joystick = NullJoystick
 
-            val input by lazyByRequest {
+            val input by Controls.lazyByRequest {
                 { joystick.y }
             }
 
-            val control by lazyByRequest {
+            val control by Controls.lazyByRequest {
                 MotorSubsystemControl(input, Subsystems.shooter.lifter)
             }
         }
+
+        init { Controls.subgroups.add(lifter) }
     }
 
-    object lifter : DelegatedLazyGroup(Controls) {
+    init { Controls.subgroups.add(shooter) }
 
-        val joystick by lazyByRequest {
-            NullJoystick
+    object lifter {
+
+        val joystick by Controls.lazyByRequest {
+            joystick3
         }
 
-        val button by lazyByRequest {
-            joystick.button(10)
+        val button by Controls.lazyByRequest {
+            joystick.button(11)
         }
 
-        val control by lazyByRequest {
+        val control by Controls.lazyByRequest {
             LifterControl(button, Subsystems.lifter)
         }
     }
 
-    private fun forEach(action: (Command) -> Unit) {
-        sink.registrations
-                .mapNotNull { it as? Command }
-                .forEach { action(it) }
+    init { Controls.subgroups.add(lifter) }
+
+    val controls: List<*> by lazy {
+        listOf(drivetrain.control,
+                shooter.wheels.control,
+                shooter.kicker.control,
+                shooter.lifter.control,
+                lifter.control)
     }
 
     fun startAll() {
-        this.forEach { it.start() }
-        logger.info("Started ${sink.registrations.count()} commands")
+        controls.forEach {
+            if (it is Initializable) {
+                it.init()
+            }
+
+            if (it is Command) {
+                Scheduler.getInstance().add(it)
+            }
+        }
+
+        logger.info("Started ${controls.count()} commands")
     }
 
     fun cancelAll() {
-        this.forEach { it.cancel() }
-        logger.info("Canceled ${sink.registrations.count()} commands")
+        controls.forEach {
+            when (it) {
+                is Command ->
+                    it.cancel()
+            }
+        }
+
+        logger.info("Canceled ${controls.count()} commands")
     }
 }
 

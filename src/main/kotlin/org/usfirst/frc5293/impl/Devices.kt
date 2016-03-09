@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.*
 import edu.wpi.first.wpilibj.interfaces.Accelerometer
 import org.usfirst.frc5293.framework.devices.AccelerometerDevice
 import org.usfirst.frc5293.framework.devices.GyroDevice
-import org.usfirst.frc5293.framework.util.DelegatedLazyGroup
 import org.usfirst.frc5293.framework.util.LazyGroup
 import org.usfirst.frc5293.framework.util.makeInverted
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountDevice
@@ -42,8 +41,8 @@ object Devices : LazyGroup() {
                 backRight = Talon(3).makeInverted())
     }
 
-    object camera : DelegatedLazyGroup(Devices) {
-        val mount: CameraMountDevice? by lazyByRequest {
+    object camera {
+        val mount: CameraMountDevice? by Devices.lazyByRequest {
             if (isCameraEnabled) {
                 CameraMountDevice(
                         sideServo = Servo(5),
@@ -53,34 +52,38 @@ object Devices : LazyGroup() {
             }
         }
 
-        val ringLight by lazyByRequest {
+        val ringLight by Devices.lazyByRequest {
             CameraRingLightDevice(
                     relay = Relay(0, Relay.Direction.kForward))
         }
     }
 
-    object shooter : DelegatedLazyGroup(Devices) {
+    init { subgroups.add(camera) }
 
-        val wheels by lazyByRequest {
+    object shooter {
+
+        val wheels by Devices.lazyByRequest {
             ShooterWheelsDevice(
                     leftMotor = Victor(8).makeInverted(),
                     rightMotor = Victor(9))
         }
 
-        val lifter by lazyByRequest {
+        val lifter by Devices.lazyByRequest {
             ShooterLifterDevice(motor = Talon(6))
         }
 
-        val kicker by lazyByRequest {
+        val kicker by Devices.lazyByRequest {
             ShooterKickerDevice(
                     servo = Servo(7))
         }
 
-        val limitSwitch by lazyByRequest {
+        val limitSwitch by Devices.lazyByRequest {
             ShooterBallLimitSwitchDevice(
                     limitSwitch = DigitalInput(0))
         }
     }
+
+    init { subgroups.add(shooter) }
 
     val lift by lazyByRequest {
         when (currentConfig) {
@@ -97,21 +100,23 @@ object Devices : LazyGroup() {
         }
     }
 
-    object sensors : DelegatedLazyGroup(Devices) {
+    object sensors {
 
-        val builtInAccelerometer by lazyByRequest {
+        val builtInAccelerometer by Devices.lazyByRequest {
             AccelerometerDevice("Built-in Accelerometer",
                     BuiltInAccelerometer(Accelerometer.Range.k2G))
         }
 
-        val accelerometer by lazyByRequest {
+        val accelerometer by Devices.lazyByRequest {
             AccelerometerDevice("Extra Accelerometer",
                     ADXL345_SPI(SPI.Port.kOnboardCS0, Accelerometer.Range.k2G))
         }
 
-        val gyro by lazyByRequest {
+        val gyro by Devices.lazyByRequest {
             GyroDevice("Extra Gyro",
                     ADXRS450_Gyro(SPI.Port.kMXP))
         }
     }
+
+    init { subgroups.add(sensors) }
 }

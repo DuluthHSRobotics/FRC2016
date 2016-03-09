@@ -7,7 +7,7 @@ import org.usfirst.frc5293.framework.translations.operations.applyQuadScaling
 import org.usfirst.frc5293.framework.translations.util.OperationPipeline
 import org.usfirst.frc5293.framework.translations.util.Point
 
-object CameraPipeline : OperationPipeline<Point> {
+class CameraPipeline : OperationPipeline<Point> {
 
     override val operations: List<(Point) -> Point> = listOf(
             ::applyInverting,

@@ -26,8 +26,10 @@ class CameraMountSubsystem(private val camera: CameraMountDevice?) : EmptySubsyt
         val limitedX = xRotation.limit(0.0, 1.0)
         val limitedY = yRotation.limit(0.0, 1.0)
 
-        camera?.sideServo?.set(limitedX)
-        camera?.topServo?.set(limitedY)
+        if (camera != null) {
+            camera.sideServo.set(limitedX)
+            camera.topServo.set(limitedY)
+        }
     }
 
     fun positionRelative(rotationX: Double, rotationY: Double) {
