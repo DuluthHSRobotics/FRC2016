@@ -28,28 +28,29 @@ class SingleAxisButtonControl<TSubsystem>(
         // This saves you from having to implement basically a state-machine.
         //
 
-        input.positiveButton.whileHeld(object : SubsystemCommand(subsystem) {
-            override fun isInterruptible() = true
+        object : PushDownButtonControl(input.positiveButton) {
+            override val subsystems = listOf(subsystem)
 
-            override fun action() {
+            override fun onPressed() {
                 subsystem.power = power.positivePower
             }
 
-            override fun end() {
+            override fun onReleased() {
                 subsystem.stop()
             }
-        })
+        }.init()
 
-        input.negativeButton.whileHeld(object : SubsystemCommand(subsystem) {
-            override fun isInterruptible() = true
+        object : PushDownButtonControl(input.negativeButton) {
+            override val subsystems = listOf(subsystem)
 
-            override fun action() {
+            override fun onPressed() {
                 subsystem.power = power.negativePower
             }
 
-            override fun end() {
+            override fun onReleased() {
                 subsystem.stop()
             }
-        })
+
+        }.init()
     }
 }

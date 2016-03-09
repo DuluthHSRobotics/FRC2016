@@ -18,12 +18,10 @@ class LifterControl(
     override val subsystems = listOf(lifter)
 
     override fun onPressed() {
-        logger.debug("onPressed()")
         lifter.power = 1.0
     }
 
     override fun onReleased() {
-        logger.debug("onReleased()")
         lifter.stop()
     }
 }

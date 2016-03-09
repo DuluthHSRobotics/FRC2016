@@ -104,13 +104,13 @@ object Controls : LazyGroup(), Logging {
             }
 
             val joystick by Controls.lazyByRequest {
-                NullJoystick
+                joystick3
             }
 
             val input by Controls.lazyByRequest {
                 SingleAxisButtonInput(
-                        positiveButton = joystick.button(3),
-                        negativeButton = joystick.button(5))
+                        positiveButton = joystick.button(6),
+                        negativeButton = joystick.button(4))
             }
 
             val power = SingleAxisPowerSettings(
