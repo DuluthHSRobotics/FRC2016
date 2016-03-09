@@ -3,14 +3,17 @@ package org.usfirst.frc5293.impl.systems.lifter
 import edu.wpi.first.wpilibj.CANTalon
 import edu.wpi.first.wpilibj.SpeedController
 import org.usfirst.frc5293.framework.util.LiveWindowExt
+import org.usfirst.frc5293.framework.util.Logging
 
-class LifterDevice(val topMotor: SpeedController, val bottomMotor: SpeedController) {
+class LifterDevice(val windowMotor: SpeedController, val winchMotor: SpeedController): Logging {
 
     init {
-        LiveWindowExt.tryAddActuator("Lift", "Bottom Motor", bottomMotor)
+        logger.info("WINDOW MOTOR WHERE ARE YOU!?")
 
-        if (bottomMotor is CANTalon) {
-            bottomMotor.setVoltageRampRate(1.0 /* V/sec */)
+        LiveWindowExt.tryAddActuator("Lift", "Bottom Motor", winchMotor)
+
+        if (winchMotor is CANTalon) {
+            winchMotor.setVoltageRampRate(1.0 /* V/sec */)
         }
     }
 }

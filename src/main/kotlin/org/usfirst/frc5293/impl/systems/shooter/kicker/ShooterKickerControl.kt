@@ -3,6 +3,7 @@ package org.usfirst.frc5293.impl.systems.shooter.kicker
 import edu.wpi.first.wpilibj.buttons.Button
 import org.usfirst.frc5293.framework.commands.ScheduledCommandGroup
 import org.usfirst.frc5293.framework.util.Logging
+import org.usfirst.frc5293.impl.Prefs
 
 class ShooterKickerControl(val kickButton: Button, subsystem: ShooterKickerSubsystem) {
     init {
@@ -17,15 +18,15 @@ class ShooterKickerOnPressed(val kicker: ShooterKickerSubsystem) : ScheduledComm
             requires(kicker)
 
             awaitIgnored {
-                kicker.angle = 70.0
-                logger.debug("angle = 70 deg")
+                kicker.angle = Prefs.root.shooterKickerAngle.get()
+                logger.debug("angle = ${kicker.angle} deg")
             }
 
-            delay(seconds = 3.0)
+            delay(seconds = Prefs.root.shooterKickerDelay.get())
 
             awaitIgnored {
                 kicker.angle = 0.0
-                logger.debug("angle = 0 deg")
+                logger.debug("angle = ${kicker.angle} deg")
             }
         }
     }

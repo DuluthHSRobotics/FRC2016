@@ -1,13 +1,15 @@
 package org.usfirst.frc5293.framework.controls
 
+import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.Subsystem
 import org.usfirst.frc5293.framework.commands.EmptyCommand
 import org.usfirst.frc5293.framework.subsystems.MotorSubsystem
+import org.usfirst.frc5293.framework.util.Logging
 
-open class MotorSubsystemControl<TSubsystem>(
+open class RawMotorSubsystemControl<TSubsystem>(
         private val input: () -> Double,
         private val subsystem: TSubsystem)
-        : EmptyCommand()
+        : EmptyCommand(), Logging
 
         where TSubsystem : Subsystem,
               TSubsystem : MotorSubsystem {
@@ -17,18 +19,20 @@ open class MotorSubsystemControl<TSubsystem>(
     }
 
     override fun execute() {
+        logger.debug("execute() { input() -> ${input()}")
         subsystem.power = input()
     }
 
     override fun end() {
+        logger.debug("end()")
         subsystem.power = 0.0
     }
 }
 
-class MotorDeadzoneSubsystemControl<TSubsystem>(
+class DeadzoneMotorSubsystemControl<TSubsystem>(
         private val input: () -> Double,
         private val subsystem: TSubsystem)
-        : MotorSubsystemControl<TSubsystem>(input, subsystem)
+        : RawMotorSubsystemControl<TSubsystem>(input, subsystem)
 
         where TSubsystem : Subsystem,
               TSubsystem : MotorSubsystem {
@@ -42,5 +46,31 @@ class MotorDeadzoneSubsystemControl<TSubsystem>(
         } else {
             subsystem.stop()
         }
+    }
+}
+
+class HookedControl(private val isEnabled: () -> Boolean, val child: Command) : EmptyCommand() {
+
+    // TODO: Kotlin's class by delegation is not really working right now...
+
+    override fun interrupted() {
+        child.interrupted()
+    }
+
+    override fun end() {
+        child.end()
+    }
+
+    override fun execute() {
+        if (!isEnabled()) return
+        child.execute()
+    }
+
+    override fun isFinished(): Boolean {
+        return child.isFinished()
+    }
+
+    override fun initialize() {
+        child.initialize()
     }
 }

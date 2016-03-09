@@ -50,7 +50,6 @@ class SingleAxisButtonControl<TSubsystem>(
             override fun onReleased() {
                 subsystem.stop()
             }
-
         }.init()
     }
 }

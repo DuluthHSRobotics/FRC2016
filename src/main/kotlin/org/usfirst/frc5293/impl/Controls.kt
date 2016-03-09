@@ -4,10 +4,7 @@ import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.buttons.JoystickButton
 import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.Scheduler
-import org.usfirst.frc5293.framework.controls.MotorSubsystemControl
-import org.usfirst.frc5293.framework.controls.SingleAxisButtonControl
-import org.usfirst.frc5293.framework.controls.SingleAxisButtonInput
-import org.usfirst.frc5293.framework.controls.SingleAxisPowerSettings
+import org.usfirst.frc5293.framework.controls.*
 import org.usfirst.frc5293.framework.input.NullJoystick
 import org.usfirst.frc5293.framework.util.Initializable
 import org.usfirst.frc5293.framework.util.LazyGroup
@@ -18,7 +15,6 @@ import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountInput
 import org.usfirst.frc5293.impl.systems.camera.ringlight.CameraRingLightControl
 import org.usfirst.frc5293.impl.systems.drivetrain.DrivetrainTankControl
 import org.usfirst.frc5293.impl.systems.drivetrain.DualDrivetrainInput
-import org.usfirst.frc5293.impl.systems.lifter.LifterControl
 import org.usfirst.frc5293.impl.systems.shooter.kicker.ShooterKickerControl
 import kotlin.reflect.KClass
 
@@ -42,7 +38,6 @@ object Controls : LazyGroup(), Logging {
         }
 
         val control by Controls.lazyByRequest {
-            println("INIT DRIVE IN CONTROLS")
             DrivetrainTankControl(input)
         }
     }
@@ -99,10 +94,6 @@ object Controls : LazyGroup(), Logging {
 
         object wheels {
 
-            init {
-                println("======= !!! HAHA IT WORKS !!! ==========")
-            }
-
             val joystick by Controls.lazyByRequest {
                 joystick3
             }
@@ -128,11 +119,11 @@ object Controls : LazyGroup(), Logging {
         object kicker {
 
             val joystick by Controls.lazyByRequest {
-                NullJoystick
+                joystick3
             }
 
             val button by Controls.lazyByRequest {
-                joystick.button(10)
+                joystick.button(1)
             }
 
             val control by Controls.lazyByRequest {
@@ -144,14 +135,12 @@ object Controls : LazyGroup(), Logging {
 
         object lifter {
 
-            val joystick = NullJoystick
-
             val input by Controls.lazyByRequest {
-                { joystick.y }
+                { joystick3.y }
             }
 
             val control by Controls.lazyByRequest {
-                MotorSubsystemControl(input, Subsystems.shooter.lifter)
+                DeadzoneMotorSubsystemControl(input, Subsystems.shooter.lifter)
             }
         }
 
@@ -162,17 +151,58 @@ object Controls : LazyGroup(), Logging {
 
     object lifter {
 
-        val joystick by Controls.lazyByRequest {
-            joystick3
+        object winchMotor {
+            val joystick by Controls.lazyByRequest {
+                joystick3
+            }
+
+            val input by Controls.lazyByRequest {
+                SingleAxisButtonInput(
+                        positiveButton = joystick.button(9),
+                        negativeButton = joystick.button(11)
+                )
+            }
+
+            val power by Controls.lazyByRequest {
+                SingleAxisPowerSettings(
+                        positivePower = 1.0,
+                        negativePower = -1.0
+                )
+            }
+
+            val control by Controls.lazyByRequest {
+                SingleAxisButtonControl(input, power, Subsystems.winchMotor)
+            }
         }
 
-        val button by Controls.lazyByRequest {
-            joystick.button(11)
+        init { Controls.subgroups.add(winchMotor) }
+
+        object windowMotor {
+
+            val joystick by Controls.lazyByRequest {
+                joystick3
+            }
+
+            val input by Controls.lazyByRequest {
+                SingleAxisButtonInput(
+                        positiveButton = joystick.button(10),
+                        negativeButton = joystick.button(12)
+                )
+            }
+
+            val power by Controls.lazyByRequest {
+                SingleAxisPowerSettings(
+                        positivePower = 1.0,
+                        negativePower = -1.0
+                )
+            }
+
+            val control by Controls.lazyByRequest {
+                SingleAxisButtonControl(input, power, Subsystems.windowMotor)
+            }
         }
 
-        val control by Controls.lazyByRequest {
-            LifterControl(button, Subsystems.lifter)
-        }
+        init { Controls.subgroups.add(windowMotor) }
     }
 
     init { Controls.subgroups.add(lifter) }
@@ -182,7 +212,8 @@ object Controls : LazyGroup(), Logging {
                 shooter.wheels.control,
                 shooter.kicker.control,
                 shooter.lifter.control,
-                lifter.control)
+                lifter.winchMotor.control,
+                lifter.windowMotor.control)
     }
 
     fun startAll() {

@@ -69,7 +69,8 @@ object Devices : LazyGroup() {
         }
 
         val lifter by Devices.lazyByRequest {
-            ShooterLifterDevice(motor = Talon(6))
+            println("SHOOTER LIFTER DEVICE INIT!!!")
+            Victor(6)
         }
 
         val kicker by Devices.lazyByRequest {
@@ -89,14 +90,14 @@ object Devices : LazyGroup() {
         when (currentConfig) {
             ConfigSet.PROTOTYPE ->
                 LifterDevice(
-                        bottomMotor = Talon(4),
-                        topMotor = Talon(5)
+                        winchMotor = Victor(4),
+                        windowMotor = Victor(5)
                 )
 
             ConfigSet.COMPETITION ->
                 LifterDevice(
-                        bottomMotor = CANTalon(0),
-                        topMotor = CANTalon(1))
+                        winchMotor = CANTalon(0),
+                        windowMotor = CANTalon(1))
         }
     }
 

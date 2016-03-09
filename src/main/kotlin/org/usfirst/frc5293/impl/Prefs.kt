@@ -43,5 +43,17 @@ class Root : LazyGroup(), PrefGroup {
         x
     }
 
+    val shooterKickerAngle by lazyByRequest {
+        val x = DoublePref("Shooter Kicker Angle", 90.0)
+        all.add(x)
+        x
+    }
+
+    val shooterKickerDelay by lazyByRequest {
+        val x = DoublePref("Shooter Kicker Delay (secs)", 2.0)
+        all.add(x)
+        x
+    }
+
     override val all: MutableList<Pref<*>> = arrayListOf()
 }
