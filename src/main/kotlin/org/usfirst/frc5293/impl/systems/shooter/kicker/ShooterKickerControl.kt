@@ -1,8 +1,9 @@
 package org.usfirst.frc5293.impl.systems.shooter.kicker
 
 import edu.wpi.first.wpilibj.buttons.Button
-import org.slf4j.LoggerFactory
 import org.usfirst.frc5293.framework.commands.ScheduledCommandGroup
+import org.usfirst.frc5293.framework.util.Logging
+import org.usfirst.frc5293.impl.Prefs
 
 class ShooterKickerControl(val kickButton: Button, subsystem: ShooterKickerSubsystem) {
     init {
@@ -10,24 +11,22 @@ class ShooterKickerControl(val kickButton: Button, subsystem: ShooterKickerSubsy
     }
 }
 
-class ShooterKickerOnPressed(val kicker: ShooterKickerSubsystem) : ScheduledCommandGroup() {
-
-    private final val logger = LoggerFactory.getLogger(ShooterKickerOnPressed::class.java)
+class ShooterKickerOnPressed(val kicker: ShooterKickerSubsystem) : ScheduledCommandGroup(), Logging {
 
     init {
         schedule {
             requires(kicker)
 
             awaitIgnored {
-                kicker.angle = 70.0
-                logger.debug("angle = 70 deg")
+                kicker.angle = Prefs.root.shooterKickerAngle.get()
+                logger.debug("angle = ${kicker.angle} deg")
             }
 
-            delay(seconds = 3.0)
+            delay(seconds = Prefs.root.shooterKickerDelay.get())
 
             awaitIgnored {
                 kicker.angle = 0.0
-                logger.debug("angle = 0 deg")
+                logger.debug("angle = ${kicker.angle} deg")
             }
         }
     }

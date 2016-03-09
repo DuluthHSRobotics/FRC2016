@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.Scheduler
 import edu.wpi.first.wpilibj.livewindow.LiveWindow
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.usfirst.frc5293.framework.util.Logging
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-class Robot : IterativeRobot() {
+class Robot : IterativeRobot(), Logging {
 
     private var autonomousCommand: Command? = null
 
@@ -28,6 +29,8 @@ class Robot : IterativeRobot() {
 
         // create the command used for the autonomous period
         autonomousCommand = null // disable autonomous
+
+        logger.info("Successfully initialised robot")
     }
 
     /**

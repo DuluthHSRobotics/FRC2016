@@ -31,6 +31,8 @@ object Devices : LazyGroup() {
     // TODO: Might want to refactor this somewhere else
     private val currentConfig = ConfigSet.PROTOTYPE
 
+    private val isCameraEnabled = false
+
     val drivetrain by lazyByRequest {
         DrivetrainDevice(
                 frontLeft = Talon(1).makeInverted(),
@@ -39,29 +41,36 @@ object Devices : LazyGroup() {
                 backRight = Talon(3).makeInverted())
     }
 
-    object camera : LazyGroup(Devices) {
-        val mount by lazyByRequest {
-            CameraMountDevice(
-                    sideServo = Servo(5),
-                    topServo = Servo(4))
+    object camera {
+        val mount: CameraMountDevice? by Devices.lazyByRequest {
+            if (isCameraEnabled) {
+                CameraMountDevice(
+                        sideServo = Servo(5),
+                        topServo = Servo(4))
+            } else {
+                null
+            }
         }
 
-        val ringLight by lazyByRequest {
+        val ringLight by Devices.lazyByRequest {
             CameraRingLightDevice(
                     relay = Relay(0, Relay.Direction.kForward))
         }
     }
 
-    object shooter : LazyGroup(Devices) {
+    init { subgroups.add(camera) }
 
-        val wheels by lazyByRequest {
+    object shooter {
+
+        val wheels by Devices.lazyByRequest {
             ShooterWheelsDevice(
                     leftMotor = Victor(8).makeInverted(),
                     rightMotor = Victor(9))
         }
 
-        val lifter by lazyByRequest {
-            ShooterLifterDevice(motor = Talon(6))
+        val lifter by Devices.lazyByRequest {
+            println("SHOOTER LIFTER DEVICE INIT!!!")
+            Victor(6)
         }
 
         val kicker by Devices.lazyByRequest {
@@ -75,36 +84,40 @@ object Devices : LazyGroup() {
         }
     }
 
+    init { subgroups.add(shooter) }
+
     val lift by lazyByRequest {
         when (currentConfig) {
             ConfigSet.PROTOTYPE ->
                 LifterDevice(
-                        bottomMotor = Talon(4),
-                        topMotor = Talon(5)
+                        winchMotor = Victor(4),
+                        windowMotor = Victor(5)
                 )
 
             ConfigSet.COMPETITION ->
                 LifterDevice(
-                        bottomMotor = CANTalon(0),
-                        topMotor = CANTalon(1))
+                        winchMotor = CANTalon(0),
+                        windowMotor = CANTalon(1))
         }
     }
 
-    object sensors : LazyGroup(Devices) {
+    object sensors {
 
-        val builtInAccelerometer by lazyByRequest {
+        val builtInAccelerometer by Devices.lazyByRequest {
             AccelerometerDevice("Built-in Accelerometer",
                     BuiltInAccelerometer(Accelerometer.Range.k2G))
         }
 
-        val accelerometer by lazyByRequest {
+        val accelerometer by Devices.lazyByRequest {
             AccelerometerDevice("Extra Accelerometer",
                     ADXL345_SPI(SPI.Port.kOnboardCS0, Accelerometer.Range.k2G))
         }
 
-        val gyro by lazyByRequest {
+        val gyro by Devices.lazyByRequest {
             GyroDevice("Extra Gyro",
                     ADXRS450_Gyro(SPI.Port.kMXP))
         }
     }
+
+    init { subgroups.add(sensors) }
 }

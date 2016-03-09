@@ -4,7 +4,7 @@ import org.usfirst.frc5293.framework.util.LazyGroup
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountSubsystem
 import org.usfirst.frc5293.impl.systems.camera.ringlight.CameraRingLightSubsystem
 import org.usfirst.frc5293.impl.systems.drivetrain.DrivetrainSubsystem
-import org.usfirst.frc5293.impl.systems.lifter.LifterSubsystem
+import org.usfirst.frc5293.impl.systems.lifter.SpeedControllerSubsystem
 import org.usfirst.frc5293.impl.systems.shooter.kicker.ShooterKickerSubsystem
 import org.usfirst.frc5293.impl.systems.shooter.lifter.ShooterLifterSubsystem
 import org.usfirst.frc5293.impl.systems.shooter.wheels.ShooterWheelsSubsystem
@@ -15,33 +15,40 @@ object Subsystems : LazyGroup() {
         DrivetrainSubsystem(Devices.drivetrain)
     }
 
-    object camera : LazyGroup(Subsystems) {
-
-        val mount by lazyByRequest {
+    object camera {
+        val mount by Subsystems.lazyByRequest {
             CameraMountSubsystem(Devices.camera.mount)
         }
 
-        val ringLight by lazyByRequest {
+        val ringLight by Subsystems.lazyByRequest {
             CameraRingLightSubsystem(Devices.camera.ringLight)
         }
     }
 
-    object shooter : LazyGroup(Subsystems) {
+    init { subgroups.add(camera) }
 
-        val wheels by lazyByRequest {
+    object shooter {
+
+        val wheels by Subsystems.lazyByRequest {
             ShooterWheelsSubsystem(Devices.shooter.wheels)
         }
 
-        val kicker by lazyByRequest {
+        val kicker by Subsystems.lazyByRequest {
             ShooterKickerSubsystem(Devices.shooter.kicker)
         }
 
-        val lifter by lazyByRequest {
+        val lifter by Subsystems.lazyByRequest {
             ShooterLifterSubsystem(Devices.shooter.lifter)
         }
     }
 
-    val lifter by lazyByRequest {
-        LifterSubsystem(Devices.lift)
+    init { subgroups.add(shooter) }
+
+    val winchMotor by Subsystems.lazyByRequest {
+        SpeedControllerSubsystem(Devices.lift.winchMotor)
+    }
+
+    val windowMotor by Subsystems.lazyByRequest {
+        SpeedControllerSubsystem(Devices.lift.windowMotor)
     }
 }

@@ -3,7 +3,7 @@ package org.usfirst.frc5293.impl.systems.camera.mount
 import org.usfirst.frc5293.framework.subsystems.EmptySubsytem
 import org.usfirst.frc5293.framework.util.math.limit
 
-class CameraMountSubsystem(private val camera: CameraMountDevice) : EmptySubsytem() {
+class CameraMountSubsystem(private val camera: CameraMountDevice?) : EmptySubsytem() {
 
     var originX = 0.5
         set(originX) {
@@ -26,8 +26,10 @@ class CameraMountSubsystem(private val camera: CameraMountDevice) : EmptySubsyte
         val limitedX = xRotation.limit(0.0, 1.0)
         val limitedY = yRotation.limit(0.0, 1.0)
 
-        camera.sideServo.set(limitedX)
-        camera.topServo.set(limitedY)
+        if (camera != null) {
+            camera.sideServo.set(limitedX)
+            camera.topServo.set(limitedY)
+        }
     }
 
     fun positionRelative(rotationX: Double, rotationY: Double) {

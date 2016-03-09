@@ -4,5 +4,6 @@ import edu.wpi.first.wpilibj.command.Subsystem
 
 abstract class EmptySubsytem : Subsystem() {
     override fun initDefaultCommand() {
+        defaultCommand = null
     }
 }
