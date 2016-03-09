@@ -31,7 +31,7 @@ object Devices : LazyGroup() {
     // TODO: Might want to refactor this somewhere else
     private val currentConfig = ConfigSet.PROTOTYPE
 
-    private val isCameraEnabled = false
+//    private val isCameraEnabled = false
 
     val drivetrain by lazyByRequest {
         DrivetrainDevice(
