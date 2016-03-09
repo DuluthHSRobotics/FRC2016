@@ -11,14 +11,12 @@ class ShooterKickerSubsystem(kicker: ShooterKickerDevice) : EmptySubsytem(), Ser
     override var value: Double
         get() = servo.get()
         set(x) {
-            SmartDashboard.putNumber("Shooter Kicker", x)
             servo.set(x)
         }
 
     override var angle: Double
         get() = servo.angle
         set(angle) {
-            SmartDashboard.putNumber("Shooter Kicker Angle", angle)
             servo.angle = angle
         }
 }

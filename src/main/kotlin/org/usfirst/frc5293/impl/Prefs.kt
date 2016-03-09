@@ -28,32 +28,25 @@ object Prefs : LazyGroup() {
     }
 }
 
-class Root : LazyGroup(), PrefGroup {
-    // ... there is nothing really here
-
-    val shooterLiftSpeed by lazyByRequest {
-        val x = DoublePref("Shooter Lift Power", 0.50)
-        all.add(x)
-        x
-    }
-
-    val shooterWheelSpeed by lazyByRequest {
-        val x = DoublePref("Shooter Wheel Power", 1.0)
-        all.add(x)
-        x
-    }
-
-    val shooterKickerAngle by lazyByRequest {
-        val x = DoublePref("Shooter Kicker Angle", 90.0)
-        all.add(x)
-        x
-    }
-
-    val shooterKickerDelay by lazyByRequest {
-        val x = DoublePref("Shooter Kicker Delay (secs)", 2.0)
-        all.add(x)
-        x
-    }
+class Root: PrefGroup {
 
     override val all: MutableList<Pref<*>> = arrayListOf()
+
+    val winchSpeedScale = {
+        val x = DoublePref("[Pref] Winch Speed Scale", 0.2)
+        all.add(x)
+        x
+    }()
+
+    val shooterKickerAngle = {
+        val x = DoublePref("[Pref] Shooter Kicker Angle", 90.0)
+        all.add(x)
+        x
+    }()
+
+    val shooterKickerDelay = {
+        val x = DoublePref("[Pref] Shooter Kicker Delay (secs)", 2.0)
+        all.add(x)
+        x
+    }()
 }

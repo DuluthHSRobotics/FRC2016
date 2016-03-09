@@ -43,13 +43,14 @@ object Devices : LazyGroup() {
 
     object camera {
         val mount: CameraMountDevice? by Devices.lazyByRequest {
-            if (isCameraEnabled) {
-                CameraMountDevice(
-                        sideServo = Servo(5),
-                        topServo = Servo(4))
-            } else {
-                null
-            }
+//            if (isCameraEnabled) {
+//                CameraMountDevice(
+//                        sideServo = Servo(5),
+//                        topServo = Servo(4))
+//            } else {
+//                null
+//            }
+            null
         }
 
         val ringLight by Devices.lazyByRequest {
@@ -69,7 +70,6 @@ object Devices : LazyGroup() {
         }
 
         val lifter by Devices.lazyByRequest {
-            println("SHOOTER LIFTER DEVICE INIT!!!")
             Victor(6)
         }
 
@@ -90,18 +90,18 @@ object Devices : LazyGroup() {
 
         val winchMotor by Devices.lazyByRequest {
             when (currentConfig) {
-                ConfigSet.COMPETITION ->
-                        LifterWinchMotorDevice(Victor(4))
                 ConfigSet.PROTOTYPE ->
+                        LifterWinchMotorDevice(Victor(4))
+                ConfigSet.COMPETITION ->
                         LifterWinchMotorDevice(CANTalon(0))
             }
         }
 
         val windowMotor by Devices.lazyByRequest {
             when (currentConfig) {
-                ConfigSet.COMPETITION ->
-                    LifterWindowMotorDevice(Victor(5))
                 ConfigSet.PROTOTYPE ->
+                    LifterWindowMotorDevice(Victor(5))
+                ConfigSet.COMPETITION ->
                     LifterWindowMotorDevice(CANTalon(1))
             }
         }

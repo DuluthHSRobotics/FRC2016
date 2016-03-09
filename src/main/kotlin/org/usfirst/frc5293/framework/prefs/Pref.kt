@@ -14,6 +14,8 @@ abstract class Pref<T>(
      */
     abstract fun get(): T
 
+    operator fun invoke() = get()
+
     /**
      * Updates the current preference value
      * @param value the value to set

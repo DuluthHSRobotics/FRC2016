@@ -26,12 +26,7 @@ class LazyByRequest<T>(
     }
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        // Access the value to invalidate it
-        val value = lazy.value
-        //        require(lazy.isInitialized(), { "Failed to init lazy prop" })
-
-        //        println("[init] prop: '${property.name}' = `$value`")
-        return value
+        return lazy.value
     }
 }
 

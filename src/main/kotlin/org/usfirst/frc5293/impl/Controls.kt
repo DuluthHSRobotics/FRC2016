@@ -190,12 +190,25 @@ object Controls : LazyGroup(), Logging {
                 )
             }
 
+            val controlInput by Controls.lazyByRequest {
+                {
+                    val raw = joystick.twist
+                    val power = if (Math.abs(raw) > 0.10) raw else 0.0
+                    val scale = Prefs.root.winchSpeedScale.get()
+                    power * scale
+                }
+            }
+
             val childControl by Controls.lazyByRequest {
-                DeadzoneMotorSubsystemControl({ joystick.twist }, Subsystems.windowMotor)
+                RawMotorSubsystemControl(controlInput, Subsystems.windowMotor)
+            }
+
+            val button by Controls.lazyByRequest {
+                joystick.button(1)
             }
 
             val control by Controls.lazyByRequest {
-                HookedControl({ joystick.trigger }, childControl)
+                HookedControl({ button.get() }, childControl)
             }
         }
 

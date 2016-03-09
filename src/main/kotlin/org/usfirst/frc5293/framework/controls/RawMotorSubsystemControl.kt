@@ -27,6 +27,11 @@ open class RawMotorSubsystemControl<TSubsystem>(
         logger.debug("end()")
         subsystem.power = 0.0
     }
+
+    override fun interrupted() {
+        logger.debug("interrupted()")
+        subsystem.power = 0.0
+    }
 }
 
 class DeadzoneMotorSubsystemControl<TSubsystem>(
