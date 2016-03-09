@@ -216,7 +216,12 @@ object Controls : LazyGroup(), Logging {
                 lifter.windowMotor.control)
     }
 
-    fun startAll() {
+    override fun init() {
+        super.init()
+        initCommands()
+    }
+
+    private fun initCommands() {
         controls.forEach {
             if (it is Initializable) {
                 it.init()
@@ -224,6 +229,14 @@ object Controls : LazyGroup(), Logging {
 
             if (it is Command) {
                 Scheduler.getInstance().add(it)
+            }
+        }
+    }
+
+    fun startAll() {
+        controls.forEach {
+            if (it is Command) {
+                it.start()
             }
         }
 
