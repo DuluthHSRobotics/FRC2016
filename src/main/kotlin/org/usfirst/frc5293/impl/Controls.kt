@@ -8,21 +8,20 @@ import org.usfirst.frc5293.framework.controls.*
 import org.usfirst.frc5293.framework.input.NullJoystick
 import org.usfirst.frc5293.framework.util.Initializable
 import org.usfirst.frc5293.framework.util.LazyGroup
-import org.usfirst.frc5293.framework.util.LazySink
 import org.usfirst.frc5293.framework.util.Logging
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountControl
 import org.usfirst.frc5293.impl.systems.camera.mount.CameraMountInput
 import org.usfirst.frc5293.impl.systems.camera.ringlight.CameraRingLightControl
+import org.usfirst.frc5293.impl.systems.drivetrain.DrivetrainArcadeControl
+import org.usfirst.frc5293.impl.systems.drivetrain.DrivetrainModeControl
 import org.usfirst.frc5293.impl.systems.drivetrain.DrivetrainTankControl
 import org.usfirst.frc5293.impl.systems.drivetrain.DualDrivetrainInput
 import org.usfirst.frc5293.impl.systems.shooter.kicker.ShooterKickerControl
-import kotlin.reflect.KClass
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-@Suppress("unused")
 object Controls : LazyGroup(), Logging {
 
     private val joystick1 by lazyByRequest { Joystick(0) }
@@ -37,8 +36,25 @@ object Controls : LazyGroup(), Logging {
                     rightJoystick = joystick2)
         }
 
-        val control by Controls.lazyByRequest {
+        val tankControl by Controls.lazyByRequest {
             DrivetrainTankControl(input)
+        }
+
+        val arcadeControl by Controls.lazyByRequest {
+            DrivetrainArcadeControl(input)
+        }
+
+        val modeButton by Controls.lazyByRequest {
+            joystick1.button(3)
+        }
+
+        val modeControl by Controls.lazyByRequest {
+            DrivetrainModeControl(
+                    arcadeCommand = arcadeControl,
+                    tankCommand = tankControl,
+                    button = modeButton,
+                    drive = Subsystems.drivetrain
+            )
         }
     }
 
@@ -218,7 +234,9 @@ object Controls : LazyGroup(), Logging {
     init { Controls.subgroups.add(lifter) }
 
     val controls: List<*> by lazy {
-        listOf(drivetrain.control,
+        listOf(drivetrain.tankControl,
+                drivetrain.arcadeControl,
+                drivetrain.modeControl,
                 shooter.wheels.control,
                 shooter.kicker.control,
                 shooter.lifter.control,
@@ -264,6 +282,7 @@ object Controls : LazyGroup(), Logging {
 
         logger.info("Canceled ${controls.count()} commands")
     }
+
 }
 
 fun Joystick.button(buttonNumber: Int) = JoystickButton(this, buttonNumber)

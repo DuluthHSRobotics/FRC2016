@@ -50,10 +50,10 @@ class DeadzoneMotorSubsystemControl<TSubsystem>(
 
         if (Math.abs(value) > deadzone) {
             subsystem.power = value
-            logger.debug("execute() [power = $value]")
+//            logger.debug("execute() [power = $value]")
         } else {
             subsystem.stop()
-            logger.debug("execute() [power = 0.0]")
+//            logger.debug("execute() [power = 0.0]")
         }
     }
 }
@@ -66,7 +66,7 @@ class HookedControl(
     // TODO: Kotlin's class by delegation is not really working right now...
 
     override fun execute() {
-        logger.debug("execute() [isEnabled() -> ${isEnabled()}]")
+//        logger.debug("execute() [isEnabled() -> ${isEnabled()}]")
 
         if (isEnabled()) {
             child.start()
