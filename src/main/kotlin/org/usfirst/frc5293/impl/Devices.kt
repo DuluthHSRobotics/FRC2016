@@ -43,13 +43,6 @@ object Devices : LazyGroup() {
 
     object camera {
         val mount: CameraMountDevice? by Devices.lazyByRequest {
-//            if (isCameraEnabled) {
-//                CameraMountDevice(
-//                        sideServo = Servo(5),
-//                        topServo = Servo(4))
-//            } else {
-//                null
-//            }
             null
         }
 

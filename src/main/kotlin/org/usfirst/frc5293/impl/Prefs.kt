@@ -10,7 +10,9 @@ object Prefs : LazyGroup() {
     // TOOD: Have global switch to completely disable the remote settings if we need to
     val root by lazyByRequest { Root() }
 
-    val groups by lazyByRequest { listOf(root) }
+    val autonomous by lazyByRequest { AutonomousPrefs() }
+
+    val groups by lazyByRequest { listOf(root, autonomous) }
 
     override fun init() {
         super.init()
@@ -46,6 +48,23 @@ class Root: PrefGroup {
 
     val shooterKickerDelay = {
         val x = DoublePref("[Pref] Shooter Kicker Delay (secs)", 2.0)
+        all.add(x)
+        x
+    }()
+}
+
+class AutonomousPrefs: PrefGroup {
+
+    override val all: MutableList<Pref<*>> = arrayListOf()
+
+    val drivePower = {
+        val x = DoublePref("[Pref] Auto - Drive Power", 0.5)
+        all.add(x)
+        x
+    }()
+
+    val driveTime = {
+        val x = DoublePref("[Pref] Auto - Drive Time (secs)", 1.0)
         all.add(x)
         x
     }()

@@ -22,7 +22,7 @@ import org.usfirst.frc5293.impl.systems.shooter.kicker.ShooterKickerControl
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-object Controls : LazyGroup(), Logging {
+object TeleopControls : LazyControlGroup(), Logging {
 
     private val joystick1 by lazyByRequest { Joystick(0) }
     private val joystick2 by lazyByRequest { Joystick(1) }
@@ -30,25 +30,25 @@ object Controls : LazyGroup(), Logging {
 
     object drivetrain {
 
-        val input by Controls.lazyByRequest {
+        val input by TeleopControls.lazyByRequest {
             DualDrivetrainInput(
                     leftJoystick = joystick1,
                     rightJoystick = joystick2)
         }
 
-        val tankControl by Controls.lazyByRequest {
+        val tankControl by TeleopControls.lazyByRequest {
             DrivetrainTankControl(input)
         }
 
-        val arcadeControl by Controls.lazyByRequest {
+        val arcadeControl by TeleopControls.lazyByRequest {
             DrivetrainArcadeControl(input)
         }
 
-        val modeButton by Controls.lazyByRequest {
+        val modeButton by TeleopControls.lazyByRequest {
             joystick1.button(3)
         }
 
-        val modeControl by Controls.lazyByRequest {
+        val modeControl by TeleopControls.lazyByRequest {
             DrivetrainModeControl(
                     arcadeCommand = arcadeControl,
                     tankCommand = tankControl,
@@ -64,57 +64,57 @@ object Controls : LazyGroup(), Logging {
 
         object mount {
 
-            val joystick by Controls.lazyByRequest {
+            val joystick by TeleopControls.lazyByRequest {
                 NullJoystick
             }
 
-            val originButton by Controls.lazyByRequest {
+            val originButton by TeleopControls.lazyByRequest {
                 joystick.button(4) // TODO: Can't remember which button it is...
             }
 
-            val input by Controls.lazyByRequest {
+            val input by TeleopControls.lazyByRequest {
                 CameraMountInput(
                         x = { joystick.twist },
                         y = { joystick.y},
                         originButton = originButton)
             }
 
-            val control by Controls.lazyByRequest {
+            val control by TeleopControls.lazyByRequest {
                 CameraMountControl(input, Subsystems.camera.mount)
             }
         }
 
-        init { Controls.subgroups.add(mount) }
+        init { TeleopControls.subgroups.add(mount) }
 
         object ringLight {
 
-            val joystick by Controls.lazyByRequest {
+            val joystick by TeleopControls.lazyByRequest {
                 NullJoystick
             }
 
-            val input by Controls.lazyByRequest {
+            val input by TeleopControls.lazyByRequest {
                 joystick.button(11)
             }
 
-            val control by Controls.lazyByRequest {
+            val control by TeleopControls.lazyByRequest {
                 CameraRingLightControl(input, Subsystems.camera.ringLight)
             }
         }
 
-        init { Controls.subgroups.add(ringLight) }
+        init { TeleopControls.subgroups.add(ringLight) }
     }
 
-    init { Controls.subgroups.add(camera) }
+    init { TeleopControls.subgroups.add(camera) }
 
     object shooter {
 
         object wheels {
 
-            val joystick by Controls.lazyByRequest {
+            val joystick by TeleopControls.lazyByRequest {
                 joystick3
             }
 
-            val input by Controls.lazyByRequest {
+            val input by TeleopControls.lazyByRequest {
                 SingleAxisButtonInput(
                         positiveButton = joystick.button(6),
                         negativeButton = joystick.button(4))
@@ -125,88 +125,88 @@ object Controls : LazyGroup(), Logging {
                     negativePower = -0.3
             )
 
-            val control by Controls.lazyByRequest {
+            val control by TeleopControls.lazyByRequest {
                 SingleAxisButtonControl(input, power, Subsystems.shooter.wheels)
             }
         }
 
-        init { Controls.subgroups.add(wheels) }
+        init { TeleopControls.subgroups.add(wheels) }
 
         object kicker {
 
-            val joystick by Controls.lazyByRequest {
+            val joystick by TeleopControls.lazyByRequest {
                 joystick3
             }
 
-            val button by Controls.lazyByRequest {
+            val button by TeleopControls.lazyByRequest {
                 joystick.button(1)
             }
 
-            val control by Controls.lazyByRequest {
+            val control by TeleopControls.lazyByRequest {
                 ShooterKickerControl(button, Subsystems.shooter.kicker)
             }
         }
 
-        init { Controls.subgroups.add(kicker) }
+        init { TeleopControls.subgroups.add(kicker) }
 
         object lifter {
 
-            val input by Controls.lazyByRequest {
+            val input by TeleopControls.lazyByRequest {
                 { joystick3.y }
             }
 
-            val control by Controls.lazyByRequest {
+            val control by TeleopControls.lazyByRequest {
                 DeadzoneMotorSubsystemControl(input, Subsystems.shooter.lifter)
             }
         }
 
-        init { Controls.subgroups.add(lifter) }
+        init { TeleopControls.subgroups.add(lifter) }
     }
 
-    init { Controls.subgroups.add(shooter) }
+    init { TeleopControls.subgroups.add(shooter) }
 
     object lifter {
 
         object winchMotor {
-            val joystick by Controls.lazyByRequest {
+            val joystick by TeleopControls.lazyByRequest {
                 joystick3
             }
 
-            val input by Controls.lazyByRequest {
+            val input by TeleopControls.lazyByRequest {
                 SingleAxisButtonInput(
                         positiveButton = joystick.button(9),
                         negativeButton = joystick.button(11)
                 )
             }
 
-            val power by Controls.lazyByRequest {
+            val power by TeleopControls.lazyByRequest {
                 SingleAxisPowerSettings(
                         positivePower = 1.0,
                         negativePower = -1.0
                 )
             }
 
-            val control by Controls.lazyByRequest {
+            val control by TeleopControls.lazyByRequest {
                 SingleAxisButtonControl(input, power, Subsystems.winchMotor)
             }
         }
 
-        init { Controls.subgroups.add(winchMotor) }
+        init { TeleopControls.subgroups.add(winchMotor) }
 
         object windowMotor {
 
-            val joystick by Controls.lazyByRequest {
+            val joystick by TeleopControls.lazyByRequest {
                 joystick2
             }
 
-            val input by Controls.lazyByRequest {
+            val input by TeleopControls.lazyByRequest {
                 SingleAxisButtonInput(
                         positiveButton = joystick.button(10),
                         negativeButton = joystick.button(12)
                 )
             }
 
-            val controlInput by Controls.lazyByRequest {
+            val controlInput by TeleopControls.lazyByRequest {
                 {
                     val raw = joystick.twist
                     val power = if (Math.abs(raw) > 0.10) raw else 0.0
@@ -215,25 +215,25 @@ object Controls : LazyGroup(), Logging {
                 }
             }
 
-            val childControl by Controls.lazyByRequest {
+            val childControl by TeleopControls.lazyByRequest {
                 RawMotorSubsystemControl(controlInput, Subsystems.windowMotor)
             }
 
-            val button by Controls.lazyByRequest {
+            val button by TeleopControls.lazyByRequest {
                 joystick.button(1)
             }
 
-            val control by Controls.lazyByRequest {
+            val control by TeleopControls.lazyByRequest {
                 HookedControl({ button.get() }, childControl)
             }
         }
 
-        init { Controls.subgroups.add(windowMotor) }
+        init { TeleopControls.subgroups.add(windowMotor) }
     }
 
-    init { Controls.subgroups.add(lifter) }
+    init { TeleopControls.subgroups.add(lifter) }
 
-    val controls: List<*> by lazy {
+    override val controls: List<*> by lazy {
         listOf(drivetrain.tankControl,
                 drivetrain.arcadeControl,
                 drivetrain.modeControl,
@@ -244,6 +244,11 @@ object Controls : LazyGroup(), Logging {
                 lifter.windowMotor.childControl,
                 lifter.windowMotor.control)
     }
+}
+
+abstract class LazyControlGroup : LazyGroup() {
+
+    abstract val controls: List<*>
 
     override fun init() {
         super.init()
@@ -251,7 +256,7 @@ object Controls : LazyGroup(), Logging {
     }
 
     private fun initCommands() {
-        controls.forEach {
+        TeleopControls.controls.forEach {
             if (it is Initializable) {
                 it.init()
             }
@@ -263,26 +268,25 @@ object Controls : LazyGroup(), Logging {
     }
 
     fun startAll() {
-        controls.forEach {
+        TeleopControls.controls.forEach {
             if (it is Command) {
                 it.start()
             }
         }
 
-        logger.info("Started ${controls.count()} commands")
+        TeleopControls.logger.info("Started ${TeleopControls.controls.count()} commands")
     }
 
     fun cancelAll() {
-        controls.forEach {
+        TeleopControls.controls.forEach {
             when (it) {
                 is Command ->
                     it.cancel()
             }
         }
 
-        logger.info("Canceled ${controls.count()} commands")
+        TeleopControls.logger.info("Canceled ${TeleopControls.controls.count()} commands")
     }
-
 }
 
 fun Joystick.button(buttonNumber: Int) = JoystickButton(this, buttonNumber)
