@@ -58,7 +58,7 @@ class DeadzoneMotorSubsystemControl<TSubsystem>(
     }
 }
 
-class HookedControl(
+class HookedStreamControl(
         private val isEnabled: () -> Boolean,
         val child: Command)
         : EmptyCommand(), Logging {

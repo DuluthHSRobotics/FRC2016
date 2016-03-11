@@ -202,7 +202,7 @@ object TeleopControls : LazyControlGroup(), Logging {
 
             val controlInput by TeleopControls.lazyByRequest {
                 {
-                    val raw = joystick.twist
+                    val raw = joystick.x
                     val power = if (Math.abs(raw) > 0.10) raw else 0.0
                     val scale = Prefs.root.winchSpeedScale.get()
                     power * scale
@@ -218,7 +218,7 @@ object TeleopControls : LazyControlGroup(), Logging {
             }
 
             val control by TeleopControls.lazyByRequest {
-                HookedControl({ button.get() }, childControl)
+                HookedStreamControl({ button.get() }, childControl)
             }
         }
 
