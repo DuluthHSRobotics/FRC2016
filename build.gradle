@@ -21,11 +21,13 @@ apply plugin: 'kotlin'
 repositories {
     mavenCentral()
     maven { url "http://first.wpi.edu/FRC/roborio/maven/release" }
+    maven { url "http://repository.jetbrains.com/all"}
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "edu.wpi.first.wpilibj:wpilibJavaFinal:0.1.0-SNAPSHOT"
+    testCompile "org.jetbrains.spek:spek:0.1.199"
 }
 
 task wrapper(type: Wrapper) {
