@@ -22,6 +22,7 @@ import org.usfirst.frc5293.impl.systems.shooter.kicker.ShooterKickerControl
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+
 object TeleopControls : LazyControlGroup(), Logging {
 
     private val joystick1 by lazyByRequest { Joystick(0) }
@@ -181,8 +182,8 @@ object TeleopControls : LazyControlGroup(), Logging {
 
             val power by TeleopControls.lazyByRequest {
                 SingleAxisPowerSettings(
-                        positivePower = 1.0,
-                        negativePower = -1.0
+                        positivePower = -1.0,
+                        negativePower = 1.0
                 )
             }
 
@@ -197,13 +198,6 @@ object TeleopControls : LazyControlGroup(), Logging {
 
             val joystick by TeleopControls.lazyByRequest {
                 joystick2
-            }
-
-            val input by TeleopControls.lazyByRequest {
-                SingleAxisButtonInput(
-                        positiveButton = joystick.button(10),
-                        negativeButton = joystick.button(12)
-                )
             }
 
             val controlInput by TeleopControls.lazyByRequest {

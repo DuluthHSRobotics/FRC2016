@@ -29,7 +29,7 @@ object Devices : LazyGroup() {
     }
 
     // TODO: Might want to refactor this somewhere else
-    private val currentConfig = ConfigSet.PROTOTYPE
+    private val currentConfig = ConfigSet.COMPETITION
 
 //    private val isCameraEnabled = false
 
@@ -63,7 +63,10 @@ object Devices : LazyGroup() {
         }
 
         val lifter by Devices.lazyByRequest {
-            Victor(6)
+            when (currentConfig) {
+                ConfigSet.PROTOTYPE -> Victor(6) as SpeedController
+                ConfigSet.COMPETITION -> Talon(6) as SpeedController
+            }
         }
 
         val kicker by Devices.lazyByRequest {
@@ -86,7 +89,7 @@ object Devices : LazyGroup() {
                 ConfigSet.PROTOTYPE ->
                         LifterWinchMotorDevice(Victor(4))
                 ConfigSet.COMPETITION ->
-                        LifterWinchMotorDevice(CANTalon(0))
+                        LifterWinchMotorDevice(CANTalon(1))
             }
         }
 
@@ -95,7 +98,7 @@ object Devices : LazyGroup() {
                 ConfigSet.PROTOTYPE ->
                     LifterWindowMotorDevice(Victor(5))
                 ConfigSet.COMPETITION ->
-                    LifterWindowMotorDevice(CANTalon(1))
+                    LifterWindowMotorDevice(CANTalon(0))
             }
         }
     }
