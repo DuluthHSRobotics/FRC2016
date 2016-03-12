@@ -12,9 +12,9 @@ abstract class SubsystemCommand : ActionCommand {
     }
 }
 
-fun SubsystemCommand(vararg subsystems: Subsystem, action: () -> Unit) =
+fun SubsystemCommand(vararg subsystems: Subsystem, action: (SubsystemCommand) -> Unit) =
     object : SubsystemCommand(*subsystems) {
         override fun action() {
-            action()
+            action(this)
         }
     }

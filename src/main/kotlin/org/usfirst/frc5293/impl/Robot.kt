@@ -16,19 +16,23 @@ import org.usfirst.frc5293.framework.util.Logging
  */
 class Robot : IterativeRobot(), Logging {
 
-    private var autonomousCommand: Command? = null
-
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     override fun robotInit() {
         // The order of initialization is important!
-        val roots = listOf(Prefs, Devices, Subsystems, TeleopControls)
-        roots.forEach { it.init() }
+        val groups = listOf(
+                Prefs,
+                Devices,
+                Subsystems,
+                TeleopControls,
+                AutonomousControls)
 
-        // create the command used for the autonomous period
-        autonomousCommand = null // disable autonomous
+        groups.forEach { it.init() }
+
+        AutonomousControls.cancelAll()
+        TeleopControls.cancelAll()
 
         logger.info("Successfully initialised robot")
     }
@@ -40,10 +44,7 @@ class Robot : IterativeRobot(), Logging {
     override fun disabledInit() {
         LiveWindow.setEnabled(false)
 
-        if (autonomousCommand != null) {
-            autonomousCommand?.cancel()
-        }
-
+        AutonomousControls.cancelAll()
         TeleopControls.cancelAll()
     }
 
@@ -52,9 +53,8 @@ class Robot : IterativeRobot(), Logging {
     }
 
     override fun autonomousInit() {
-        if (autonomousCommand != null) {
-            autonomousCommand?.start()
-        }
+        TeleopControls.cancelAll()
+        AutonomousControls.startAll()
     }
 
     /**
@@ -65,14 +65,7 @@ class Robot : IterativeRobot(), Logging {
     }
 
     override fun teleopInit() {
-        // This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-        if (autonomousCommand != null) {
-            autonomousCommand?.cancel()
-        }
-
+        AutonomousControls.cancelAll()
         TeleopControls.startAll()
     }
 

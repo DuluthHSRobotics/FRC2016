@@ -241,7 +241,7 @@ object TeleopControls : LazyControlGroup(), Logging {
     }
 }
 
-abstract class LazyControlGroup : LazyGroup() {
+abstract class LazyControlGroup(willAddToScheduler: Boolean = true) : LazyGroup(), Logging {
 
     abstract val controls: List<*>
 
@@ -251,7 +251,7 @@ abstract class LazyControlGroup : LazyGroup() {
     }
 
     private fun initCommands() {
-        TeleopControls.controls.forEach {
+        controls.forEach {
             if (it is Initializable) {
                 it.init()
             }
@@ -263,24 +263,24 @@ abstract class LazyControlGroup : LazyGroup() {
     }
 
     fun startAll() {
-        TeleopControls.controls.forEach {
+        controls.forEach {
             if (it is Command) {
                 it.start()
             }
         }
 
-        TeleopControls.logger.info("Started ${TeleopControls.controls.count()} commands")
+        logger.info("Started ${controls.count()} commands")
     }
 
     fun cancelAll() {
-        TeleopControls.controls.forEach {
+        controls.forEach {
             when (it) {
                 is Command ->
                     it.cancel()
             }
         }
 
-        TeleopControls.logger.info("Canceled ${TeleopControls.controls.count()} commands")
+        logger.info("Canceled ${controls.count()} commands")
     }
 }
 
