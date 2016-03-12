@@ -90,11 +90,11 @@ object TeleopControls : LazyControlGroup(), Logging {
         object ringLight {
 
             val joystick by TeleopControls.lazyByRequest {
-                NullJoystick
+                joystick3
             }
 
             val input by TeleopControls.lazyByRequest {
-                joystick.button(11)
+                joystick.button(3)
             }
 
             val control by TeleopControls.lazyByRequest {
@@ -156,7 +156,7 @@ object TeleopControls : LazyControlGroup(), Logging {
                 { joystick3.y }
             }
 
-            val control by TeleopControls.lazyByRequest {   
+            val control by TeleopControls.lazyByRequest {
                 DeadzoneMotorSubsystemControl(input, Subsystems.shooter.lifter)
             }
         }
@@ -234,6 +234,7 @@ object TeleopControls : LazyControlGroup(), Logging {
                 shooter.wheels.control,
                 shooter.kicker.control,
                 shooter.lifter.control,
+                camera.ringLight.control,
                 lifter.winchMotor.control,
                 lifter.windowMotor.childControl,
                 lifter.windowMotor.control)
