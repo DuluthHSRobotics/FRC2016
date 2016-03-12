@@ -65,7 +65,7 @@ object Devices : LazyGroup() {
         val lifter by Devices.lazyByRequest {
             when (currentConfig) {
                 ConfigSet.PROTOTYPE -> Victor(6) as SpeedController
-                ConfigSet.COMPETITION -> Talon(6) as SpeedController
+                ConfigSet.COMPETITION -> Talon(6).makeInverted() as SpeedController
             }
         }
 

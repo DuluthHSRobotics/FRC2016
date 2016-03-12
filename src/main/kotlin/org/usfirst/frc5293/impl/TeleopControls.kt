@@ -156,7 +156,7 @@ object TeleopControls : LazyControlGroup(), Logging {
                 { joystick3.y }
             }
 
-            val control by TeleopControls.lazyByRequest {
+            val control by TeleopControls.lazyByRequest {   
                 DeadzoneMotorSubsystemControl(input, Subsystems.shooter.lifter)
             }
         }
