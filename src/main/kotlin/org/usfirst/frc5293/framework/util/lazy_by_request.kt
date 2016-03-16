@@ -3,34 +3,74 @@ package org.usfirst.frc5293.framework.util
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-class LazySink {
-    val registrations: MutableList<Lazy<*>> = arrayListOf()
+sealed class LazyContainer<T>() {
+    abstract fun invalidate(): T
 
-    fun <T> register(lazy: Lazy<T>) {
-        registrations.add(lazy)
+    class OfLazy<T>(private val lazy: Lazy<T>) : LazyContainer<T>() {
+        override fun invalidate(): T {
+            return lazy.value
+        }
+    }
+
+    class OfFunction<T>(private val factory: () -> T) : LazyContainer<T>() {
+        fun create(): T {
+            return factory.invoke()
+        }
+
+        override fun invalidate(): T {
+            return create()
+        }
+    }
+}
+
+class LazySink {
+
+    val registrations: MutableList<LazyContainer<*>> = arrayListOf()
+
+    fun <T> registerLazy(lazy: Lazy<T>): LazyContainer.OfLazy<T> {
+        val x = LazyContainer.OfLazy(lazy)
+        registrations.add(x)
+        return x
+    }
+
+    fun <T> registerLazy(initializer: () -> T): LazyContainer.OfLazy<T> {
+        return registerLazy(lazy(initializer))
+    }
+
+    fun <T> registerFactory(factory: () -> T): LazyContainer.OfFunction<T> {
+        val f = LazyContainer.OfFunction(factory)
+        registrations.add(f)
+        return f
     }
 
     fun invalidate() {
-        registrations.forEach { it.value }
+        registrations.forEach {
+            it.invalidate()
+        }
     }
 }
 
-class LazyByRequest<T>(
+class SinkedLazyProperty<T>(
         sink: LazySink,
         initializer: () -> T) {
 
-    val lazy = lazy<T>(initializer)
-
-    init {
-        sink.register(lazy)
-    }
+    val container = sink.registerLazy(initializer)
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return lazy.value
+        return container.invalidate()
     }
 }
 
-fun <T> lazyByRequest(sink: LazySink, initializer: () -> T) = LazyByRequest(sink, initializer)
+class SinkedFactoryProperty<T>(
+        sink: LazySink,
+        initializer: () -> T) {
+
+    val container = sink.registerFactory(initializer)
+
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return container.invalidate()
+    }
+}
 
 abstract class LazyGroup() : Initializable {
 
@@ -43,23 +83,8 @@ abstract class LazyGroup() : Initializable {
     }
 
     protected open fun <T> lazyByRequest(initializer: () -> T) =
-            LazyByRequest(sink, initializer)
+            SinkedLazyProperty(sink, initializer)
 
-//    protected fun add(group: LazyGroup) {
-//        subgroups.add(group)
-//    }
+    protected open fun <T> factoryByRequest(initializer: () -> T) =
+            SinkedFactoryProperty(sink, initializer)
 }
-
-//abstract class DelegatedLazyGroup(private val actualGroup: LazyGroup) : LazyGroup(), Initializable {
-//
-//    init {
-//        actualGroup.add(this)
-//    }
-//
-//    override fun init() {
-//        actualGroup.init()
-//    }
-//
-//    override fun <T> lazyByRequest(initializer: () -> T) =
-//            LazyByRequest(actualGroup.sink, initializer)
-//}

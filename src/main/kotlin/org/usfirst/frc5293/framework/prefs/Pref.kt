@@ -1,5 +1,7 @@
 package org.usfirst.frc5293.framework.prefs
 
+import org.usfirst.frc5293.framework.util.Logging
+
 abstract class Pref<T>(
         val key: String,
 
@@ -7,7 +9,8 @@ abstract class Pref<T>(
          * Get the default preference value
          * @return the default preference value
          */
-        val default: T) {
+        val default: T)
+            : Logging {
 
     /**
      * @return the current preference value
@@ -20,7 +23,9 @@ abstract class Pref<T>(
      * Updates the current preference value
      * @param value the value to set
      */
-    abstract fun set(value: T)
+    open fun set(value: T) {
+        logger.debug("set '$key' -> $value")
+    }
 
     /**
      * Gets these current value and checks if it is set to the default value

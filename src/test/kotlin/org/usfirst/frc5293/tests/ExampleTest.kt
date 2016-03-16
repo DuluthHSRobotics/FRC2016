@@ -3,7 +3,6 @@ package org.usfirst.frc5293.tests
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.shouldEqual
 import org.usfirst.frc5293.framework.util.LazyGroup
-import org.usfirst.frc5293.framework.util.lazyByRequest
 
 class LazyGroupSpecs: Spek() { init {
 
@@ -17,7 +16,7 @@ class LazyGroupSpecs: Spek() { init {
         on("trying to intialize the group") {
             group.init()
 
-            it("should result the property being initlaized") {
+            it("should result the property being initialized") {
                 shouldEqual(group.price, 2.99)
             }
         }

@@ -241,7 +241,7 @@ object TeleopControls : LazyControlGroup(), Logging {
     }
 }
 
-abstract class LazyControlGroup(willAddToScheduler: Boolean = true) : LazyGroup(), Logging {
+abstract class LazyControlGroup() : LazyGroup(), Logging {
 
     abstract val controls: List<*>
 

@@ -9,7 +9,7 @@ object AutonomousControls
         : LazyControlGroup()
         , Logging {
 
-    val command by lazyByRequest {
+    val command by factoryByRequest {
         AutonomousCommand(Subsystems.drivetrain)
     }
 

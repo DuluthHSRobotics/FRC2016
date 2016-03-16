@@ -9,6 +9,7 @@ class BooleanPref(key: String, default: Boolean) : Pref<Boolean>(key, default) {
     }
 
     override fun set(value: Boolean) {
+        super.set(value)
         Preferences.getInstance().putBoolean(key, value)
     }
 }
