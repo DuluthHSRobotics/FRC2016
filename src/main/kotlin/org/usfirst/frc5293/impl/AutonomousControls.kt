@@ -1,8 +1,10 @@
 package org.usfirst.frc5293.impl
 
 import org.usfirst.frc5293.framework.commands.EmptyCommand
+import org.usfirst.frc5293.framework.util.LazyControlGroup
 import org.usfirst.frc5293.framework.util.LazyGroup
 import org.usfirst.frc5293.framework.util.Logging
+import org.usfirst.frc5293.framework.util.factory
 import org.usfirst.frc5293.impl.autonomous.AutonomousCommand
 
 object AutonomousControls
@@ -13,7 +15,7 @@ object AutonomousControls
         AutonomousCommand(Subsystems.drivetrain)
     }
 
-    override val controls: List<*> by lazy {
+    override val controls: List<*> by factory {
         listOf(command)
     }
 }

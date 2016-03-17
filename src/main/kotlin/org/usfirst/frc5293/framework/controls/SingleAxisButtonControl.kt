@@ -2,7 +2,7 @@ package org.usfirst.frc5293.framework.controls
 
 import edu.wpi.first.wpilibj.buttons.Button
 import edu.wpi.first.wpilibj.command.Subsystem
-import org.usfirst.frc5293.framework.commands.SubsystemCommand
+import org.usfirst.frc5293.framework.commands.SubsystemActionCommand
 import org.usfirst.frc5293.framework.subsystems.SpeedControllerSubsystem
 
 class SingleAxisButtonInput(

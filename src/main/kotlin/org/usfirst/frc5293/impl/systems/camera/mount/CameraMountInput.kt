@@ -1,7 +1,7 @@
 package org.usfirst.frc5293.impl.systems.camera.mount
 
 import edu.wpi.first.wpilibj.buttons.Button
-import org.usfirst.frc5293.framework.commands.SubsystemCommand
+import org.usfirst.frc5293.framework.commands.SubsystemActionCommand
 import org.usfirst.frc5293.framework.translations.camera.CameraEngine
 
 class CameraMountInput(
@@ -14,7 +14,7 @@ class CameraMountControl(val input: CameraMountInput, val mount: CameraMountSubs
     val engine by lazy { CameraEngine(input.x, input.y) }
 
     init {
-        input.originButton.whenActive(SubsystemCommand(mount) {
+        input.originButton.whenActive(SubsystemActionCommand(mount) {
             val point = engine.result
             mount.setOrigin(point.x, point.y)
         })

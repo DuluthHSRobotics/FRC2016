@@ -2,7 +2,7 @@ package org.usfirst.frc5293.framework.commands
 
 import edu.wpi.first.wpilibj.command.Subsystem
 
-abstract class SubsystemCommand : ActionCommand {
+abstract class SubsystemActionCommand : ActionCommand {
 
     constructor(subsystems: List<Subsystem>) : super() {
         subsystems.forEach { requires(it) }
@@ -12,8 +12,8 @@ abstract class SubsystemCommand : ActionCommand {
     }
 }
 
-fun SubsystemCommand(vararg subsystems: Subsystem, action: (SubsystemCommand) -> Unit) =
-    object : SubsystemCommand(*subsystems) {
+fun SubsystemActionCommand(vararg subsystems: Subsystem, action: (SubsystemActionCommand) -> Unit) =
+    object : SubsystemActionCommand(*subsystems) {
         override fun action() {
             action(this)
         }

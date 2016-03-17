@@ -3,7 +3,7 @@ package org.usfirst.frc5293.framework.controls
 import edu.wpi.first.wpilibj.buttons.Button
 import edu.wpi.first.wpilibj.buttons.JoystickButton
 import edu.wpi.first.wpilibj.command.Subsystem
-import org.usfirst.frc5293.framework.commands.SubsystemCommand
+import org.usfirst.frc5293.framework.commands.SubsystemActionCommand
 import org.usfirst.frc5293.framework.util.Initializable
 import org.usfirst.frc5293.framework.util.Logging
 
@@ -21,14 +21,14 @@ abstract class PushDownButtonControl(val button: Button): Initializable, Logging
         if (didInit) return
         didInit = true
 
-        button.whileHeld(object : SubsystemCommand(*subsystems.toTypedArray()) {
+        button.whileHeld(object : SubsystemActionCommand(*subsystems.toTypedArray()) {
             override fun action() {
                 logger.debug("onPressed()")
                 onPressed()
             }
         })
 
-        button.whenReleased(object : SubsystemCommand(*subsystems.toTypedArray()) {
+        button.whenReleased(object : SubsystemActionCommand(*subsystems.toTypedArray()) {
             override fun action() {
                 logger.debug("onReleased()")
                 onReleased()

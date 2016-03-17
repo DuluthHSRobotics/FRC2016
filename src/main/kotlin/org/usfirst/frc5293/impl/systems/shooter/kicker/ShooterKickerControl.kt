@@ -1,33 +1,28 @@
 package org.usfirst.frc5293.impl.systems.shooter.kicker
 
 import edu.wpi.first.wpilibj.buttons.Button
+import org.usfirst.frc5293.framework.commands.EmptyCommand
 import org.usfirst.frc5293.framework.commands.ScheduledCommandGroup
+import org.usfirst.frc5293.framework.commands.SubsystemActionCommand
 import org.usfirst.frc5293.framework.util.Logging
 import org.usfirst.frc5293.impl.Prefs
+import org.usfirst.frc5293.impl.Subsystems
 
-class ShooterKickerControl(val kickButton: Button, subsystem: ShooterKickerSubsystem) {
+class ShooterKickerControl(val kickButton: Button, kicker: ShooterKickerSubsystem) {
     init {
-        kickButton.whenPressed(ShooterKickerOnPressed(subsystem))
-    }
-}
+        kickButton.whileHeld(object : EmptyCommand() {
 
-class ShooterKickerOnPressed(val kicker: ShooterKickerSubsystem) : ScheduledCommandGroup(), Logging {
+            init {
+                requires(kicker)
+            }
 
-    init {
-        schedule {
-            requires(kicker)
-
-            awaitIgnored {
+            override fun execute() {
                 kicker.angle = Prefs.root.shooterKickerAngle.get()
-                logger.debug("angle = ${kicker.angle} deg")
             }
+        })
 
-            delay(seconds = Prefs.root.shooterKickerDelay.get())
-
-            awaitIgnored {
-                kicker.angle = 0.0
-                logger.debug("angle = ${kicker.angle} deg")
-            }
-        }
+        kickButton.whenReleased(SubsystemActionCommand(kicker) {
+            kicker.angle = 0.0
+        })
     }
 }

@@ -114,12 +114,12 @@ object Devices : LazyGroup() {
 
         val accelerometer by Devices.lazyByRequest {
             AccelerometerDevice("Extra Accelerometer",
-                    ADXL345_SPI(SPI.Port.kOnboardCS0, Accelerometer.Range.k2G))
+                    ADXL362(SPI.Port.kOnboardCS0, Accelerometer.Range.k2G))
         }
 
         val gyro by Devices.lazyByRequest {
             GyroDevice("Extra Gyro",
-                    ADXRS450_Gyro(SPI.Port.kMXP))
+                    ADXRS450_Gyro(SPI.Port.kOnboardCS1))
         }
     }
 

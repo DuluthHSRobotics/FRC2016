@@ -68,9 +68,19 @@ class SinkedFactoryProperty<T>(
     val container = sink.registerFactory(initializer)
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return container.invalidate()
+        return container.create()
     }
 }
+
+class FactoryProperty<T>(
+        private val initializer: () -> T) {
+
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return initializer()
+    }
+}
+
+fun <T> factory(initializer: () -> T): FactoryProperty<T> = FactoryProperty(initializer)
 
 abstract class LazyGroup() : Initializable {
 
