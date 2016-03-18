@@ -14,4 +14,6 @@ class MotorSubsystem(private val motor: SpeedController)
     override fun stop() {
         power = 0.0
     }
+
+    val isMoving = Math.abs(power) > 0.0
 }

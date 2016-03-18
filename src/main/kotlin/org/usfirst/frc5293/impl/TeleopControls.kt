@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.buttons.JoystickButton
 import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.Scheduler
+import org.usfirst.frc5293.framework.commands.EmptyCommand
 import org.usfirst.frc5293.framework.controls.*
 import org.usfirst.frc5293.framework.input.NullJoystick
 import org.usfirst.frc5293.framework.util.Initializable
@@ -123,8 +124,8 @@ object TeleopControls : LazyControlGroup(), Logging {
             }
 
             val power = SingleAxisPowerSettings(
-                    positivePower = 1.0,
-                    negativePower = -0.3
+                    positivePower = { Prefs.shooterWheels.outtakePower.get() },
+                    negativePower = { Prefs.shooterWheels.intakePower.get() }
             )
 
             val control by TeleopControls.lazyByRequest {
@@ -205,7 +206,7 @@ object TeleopControls : LazyControlGroup(), Logging {
                 {
                     val raw = joystick.x
                     val power = if (Math.abs(raw) > 0.10) raw else 0.0
-                    val scale = Prefs.root.winchSpeedScale.get()
+                    val scale = Prefs.root.windowMotorScaling.get()
                     power * scale
                 }
             }
@@ -220,6 +221,18 @@ object TeleopControls : LazyControlGroup(), Logging {
 
             val control by TeleopControls.lazyByRequest {
                 HookedStreamControl({ button.get() }, childControl)
+            }
+
+            val disableDrivetrainControl by TeleopControls.lazyByRequest {
+                object : EmptyCommand(), Logging {
+                    override fun execute() {
+                        if (Subsystems.windowMotor.isMoving) {
+                            Subsystems.drivetrain.disable()
+                        } else {
+                            Subsystems.drivetrain.enable()
+                        }
+                    }
+                } as Command
             }
         }
 
@@ -238,7 +251,8 @@ object TeleopControls : LazyControlGroup(), Logging {
                 camera.ringLight.control,
                 lifter.winchMotor.control,
                 lifter.windowMotor.childControl,
-                lifter.windowMotor.control)
+                lifter.windowMotor.control,
+                lifter.windowMotor.disableDrivetrainControl)
     }
 }
 

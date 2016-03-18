@@ -1,14 +1,20 @@
 package org.usfirst.frc5293.impl.systems.drivetrain
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.usfirst.frc5293.framework.subsystems.DisablableSubsystem
 import org.usfirst.frc5293.framework.subsystems.EmptySubsytem
 import org.usfirst.frc5293.impl.Devices
+import org.usfirst.frc5293.impl.Prefs
 
-class DrivetrainSubsystem(private val drivetrain: DrivetrainDevice) : EmptySubsytem() {
+class DrivetrainSubsystem(private val drivetrain: DrivetrainDevice) : DisablableSubsystem() {
 
     private val drive by lazy { drivetrain.control }
 
     fun driveArcade(power: Double, rotation: Double) {
+        if (!isEnabled) {
+            stop()
+        }
+
         // TODO: Just for debug right now
         SmartDashboard.putNumber("Joystick Power", power)
         SmartDashboard.putNumber("Joystick Rot", rotation)
@@ -22,6 +28,10 @@ class DrivetrainSubsystem(private val drivetrain: DrivetrainDevice) : EmptySubsy
     }
 
     fun driveTank(leftPower: Double, rightPower: Double) {
+        if (!isEnabled) {
+            stop()
+        }
+
         // TODO: Just for debug right now
         SmartDashboard.putNumber("Joystick Left Power", leftPower)
         SmartDashboard.putNumber("Joystick Right Power", rightPower)

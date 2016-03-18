@@ -10,8 +10,8 @@ class LifterWinchMotorDevice(val motor: SpeedController): Logging {
     init {
         LiveWindowExt.tryAddActuator("Lift", "Winch Motor", motor)
 
-        if (motor is CANTalon) {
-            motor.setVoltageRampRate(1.0 /* V/sec */)
-        }
+//        if (motor is CANTalon) {
+//            motor.setVoltageRampRate(1.0 /* V/sec */)
+//        }
     }
 }

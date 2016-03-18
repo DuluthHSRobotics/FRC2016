@@ -12,7 +12,6 @@ class ShooterWheelsSubsystem(wheels: ShooterWheelsDevice) : EmptySubsytem(), Spe
         get() = controller.get()
         set(x) {
             controller.set(x)
-            SmartDashboard.putNumber("Shooter Power", x)
         }
 }
 

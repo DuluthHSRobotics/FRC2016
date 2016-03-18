@@ -27,14 +27,16 @@ class Robot : IterativeRobot(), Logging {
                 Devices,
                 Subsystems,
                 TeleopControls,
-                AutonomousControls)
+                AutonomousControls,
+                SensorControls)
 
         groups.forEach { it.init() }
 
         AutonomousControls.cancelAll()
         TeleopControls.cancelAll()
+        SensorControls.startAll()
 
-        logger.info("Successfully initialised robot")
+        logger.info("Successfully initialized robot")
     }
 
     /**
@@ -50,11 +52,15 @@ class Robot : IterativeRobot(), Logging {
 
     override fun disabledPeriodic() {
         Scheduler.getInstance().run()
+
+        logger.info("Auto Power -> ${Prefs.autonomous.drivePower.get()}")
+        logger.info("Auto Time -> ${Prefs.autonomous.driveTime.get()}")
     }
 
     override fun autonomousInit() {
         TeleopControls.cancelAll()
         AutonomousControls.startAll()
+        SensorControls.startAll()
     }
 
     /**
@@ -67,6 +73,7 @@ class Robot : IterativeRobot(), Logging {
     override fun teleopInit() {
         AutonomousControls.cancelAll()
         TeleopControls.startAll()
+        SensorControls.startAll()
     }
 
     /**
@@ -79,6 +86,7 @@ class Robot : IterativeRobot(), Logging {
     }
 
     override fun testInit() {
+        SensorControls.startAll()
         LiveWindow.setEnabled(true)
     }
 

@@ -12,9 +12,9 @@ class AccelerometerDevice(name: String, accelerometer: Accelerometer) {
     }
 }
 
-class GyroDevice(name: String, gyro: Gyro) {
+class GyroDevice(val name: String, val sensor: Gyro) {
     init {
-        if (gyro is Gyro && gyro is LiveWindowSendable)
-            LiveWindow.addSensor("Sensors", name, gyro)
+        if (sensor is Gyro && sensor is LiveWindowSendable)
+            LiveWindow.addSensor("Sensors", name, sensor)
     }
 }

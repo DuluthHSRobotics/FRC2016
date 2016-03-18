@@ -10,7 +10,10 @@ class SingleAxisButtonInput(
         val negativeButton: Button)
 
 
-data class SingleAxisPowerSettings(val positivePower: Double, val negativePower: Double)
+data class SingleAxisPowerSettings(val positivePower: () -> Double, val negativePower: () -> Double)
+
+fun SingleAxisPowerSettings(positivePower: Double, negativePower: Double) =
+        SingleAxisPowerSettings({ positivePower }, { negativePower })
 
 class SingleAxisButtonControl<TSubsystem>(
         val input: SingleAxisButtonInput,
@@ -32,7 +35,7 @@ class SingleAxisButtonControl<TSubsystem>(
             override val subsystems = listOf(subsystem)
 
             override fun onPressed() {
-                subsystem.power = power.positivePower
+                subsystem.power = power.positivePower()
             }
 
             override fun onReleased() {
@@ -44,7 +47,7 @@ class SingleAxisButtonControl<TSubsystem>(
             override val subsystems = listOf(subsystem)
 
             override fun onPressed() {
-                subsystem.power = power.negativePower
+                subsystem.power = power.negativePower()
             }
 
             override fun onReleased() {
