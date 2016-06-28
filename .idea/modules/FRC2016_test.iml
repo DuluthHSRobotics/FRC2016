@@ -11,10 +11,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="FRC2016_main" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.0.2-1" level="project" />
     <orderEntry type="library" name="Gradle: edu.wpi.first.wpilibj:wpilibJavaFinal:0.1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.spek:spek:0.1.199" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-runtime:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-runtime:1.0.2-1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-test:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.11" level="project" />
